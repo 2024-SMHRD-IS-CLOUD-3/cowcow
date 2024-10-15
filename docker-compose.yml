@@ -1,0 +1,32 @@
+services:
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - mynetwork
+
+  backend:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_HOST=project-db-cgi.smhrd.com
+      - DATABASE_PORT=3307
+      - DATABASE_USER=ohi0
+      - DATABASE_PASSWORD=smart123!
+      - DATABASE_NAME=mydb
+    networks:
+      - mynetwork
+
+volumes:
+  db_data:
+
+networks:
+  mynetwork:
