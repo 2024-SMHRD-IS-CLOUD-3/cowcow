@@ -23,15 +23,15 @@ import { AuctionBid } from './auction-bids/auction-bid.entity';
       password: 'smart123!',
       database: 'ohi0',
       entities: [
-        User, Image, UserBarn, Cow, CowDetail, AuctionCow, Auction, AuctionBid,
+        User, Image, UserBarn, Cow, CowDetail, AuctionCow, Auction, AuctionBid
       ],
       synchronize: true, // 개발 환경에서만 사용 (자동 테이블 생성)
     }),
     TypeOrmModule.forFeature([
-      User, Image, UserBarn, Cow, CowDetail, AuctionCow, Auction, AuctionBid,
+      User, Image, UserBarn, Cow, CowDetail, AuctionCow, Auction, AuctionBid
     ]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}
