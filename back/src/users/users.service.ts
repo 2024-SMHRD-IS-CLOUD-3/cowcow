@@ -13,4 +13,10 @@ export class UsersService {
   findOne(id: number): Promise<User> {
     return this.usersRepository.findOne({ where: { usrSeq: id } });
   }
+
+  // 모든 사용자 조회
+  async findAll(): Promise<User[]> {
+    return this.usersRepository.find();
+  }
+
 }

@@ -1,0 +1,201 @@
+/* 전체 레이아웃 스타일 */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0d1117, #1a1a1a);
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* 헤더 스타일 */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #1a1a1a;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+
+.main-header h1 {
+    font-size: 28px;
+    color: #63b3ff;
+    letter-spacing: 1px;
+}
+
+/* 검색창 스타일 */
+.search-bar input {
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #333;
+    color: #fff;
+    width: 300px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.search-bar input:focus {
+    border-color: #63b3ff;
+}
+
+/* 네비게이션 링크 */
+.nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #aaa;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #63b3ff;
+}
+
+/* 경매 목록 섹션 */
+.live-auctions {
+    padding: 40px;
+    text-align: center;
+}
+
+.live-auctions h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #63b3ff;
+}
+
+/* 경매 카드 그리드 */
+.auction-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0 40px;
+}
+
+/* 경매 카드 스타일 */
+.auction-card {
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.auction-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
+}
+
+/* 썸네일 컨테이너 */
+.thumbnail-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.thumbnail-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* LIVE 배지 */
+.live-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* 시청자 수 */
+.viewer-count {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+/* 경매 정보 */
+.auction-info {
+    padding: 20px;
+    text-align: left;
+}
+
+.auction-info h3 {
+    margin: 10px 0;
+    font-size: 22px;
+    color: #f0f0f0;
+}
+
+.auction-info p {
+    color: #aaa;
+}
+
+/* 탑 버튼 스타일 */
+.top-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #63b3ff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 101;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s, background-color 0.3s;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 탑 버튼에 호버 효과 */
+.top-button:hover {
+    background-color: #007acc;
+    transform: scale(1.1); /* 크기 확대 */
+}
+
+/* 탑 버튼에 눌렀을 때의 효과 */
+.top-button:active {
+    transform: scale(1.05); /* 클릭 시 약간 줄어듦 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* SVG 아이콘 스타일 */
+.top-button svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
