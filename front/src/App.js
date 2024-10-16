@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import UserList from './components/UserList';
+// import UserList from './components/UserList';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Main from './components/Main'
+import Login from './components/Login';
+import SignUp from './components/SignUp';
+
 
 function App() {
   const [data, setData] = useState([]);
@@ -18,9 +23,16 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <UserList users={data} /> {/* UserList에 users prop 전달 */}
-    </div>
+    // <div>
+    //   <UserList users={data} /> {/* UserList에 users prop 전달 */}
+    // </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main/>}></Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </Router>
   );
 }
 
