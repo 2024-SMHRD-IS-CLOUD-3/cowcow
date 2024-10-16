@@ -29,5 +29,11 @@ export class UsersService {
         return user; // 사용자 반환
     }
     return null; // 비밀번호가 일치하지 않는 경우 null 반환
-}
+  }
+
+  // 사용자 삭제 (회원탈퇴)
+  async deleteUser(id: number): Promise<void> {
+    await this.usersRepository.delete(id);
+  }
+
 }

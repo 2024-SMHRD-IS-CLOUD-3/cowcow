@@ -31,7 +31,7 @@ function App() {
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/myPage" element={<MyPage user={user} setUser={setUser} />} />
-        <Route path="/deleteAccount" element={<DeleteAccount setUser={setUser} />} />
+        <Route path="/deleteAccount" element={<DeleteAccount user={user} setUser={setUser} />} />
         <Route path="/transactionHistory" element={<TransactionHistory user={user} setUser={setUser} />} />
       </Routes>
     </Router>
