@@ -1,15 +1,10 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.entity'
+import { User } from './user.entity';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.usersService.findOne(id);
-  }
 
   // 모든 사용자 조회
   @Get()
@@ -17,4 +12,9 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  // 사용자 생성 (회원가입)
+  @Post('signup') // POST /users/signup
+  async createUser(@Body() userData: Partial<User>): Promise<User> {
+    return this.usersService.create(userData);
+  }
 }
