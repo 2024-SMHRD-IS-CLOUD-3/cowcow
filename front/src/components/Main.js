@@ -1,22 +1,20 @@
-// src/home/main.js
+// src/home/MainPage.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
-import './Main.css'; // CSS 파일 불러오기 (경로 유지)
+import { Link, useNavigate } from 'react-router-dom';
+import './Main.css'; // CSS 파일 불러오기
 
-// 코드 내용은 그대로 유지
-
-
-const MainPage = () => {
+const MainPage = ({ user, setUser }) => { // user와 setUser를 props로 추가
     const auctionData = Array.from({ length: 10 }, (_, index) => ({
         id: index + 1,
         title: `소 경매 #${index + 1}`,
         viewers: Math.floor(Math.random() * 200),
         status: index % 2 === 0 ? 'LIVE' : '종료',
-        thumbnail: `https://placekitten.com/400/200?image=${index + 1}` // 임시 썸네일 이미지
+        thumbnail: `https://placekitten.com/400/200?image=${index + 1}`
     }));
 
     const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태 관리
     const [showTopButton, setShowTopButton] = useState(false); // 탑 버튼 표시 여부 관리
+    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
     const filteredAuctions = auctionData.filter((auction) =>
         auction.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -39,10 +37,18 @@ const MainPage = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    const handleLogout = () => {
+        setUser(null); // 로그아웃 처리
+        navigate('/'); // 메인 페이지로 리다이렉트
+    };
+
     return (
         <div className="main-container">
             <header className="main-header">
-                <h1>카우카우</h1>
+                <h1 style={{ display: 'inline' }}>카우카우</h1>
+                {user && (
+                    <span style={{ marginLeft: '10px' }}>안녕하세요, {user.usrNm}님!</span> // 사용자 이름 표시
+                )}
                 <div className="search-bar">
                     <input
                         type="text"
@@ -52,9 +58,16 @@ const MainPage = () => {
                     />
                 </div>
                 <nav className="nav-links">
-                    <a href="/">홈</a>
-                    <a href="/auction">경매등록</a>
-                    <Link to= "/login"><a>로그인</a></Link>
+                    <Link to="/">홈</Link>
+                    <Link to="/auction">경매등록</Link>
+                    {!user ? (
+                        <Link to="/login">로그인</Link>
+                    ) : (
+                        <>
+                            <Link to="/mypage">마이페이지</Link>
+                            <Link to = "/" onClick={handleLogout}>로그아웃</Link>
+                        </>
+                    )}
                 </nav>
             </header>
 

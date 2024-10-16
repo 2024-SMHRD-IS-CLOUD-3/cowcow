@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-// import UserList from './components/UserList';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Main from './components/Main'
+import Main from './components/Main';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 
-
 function App() {
   const [data, setData] = useState([]);
+  const [user, setUser] = useState(null); // 로그인한 사용자 상태 관리
 
   useEffect(() => {
     // NestJS 서버(3001번 포트)에 있는 API 호출
@@ -23,13 +22,10 @@ function App() {
   }, []);
 
   return (
-    // <div>
-    //   <UserList users={data} /> {/* UserList에 users prop 전달 */}
-    // </div>
     <Router>
       <Routes>
-        <Route path="/" element={<Main/>}></Route>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Main user={user} setUser={setUser} />} />
+        <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signUp" element={<SignUp />} />
       </Routes>
     </Router>
@@ -37,4 +33,3 @@ function App() {
 }
 
 export default App;
-
