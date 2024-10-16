@@ -54,7 +54,7 @@ const MainPage = () => {
                 <nav className="nav-links">
                     <a href="/">홈</a>
                     <a href="/auction">경매등록</a>
-                    <a href='/login'>로그인</a>
+                    <Link to= "/login"><a>로그인</a></Link>
                 </nav>
             </header>
 
