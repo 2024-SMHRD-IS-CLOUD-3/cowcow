@@ -29,7 +29,7 @@ const MyPage = ({ user, setUser }) => {
                 <Sidebar />
                 <section className="mypage-content">
                     <h1>개인정보 변경</h1>
-                    <ProfileInfo />
+                    <ProfileInfo user={user} /> {/* user prop 추가 */}
                 </section>
             </div>
             {showTopButton && (
@@ -66,7 +66,7 @@ const Sidebar = () => (
     </aside>
 );
 
-const ProfileInfo = () => {
+const ProfileInfo = ({ user }) => { // user prop 추가
     const [addresses, setAddresses] = useState(['소경매왕']); // 초기 주소 1개
 
     const handleAddAddress = () => {
@@ -90,9 +90,9 @@ const ProfileInfo = () => {
 
     return (
         <div className="profile-info">
-            <InputField label="이름" value="홍길동" />
-            <InputField label="이메일" value="hong@example.com" />
-            <InputField label="전화번호" value="010-1234-5678" />
+            <InputField label="이름" value={user ? user.usrNm : '이름 없음'} /> {/* null 체크 추가 */}
+            <InputField label="이메일" value={user ? user.usrEml : '이메일 없음'} /> {/* null 체크 추가 */}
+            <InputField label="전화번호" value={user ? user.usrPhn : '전화번호 없음'} /> {/* null 체크 추가 */}
             <InputField label="농가이름" value="소경매왕" />
             <label className="address-label">농가주소</label>
 
