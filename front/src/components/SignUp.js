@@ -1,7 +1,7 @@
 // src/signup/SignUp.js
 import React, { useState } from 'react';
 import './SignUp.css'; // CSS 파일 import
-import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate 사용
+import { Link, useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate 사용
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
@@ -119,9 +119,11 @@ const SignUp = () => {
 
                 <p className="login-link">
                     이미 계정이 있으신가요?{' '}
-                    <a onClick={goToLogin} className="login-link-text">
-                        로그인
-                    </a>
+                    <Link to = "/login">
+                        <a className="login-link-text">
+                            로그인
+                        </a>
+                    </Link>
                 </p>
             </div>
         </div>
