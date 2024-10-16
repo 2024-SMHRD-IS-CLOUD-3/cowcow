@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn } from 'typeorm';
 import { Image } from '../images/image.entity';
 import { UserBarn } from '../user-barns/user-barn.entity';
 import { AuctionBid } from '../auction-bids/auction-bid.entity';
@@ -26,7 +26,7 @@ export class User {
   @Column({ name: 'usr_eml', nullable: true })
   usrEml: string;
 
-  @Column({ name: 'usr_crt_dt', type: 'datetime', nullable: true })
+  @CreateDateColumn({ name: 'usr_crt_dt', type: 'datetime' })
   usrCrtDt: Date;
 
   @OneToMany(() => Image, (image) => image.user)

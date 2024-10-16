@@ -1,13 +1,39 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Link import 추가
+import { Link, useNavigate } from 'react-router-dom'; // Link 및 useNavigate import 추가
 import './DeleteAccount.css'; // CSS 파일 import
 
-const DeleteAccount = ({ setUser }) => { // setUser 추가
-    const handleDelete = () => {
+const DeleteAccount = ({ user, setUser }) => { // user, setUser prop 추가
+    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+
+    const handleDelete = async () => {
         if (window.confirm('정말로 회원 탈퇴를 진행하시겠습니까?')) {
-            alert('회원 탈퇴가 완료되었습니다.');
-            setUser(null); // 로그아웃 처리
-            // TODO: 회원 탈퇴 처리 로직 추가 (백엔드 API 연동)
+            try {
+                console.log(user)
+                console.log(user.usrSeq)
+                if (user && user.usrSeq) {
+                    // 회원 탈퇴 API 호출
+                    const response = await fetch(`http://localhost:3001/users/${user.usrSeq}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'include', // 쿠키 인증이 필요한 경우 사용
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('회원 탈퇴 실패');
+                    }
+
+                    alert('회원 탈퇴가 완료되었습니다.');
+                    setUser(null); // 로그아웃 처리
+                    navigate('/'); // 메인 페이지로 이동
+                } else {
+                    alert('사용자 정보가 없습니다.');
+                }
+            } catch (error) {
+                console.error('회원 탈퇴 중 오류가 발생했습니다:', error);
+                alert('회원 탈퇴 중 오류가 발생했습니다. 다시 시도해 주세요.');
+            }
         }
     };
 
