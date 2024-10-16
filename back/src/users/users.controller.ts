@@ -6,15 +6,18 @@ import { User } from './user.entity';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // 모든 사용자 조회
   @Get()
   async getAllUsers(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
-  // 사용자 생성 (회원가입)
   @Post('signup') // POST /users/signup
   async createUser(@Body() userData: Partial<User>): Promise<User> {
     return this.usersService.create(userData);
+  }
+
+  @Post('login') // POST /users/login
+  async loginUser(@Body() userData: { usrEml: string; usrPwd: string }): Promise<User | null> {
+    return this.usersService.validateUser(userData.usrEml, userData.usrPwd);
   }
 }

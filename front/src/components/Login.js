@@ -1,16 +1,45 @@
 // src/login/Login.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.css'; // CSS 파일 import
 
-const LoginPage = () => {
+const LoginPage = ({ setUser }) => { // setUser prop 추가
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Email:', email, 'Password:', password);
-        // 로그인 처리 로직 추가
+        
+        // 로그인 처리
+        const userData = {
+            usrEml: email,
+            usrPwd: password,
+        };
+
+        try {
+            const response = await fetch('http://localhost:3001/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (!response.ok) {
+                throw new Error('로그인 실패');
+            }
+
+            const result = await response.json();
+            console.log('로그인 성공:', result);
+
+            // 로그인 성공 후 사용자 정보 저장
+            setUser(result); // 로그인한 사용자 정보를 상태에 저장
+            navigate('/'); // 메인 페이지로 이동
+        } catch (error) {
+            console.error('Error during login:', error);
+            alert('로그인 실패: ' + error.message); // 오류 메시지 표시
+        }
     };
 
     return (
@@ -50,7 +79,7 @@ const LoginPage = () => {
                     <a href="/find-password">비밀번호 찾기</a>
                 </div>
                 <p className="signup-link">
-                    계정이 없으신가요? <Link to="/signUp"><a>회원가입</a></Link>
+                    계정이 없으신가요? <Link to="/signUp">회원가입</Link>
                 </p>
             </div>
         </div>
@@ -58,4 +87,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
