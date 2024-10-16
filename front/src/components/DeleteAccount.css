@@ -1,0 +1,157 @@
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* 헤더 스타일 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #1a1a1a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header .logo-link {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #1e90ff;
+}
+
+.nav-links a.active {
+    color: #63b3ff;
+    font-weight: bold;
+}
+
+/* 레이아웃 스타일 */
+.delete-account-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #111;
+}
+
+/* 콘텐츠 컨테이너 */
+.content-container {
+    display: flex;
+    flex: 1;
+}
+
+/* 중앙 정렬 */
+.content-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+}
+
+/* 유의사항 스타일 */
+.warning {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+    width: 80%;
+    max-width: 600px;
+}
+
+.warning h2 {
+    margin-bottom: 10px;
+}
+
+.warning p {
+    margin: 5px 0;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+    width: 250px;
+    background-color: #1a1a1a;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #bbb;
+    font-size: 18px;
+    transition: color 0.3s;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #333;
+    color: #1e90ff;
+}
+
+.sidebar ul li a.active {
+    background-color: #1e90ff;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* 회원탈퇴 버튼 스타일 */
+.delete-btn {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #ff4444;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #ff7777;
+}
+
+/* 푸터 스타일 */
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #000;
+    color: #aaa;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+}

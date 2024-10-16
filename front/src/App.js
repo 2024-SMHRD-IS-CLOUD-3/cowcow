@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Main from './components/Main';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import MyPage from './components/MyPage';  
+import DeleteAccount from './components/DeleteAccount'; 
+import TransactionHistory from './components/TransactionHistory';
 
 function App() {
   const [data, setData] = useState([]);
@@ -27,6 +30,9 @@ function App() {
         <Route path="/" element={<Main user={user} setUser={setUser} />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signUp" element={<SignUp />} />
+        <Route path="/myPage" element={<MyPage user={user} setUser={setUser} />} />
+        <Route path="/deleteAccount" element={<DeleteAccount setUser={setUser} />} />
+        <Route path="/transactionHistory" element={<TransactionHistory user={user} setUser={setUser} />} />
       </Routes>
     </Router>
   );

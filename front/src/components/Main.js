@@ -64,7 +64,7 @@ const MainPage = ({ user, setUser }) => { // user와 setUser를 props로 추가
                         <Link to="/login">로그인</Link>
                     ) : (
                         <>
-                            <Link to="/mypage">마이페이지</Link>
+                            <Link to="/myPage">마이페이지</Link>
                             <Link to = "/" onClick={handleLogout}>로그아웃</Link>
                         </>
                     )}
