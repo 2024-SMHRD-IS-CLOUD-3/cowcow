@@ -1,0 +1,112 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0d1117, #1a1a1a);
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.signup-box {
+    width: 400px;
+    padding: 40px;
+    background-color: #1a1a1a;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+}
+
+.signup-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #63b3ff;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #f0f0f0;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: calc(100% - 11px);
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #0d1117;
+    color: #f0f0f0;
+    box-sizing: border-box;
+}
+
+.input-group input::placeholder {
+    color: #888;
+}
+
+/* 전화번호 입력칸 너비 조정 */
+.phone-input input {
+    width: calc(70% - px);
+    margin-right: 1px;
+}
+
+
+.check-button,
+.send-code-button {
+    width: 100px;
+    height: 35px;
+    background-color: #63b3ff; 
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.check-button:hover,
+.send-code-button:hover {
+    background-color: #4a90e2; /* 더 짙은 파란색 */
+}
+
+.signup-button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #63b3ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.signup-button:hover {
+    background-color: #4a90e2;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.login-link-text {
+    color: #63b3ff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.login-link-text:hover {
+    text-decoration: underline;
+}
