@@ -12,6 +12,7 @@ import { CowDetail } from './cow-details/cow-detail.entity';
 import { AuctionCow } from './auction-cows/auction-cow.entity';
 import { Auction } from './auctions/auction.entity';
 import { AuctionBid } from './auction-bids/auction-bid.entity';
+import { UsersModule } from './users/users.module'; // UsersModule import 추가
 
 @Module({
   imports: [
@@ -25,11 +26,12 @@ import { AuctionBid } from './auction-bids/auction-bid.entity';
       entities: [
         User, Image, UserBarn, Cow, CowDetail, AuctionCow, Auction, AuctionBid
       ],
-      synchronize: true, // 개발 환경에서만 사용 (자동 테이블 생성)
+      synchronize: true,
     }),
     TypeOrmModule.forFeature([
       User, Image, UserBarn, Cow, CowDetail, AuctionCow, Auction, AuctionBid
     ]),
+    UsersModule, // UsersModule 추가
   ],
   controllers: [AppController],
   providers: [AppService]
