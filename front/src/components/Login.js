@@ -1,5 +1,6 @@
 // src/login/Login.js
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 import './Login.css'; // CSS 파일 import
 
 const LoginPage = () => {
@@ -49,7 +50,7 @@ const LoginPage = () => {
                     <a href="/find-password">비밀번호 찾기</a>
                 </div>
                 <p className="signup-link">
-                    계정이 없으신가요? <a href="/signup">회원가입</a>
+                    계정이 없으신가요? <Link to="/signUp"><a>회원가입</a></Link>
                 </p>
             </div>
         </div>
