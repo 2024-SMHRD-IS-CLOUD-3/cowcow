@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './SignUp.css'; // CSS 파일 import
 import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate 사용
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
@@ -13,14 +13,40 @@ const SignUp = () => {
     const [isSubmitted, setIsSubmitted] = useState(false); // 회원가입 성공 여부
     const navigate = useNavigate(); // 페이지 이동 함수
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isVerified) {
             alert('이메일 인증이 필요합니다.');
             return;
         }
-        console.log('회원가입 정보:', { email, password, phone, name });
-        setIsSubmitted(true); // 회원가입 성공 처리
+
+        // 회원가입 정보
+        const userData = {
+            usrEml: email,      // 이메일을 usrEml로 매핑
+            usrPwd: password,   // 비밀번호를 usrPwd로 매핑
+            usrPhn: phone,      // 전화번호를 usrPhn으로 매핑
+            usrNm: name,        // 이름을 usrNm으로 매핑
+        };
+
+        try {
+            const response = await fetch('http://localhost:3001/users/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (!response.ok) {
+                throw new Error('회원가입 실패');
+            }
+
+            const result = await response.json();
+            console.log('회원가입 정보:', result);
+            setIsSubmitted(true); // 회원가입 성공 처리
+        } catch (error) {
+            console.error('Error during sign up:', error);
+        }
     };
 
     const verifyEmail = () => {
@@ -31,10 +57,6 @@ const SignUp = () => {
         }
     };
 
-    const goToLogin = () => {
-        navigate('/'); // 로그인 페이지로 이동
-    };
-
     return (
         <div className="signup-container">
             <div className="signup-box">
@@ -42,9 +64,11 @@ const SignUp = () => {
                 {isSubmitted ? (
                     <div className="success-message">
                         <p>회원가입이 정상적으로 완료되었습니다!</p>
-                        <button onClick={goToLogin} className="go-login-button">
+                        <Link to='/login'>
+                        <button className="go-login-button">
                             로그인하러 가기
                         </button>
+                        </Link>
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit}>
@@ -85,7 +109,7 @@ const SignUp = () => {
                                 type="text"
                                 id="name"
                                 value={name}
-                                onChange={(e) => setName(e.target.value)} // 수정된 부분
+                                onChange={(e) => setName(e.target.value)}
                                 placeholder="이름을 입력하세요"
                                 required
                             />
@@ -126,9 +150,9 @@ const SignUp = () => {
                     <p className="login-link">
                         이미 계정이 있으신가요?{' '}
                         <Link to='/login'>
-                        <a className="login-link-text">
-                            로그인
-                        </a>
+                            <span className="login-link-text">
+                                로그인
+                            </span>
                         </Link>
                     </p>
                 )}
