@@ -80,9 +80,9 @@ const MainPage = ({ user, setUser }) => {
       <div className="live-auctions">
         <h2>실시간 경매</h2>
 
-        <Link to="/auctionDetail">
-          <div className="auction-list">
-            {filteredAuctions.map((auction) => (
+        <div className="auction-list">
+          {filteredAuctions.map((auction) => (
+            <Link to="/auctionDetail">
               <div
                 key={auction.id}
                 className={`auction-card ${auction.status.toLowerCase()}`}
@@ -102,9 +102,9 @@ const MainPage = ({ user, setUser }) => {
                   <p>경매 상태: {auction.status}</p>
                 </div>
               </div>
-            ))}
-          </div>
-        </Link>
+            </Link>
+          ))}
+        </div>
       </div>
 
       {showTopButton && (
