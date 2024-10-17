@@ -6,6 +6,7 @@ import SignUp from './components/SignUp';
 import MyPage from './components/MyPage';
 import DeleteAccount from './components/DeleteAccount';
 import TransactionHistory from './components/TransactionHistory';
+import AuctionDetail from './components/AuctionDetail';
 
 function App() {
   const [user, setUser] = useState(null); // 로그인한 사용자 상태 관리
@@ -32,6 +33,7 @@ function App() {
         <Route path="/myPage" element={<MyPage user={user} setUser={setUser} />} />
         <Route path="/deleteAccount" element={<DeleteAccount user={user} setUser={setUser} />} />
         <Route path="/transactionHistory" element={<TransactionHistory user={user} setUser={setUser} />} />
+        <Route path="/auctionDetail" element={<AuctionDetail user={user} setUser={setUser} />} />
       </Routes>
     </Router>
   );
