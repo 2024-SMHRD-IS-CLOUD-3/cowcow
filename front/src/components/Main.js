@@ -39,6 +39,7 @@ const MainPage = ({ user, setUser }) => { // user와 setUser를 props로 추가
 
     const handleLogout = () => {
         setUser(null); // 로그아웃 처리
+        localStorage.removeItem('user');
         navigate('/'); // 메인 페이지로 리다이렉트
     };
 

@@ -3,26 +3,25 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Main from './components/Main';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
-import MyPage from './components/MyPage';  
-import DeleteAccount from './components/DeleteAccount'; 
+import MyPage from './components/MyPage';
+import DeleteAccount from './components/DeleteAccount';
 import TransactionHistory from './components/TransactionHistory';
 
 function App() {
-  const [data, setData] = useState([]);
   const [user, setUser] = useState(null); // 로그인한 사용자 상태 관리
 
   useEffect(() => {
-    // NestJS 서버(3001번 포트)에 있는 API 호출
-    fetch('http://localhost:3001/users') // API 경로 확인
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => setData(data))
-      .catch((error) => console.error('Error fetching data:', error));
+    // 로컬 스토리지에서 사용자 정보 가져오기
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // 사용자 정보를 상태에 설정
+    }
   }, []);
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user'); // 로그아웃 시 로컬 스토리지에서 사용자 정보 삭제
+  };
 
   return (
     <Router>

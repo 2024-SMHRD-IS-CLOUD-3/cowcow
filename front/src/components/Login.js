@@ -16,7 +16,7 @@ const LoginPage = ({ setUser }) => { // setUser prop 추가
             usrEml: email,
             usrPwd: password,
         };
-
+    
         try {
             const response = await fetch('http://localhost:3001/users/login', {
                 method: 'POST',
@@ -25,22 +25,25 @@ const LoginPage = ({ setUser }) => { // setUser prop 추가
                 },
                 body: JSON.stringify(userData),
             });
-
+    
             if (!response.ok) {
                 throw new Error('로그인 실패');
             }
-
+    
             const result = await response.json();
             console.log('로그인 성공:', result);
-
+    
             // 로그인 성공 후 사용자 정보 저장
-            setUser(result); // 로그인한 사용자 정보를 상태에 저장
+            setUser(result); // 상태에 저장
+            localStorage.setItem('user', JSON.stringify(result)); // 로컬 스토리지에 저장
+    
             navigate('/'); // 메인 페이지로 이동
         } catch (error) {
             console.error('Error during login:', error);
             alert('로그인 실패: ' + error.message); // 오류 메시지 표시
         }
     };
+    
 
     return (
         <div className="login-container">

@@ -8,7 +8,6 @@ import { User } from './users/user.entity';
 import { Image } from './images/image.entity';
 import { UserBarn } from './user-barns/user-barn.entity';
 import { Cow } from './cows/cow.entity';
-import { CowDetail } from './cow-details/cow-detail.entity';
 import { AuctionCow } from './auction-cows/auction-cow.entity';
 import { Auction } from './auctions/auction.entity';
 import { AuctionBid } from './auction-bids/auction-bid.entity';
@@ -24,12 +23,12 @@ import { UsersModule } from './users/users.module'; // UsersModule import 추가
       password: 'smart123!',
       database: 'ohi0',
       entities: [
-        User, Image, UserBarn, Cow, CowDetail, AuctionCow, Auction, AuctionBid
+        User, Image, UserBarn, Cow, AuctionCow, Auction, AuctionBid
       ],
       synchronize: true,
     }),
     TypeOrmModule.forFeature([
-      User, Image, UserBarn, Cow, CowDetail, AuctionCow, Auction, AuctionBid
+      User, Image, UserBarn, Cow, AuctionCow, Auction, AuctionBid
     ]),
     UsersModule, // UsersModule 추가
   ],

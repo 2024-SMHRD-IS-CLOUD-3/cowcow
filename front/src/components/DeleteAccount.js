@@ -5,6 +5,12 @@ import './DeleteAccount.css'; // CSS 파일 import
 const DeleteAccount = ({ user, setUser }) => { // user, setUser prop 추가
     const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
+    const handleLogout = () => {
+        setUser(null); // 로그아웃 처리
+        localStorage.removeItem('user');
+        navigate('/'); // 메인 페이지로 리다이렉트
+    };
+
     const handleDelete = async () => {
         if (window.confirm('정말로 회원 탈퇴를 진행하시겠습니까?')) {
             try {
