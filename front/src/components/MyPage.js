@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Link import 추가
+import { Link, useNavigate } from 'react-router-dom'; // Link import 추가
 import './MyPage.css';
+
+
 
 const MyPage = ({ user, setUser }) => {
     const [showTopButton, setShowTopButton] = useState(false);
@@ -23,6 +25,8 @@ const MyPage = ({ user, setUser }) => {
         localStorage.removeItem('user');
         navigate('/'); // 메인 페이지로 리다이렉트
     };
+
+    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
     return (
         <div className="mypage-layout">

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Link import 추가
+import { Link, useNavigate } from 'react-router-dom'; // Link import 추가
 import './TransactionHistory.css'; // CSS 파일 import
+
+
 
 const TransactionHistory = ({ user, setUser }) => { // user와 setUser 추가
     const [filter, setFilter] = useState('전체');
@@ -25,6 +27,7 @@ const TransactionHistory = ({ user, setUser }) => { // user와 setUser 추가
         localStorage.removeItem('user');
         navigate('/'); // 메인 페이지로 리다이렉트
     };
+    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
     return (
         <div className="transaction-layout">
