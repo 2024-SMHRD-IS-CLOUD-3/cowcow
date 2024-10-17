@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Link 및 useNavigate import 추가
 import './DeleteAccount.css'; // CSS 파일 import
+import logo from "../images/cowcowlogo.png"
 
 const DeleteAccount = ({ user, setUser }) => { // user, setUser prop 추가
     const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
@@ -72,7 +73,7 @@ const Warning = () => (
 const Header = ({ handleLogout }) => (
     <header className="header">
         <div className="logo">
-            <Link to="/" className="logo-link">카우카우</Link> {/* a 태그를 Link로 변경 */}
+            <Link to="/" className="logo-link"><img src={logo}></img></Link> {/* a 태그를 Link로 변경 */}
         </div>
         <nav className="nav-links">
             <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}

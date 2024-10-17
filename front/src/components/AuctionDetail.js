@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Link import 추가
 import "./AuctionDetail.css";
+import logo from "../images/cowcowlogo.png"
 
 const AuctionDetail = ({ user, setUser }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -54,7 +55,7 @@ const AuctionDetail = ({ user, setUser }) => {
       <header className="header">
         <div className="logo">
           <Link to="/" className="logo-link">
-            <h1 style={{ display: "inline" }}>카우카우</h1>
+            <h1 style={{ display: "inline" }}><img src={logo}></img></h1>
           </Link>
         </div>
         <nav className="nav-links">

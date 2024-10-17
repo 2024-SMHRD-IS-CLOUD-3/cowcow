@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Main.css"; // CSS 파일 불러오기
+import logo from "../images/cowcowlogo.png"
 
 const MainPage = ({ user, setUser }) => {
   // user와 setUser를 props로 추가
@@ -47,7 +48,9 @@ const MainPage = ({ user, setUser }) => {
   return (
     <div className="main-container">
       <header className="main-header">
-        <h1 style={{ display: "inline" }}>카우카우</h1>
+        <h1 style={{ display: "inline" }}>
+          <img src={logo}></img>
+          </h1>
         {user && (
           <span style={{ marginLeft: "10px" }}>
             안녕하세요, {user.usrNm}님!

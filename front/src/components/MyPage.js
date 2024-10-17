@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Link import 추가
 import './MyPage.css';
-
+import logo from "../images/cowcowlogo.png"
 
 
 const MyPage = ({ user, setUser }) => {
@@ -51,7 +51,7 @@ const MyPage = ({ user, setUser }) => {
 const Header = ({ handleLogout }) => (
     <header className="header">
         <div className="logo">
-            <Link to="/" className="logo-link">카우카우</Link> {/* a 태그를 Link로 변경 */}
+            <Link to="/" className="logo-link"><img src={logo}></img></Link> {/* a 태그를 Link로 변경 */}
         </div>
         <nav className="nav-links">
             <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}

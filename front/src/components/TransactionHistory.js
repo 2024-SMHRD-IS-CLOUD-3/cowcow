@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Link import 추가
 import './TransactionHistory.css'; // CSS 파일 import
-
+import logo from "../images/cowcowlogo.png"
 
 
 const TransactionHistory = ({ user, setUser }) => { // user와 setUser 추가
@@ -85,7 +85,7 @@ const TransactionTable = ({ transactions }) => (
 const Header = ({ handleLogout }) => (
     <header className="header">
         <div className="logo">
-            <Link to="/" className="logo-link">카우카우</Link> {/* a 태그를 Link로 변경 */}
+            <Link to="/" className="logo-link"><img src={logo}></img></Link> {/* a 태그를 Link로 변경 */}
         </div>
         <nav className="nav-links">
             <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}
