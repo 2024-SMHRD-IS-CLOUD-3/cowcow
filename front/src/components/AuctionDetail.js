@@ -1,4 +1,3 @@
-// src/home/AuctionDetail.js
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Link import 추가
 import "./AuctionDetail.css";
@@ -35,17 +34,31 @@ const AuctionDetail = ({ user, setUser }) => {
     showSlide(currentSlide);
   }, [currentSlide]);
 
+  useEffect(() => {
+    // 웹캠을 통해 비디오 송출
+    const videoElement = document.getElementById("liveStream");
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          videoElement.srcObject = stream;
+        })
+        .catch((error) => {
+          console.error("웹캠 스트림을 불러올 수 없습니다:", error);
+        });
+    }
+  }, []);
+
   return (
     <div className="auction-detail-container">
       <header className="header">
         <div className="logo">
           <Link to="/" className="logo-link">
             <h1 style={{ display: "inline" }}>카우카우</h1>
-          </Link>{" "}
-          {/* a 태그를 Link로 변경 */}
+          </Link>
         </div>
         <nav className="nav-links">
-          <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}
+          <Link to="/">홈</Link>
           <Link to="/auction">경매등록</Link>
           {!user ? (
             <Link to="/login">로그인</Link>
@@ -64,7 +77,6 @@ const AuctionDetail = ({ user, setUser }) => {
         <div className="auction-content">
           <div className="video-container">
             <video id="liveStream" controls autoPlay muted>
-              <source src="rtmp://your-stream-url" type="video/mp4" />
               브라우저가 동영상을 지원하지 않습니다.
             </video>
           </div>
