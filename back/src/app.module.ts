@@ -23,7 +23,7 @@ import { UsersModule } from './users/users.module'; // UsersModule import 추가
       entities: [
         User, UserBarn, Cow, Auction, AuctionBid
       ],
-      synchronize: true,
+      synchronize: false,
     }),
     TypeOrmModule.forFeature([
       User, UserBarn, Cow, Auction, AuctionBid

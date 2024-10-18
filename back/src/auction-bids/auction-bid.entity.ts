@@ -7,10 +7,10 @@ export class AuctionBid {
   @PrimaryGeneratedColumn({ name: 'bid_seq', unsigned: false })
   bidSeq: number; // 입찰 시퀀스
 
-  @Column({ name: 'auc_seq', unsigned: true, nullable: false })
+  @Column({ name: 'auc_seq', unsigned: true, nullable: true })
   aucSeq: number; // 경매 시퀀스 (Foreign Key)
 
-  @Column({ name: 'bid_acc', unsigned: true, nullable: false })
+  @Column({ name: 'bid_acc', unsigned: true, nullable: true })
   bidAcc: number; // 입찰자 (Foreign Key)
 
   @Column({ name: 'bid_amt', type: 'int', nullable: true })
