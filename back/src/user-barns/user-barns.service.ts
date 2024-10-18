@@ -16,10 +16,10 @@ export class UserBarnsService {
   }
 
   // 특정 축사 조회
-  async findOne(barnSeq: number): Promise<UserBarn> {
-    const barn = await this.userBarnRepository.findOne({ where: { barnSeq } });
+  async findOne(usrBarnSeq: number): Promise<UserBarn> {
+    const barn = await this.userBarnRepository.findOne({ where: { usrBarnSeq } });
     if (!barn) {
-      throw new NotFoundException(`Barn with ID ${barnSeq} not found`);
+      throw new NotFoundException(`Barn with ID ${usrBarnSeq} not found`);
     }
     return barn;
   }
@@ -31,10 +31,10 @@ export class UserBarnsService {
   }
 
   // 축사 삭제
-  async remove(barnSeq: number): Promise<void> {
-    const result = await this.userBarnRepository.delete(barnSeq);
+  async remove(usrBarnSeq: number): Promise<void> {
+    const result = await this.userBarnRepository.delete(usrBarnSeq);
     if (result.affected === 0) {
-      throw new NotFoundException(`Barn with ID ${barnSeq} not found`);
+      throw new NotFoundException(`Barn with ID ${usrBarnSeq} not found`);
     }
   }
 }

@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn } from 'typeorm';
-import { Image } from '../images/image.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Auction } from '../auctions/auction.entity';
 import { UserBarn } from '../user-barns/user-barn.entity';
 import { AuctionBid } from '../auction-bids/auction-bid.entity';
+import { Cow } from '../cows/cow.entity'; // Cow Entity import
 
 @Entity('users')
 export class User {
@@ -26,15 +27,16 @@ export class User {
   @Column({ name: 'usr_eml', nullable: true })
   usrEml: string;
 
-  @CreateDateColumn({ name: 'usr_crt_dt', type: 'datetime' })
-  usrCrtDt: Date;
-
-  @OneToMany(() => Image, (image) => image.user)
-  images: Image[];
+  @OneToMany(() => Auction, (auction) => auction.user)
+  auctions: Auction[];
 
   @OneToMany(() => UserBarn, (userBarn) => userBarn.user)
   userBarns: UserBarn[];
 
   @OneToMany(() => AuctionBid, (auctionBid) => auctionBid.user)
   auctionBids: AuctionBid[];
+
+  @OneToMany(() => Cow, (cow) => cow.user)
+    cows: Cow[]; // 관계 추가
+  
 }
