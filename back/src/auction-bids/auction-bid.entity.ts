@@ -4,13 +4,13 @@ import { Auction } from '../auctions/auction.entity'; // Auction Entity import
 
 @Entity('auction_bids')
 export class AuctionBid {
-  @PrimaryGeneratedColumn({ name: 'bid_seq', unsigned: true })
+  @PrimaryGeneratedColumn({ name: 'bid_seq', unsigned: false })
   bidSeq: number; // 입찰 시퀀스
 
-  @Column({ name: 'auc_seq', nullable: true })
+  @Column({ name: 'auc_seq', unsigned: true, nullable: false })
   aucSeq: number; // 경매 시퀀스 (Foreign Key)
 
-  @Column({ name: 'bid_acc', nullable: true })
+  @Column({ name: 'bid_acc', unsigned: true, nullable: false })
   bidAcc: number; // 입찰자 (Foreign Key)
 
   @Column({ name: 'bid_amt', type: 'int', nullable: true })

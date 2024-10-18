@@ -6,7 +6,7 @@ export class Cow {
   @PrimaryGeneratedColumn({ name: 'cow_seq', unsigned: true })
   cowSeq: number; // 소 시퀀스
 
-  @Column({ name: 'usr_seq', nullable: true })
+  @Column({ name: 'usr_seq', unsigned: true, nullable: false })
   usrSeq: number; // 사용자 시퀀스 (Foreign Key)
 
   @Column({ name: 'cow_no', nullable: true })

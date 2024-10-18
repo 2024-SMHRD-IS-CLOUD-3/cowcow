@@ -6,7 +6,7 @@ export class UserBarn {
   @PrimaryGeneratedColumn({ name: 'usr_barn_seq', unsigned: true })
   usrBarnSeq: number; // 축사 시퀀스
 
-  @Column({ name: 'usr_seq', nullable: true })
+  @Column({ name: 'usr_seq', unsigned: true, nullable: false })
   usrSeq: number; // 사용자 시퀀스 (Foreign Key)
 
   @Column({ name: 'usr_barn_name', nullable: true })

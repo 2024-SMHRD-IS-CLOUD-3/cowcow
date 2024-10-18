@@ -8,13 +8,13 @@ export class Auction {
   @PrimaryGeneratedColumn({ name: 'auc_seq', unsigned: true })
   aucSeq: number; // 경매 시퀀스
 
-  @Column({ name: 'usr_seq', nullable: true })
+  @Column({ name: 'usr_seq', unsigned: true, nullable: false })
   usrSeq: number; // 사용자 시퀀스 (Foreign Key)
 
-  @Column({ name: 'usr_barn_seq', nullable: true })
+  @Column({ name: 'usr_barn_seq', unsigned: true, nullable: false })
   usrBarnSeq: number; // 축사 시퀀스 (Foreign Key)
 
-  @Column({ name: 'cow_seq', nullable: true })
+  @Column({ name: 'cow_seq', unsigned: true, nullable: false })
   cowSeq: number; // 소 시퀀스 (Foreign Key)
 
   @Column({ name: 'auc_broadcast_title', nullable: true })
