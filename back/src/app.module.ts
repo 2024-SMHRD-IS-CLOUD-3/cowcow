@@ -9,7 +9,13 @@ import { UserBarn } from './user-barns/user-barn.entity';
 import { Cow } from './cows/cow.entity';
 import { Auction } from './auctions/auction.entity';
 import { AuctionBid } from './auction-bids/auction-bid.entity';
-import { UsersModule } from './users/users.module'; // UsersModule import 추가
+
+// 모듈 임포트
+import { UsersModule } from './users/users.module';
+import { AuctionsModule } from './auctions/auctions.module';
+import { CowsModule } from './cows/cows.module';
+import { AuctionBidsModule } from './auction-bids/auction-bids.module';
+import { UserBarnsModule } from './user-barns/user-barns.module';
 
 @Module({
   imports: [
@@ -21,16 +27,17 @@ import { UsersModule } from './users/users.module'; // UsersModule import 추가
       password: 'smart123!',
       database: 'ohi0',
       entities: [
-        User, UserBarn, Cow, Auction, AuctionBid
+        User, UserBarn, Cow, Auction, AuctionBid,
       ],
       synchronize: false,
     }),
-    TypeOrmModule.forFeature([
-      User, UserBarn, Cow, Auction, AuctionBid
-    ]),
-    UsersModule, // UsersModule 추가
+    UsersModule,
+    AuctionsModule,
+    CowsModule,
+    AuctionBidsModule,
+    UserBarnsModule,
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService],
 })
 export class AppModule {}
