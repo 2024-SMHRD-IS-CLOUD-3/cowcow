@@ -20,4 +20,4 @@ RUN npm run build
 CMD ["npm", "run", "start:prod"]
 
 # 컨테이너가 사용할 포트
-EXPOSE 3000
+EXPOSE 3001
