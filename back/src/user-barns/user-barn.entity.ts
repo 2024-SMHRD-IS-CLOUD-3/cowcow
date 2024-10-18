@@ -1,29 +1,18 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { User } from '../users/user.entity';
+import { User } from '../users/user.entity'; // User Entity import
 
 @Entity('user_barns')
 export class UserBarn {
-  @PrimaryGeneratedColumn({ name: 'barn_seq', unsigned: true })
-  barnSeq: number;
+  @PrimaryGeneratedColumn({ name: 'usr_barn_seq', unsigned: true })
+  usrBarnSeq: number; // 축사 시퀀스
 
-  @Column({ name: 'usr_seq', unsigned: true, nullable: true })
-  usrSeq: number;
+  @Column({ name: 'usr_seq', nullable: true })
+  usrSeq: number; // 사용자 시퀀스 (Foreign Key)
 
-  @Column({ name: 'barn_nm', nullable: true })
-  barnNm: string;
+  @Column({ name: 'usr_barn_name', nullable: true })
+  usrBarnName: string; // 축사명
 
-  @Column({ name: 'barn_add', nullable: true })
-  barnAdd: string;
-
-  @Column({ name: 'barn_add2', nullable: true })
-  barnAdd2: string;
-
-  @Column({ name: 'barn_cow_cnt', type: 'int', nullable: true })
-  barnCowCnt: number;
-
-  @Column({ name: 'barn_crt_dt', type: 'datetime', nullable: true })
-  barnCrtDt: Date;
-
+  // Many-to-One 관계 설정
   @ManyToOne(() => User, (user) => user.userBarns)
-  user: User;
+  user: User; // 사용자와의 관계
 }

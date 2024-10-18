@@ -1,40 +1,28 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Auction } from '../auctions/auction.entity';
-import { Cow } from '../cows/cow.entity';
-import { User } from '../users/user.entity';
+import { User } from '../users/user.entity'; // User Entity import
+import { Auction } from '../auctions/auction.entity'; // Auction Entity import
 
 @Entity('auction_bids')
 export class AuctionBid {
   @PrimaryGeneratedColumn({ name: 'bid_seq', unsigned: true })
-  bidSeq: number;
+  bidSeq: number; // 입찰 시퀀스
 
-  @Column({ name: 'bid_acc', unsigned: true, nullable: false })
-  bidAcc: number;
+  @Column({ name: 'auc_seq', nullable: true })
+  aucSeq: number; // 경매 시퀀스 (Foreign Key)
 
-  @Column({ name: 'auc_seq', unsigned: true, nullable: false })
-  aucSeq: number;
-
-  @Column({ name: 'cow_seq', unsigned: true, nullable: false })
-  cowSeq: number;
+  @Column({ name: 'bid_acc', nullable: true })
+  bidAcc: number; // 입찰자 (Foreign Key)
 
   @Column({ name: 'bid_amt', type: 'int', nullable: true })
-  bidAmt: number;
+  bidAmt: number; // 입찰 금액
 
-  @Column({ name: 'bid_dt', type: 'date', nullable: true })
-  bidDt: Date;
+  @Column({ name: 'bid_dt', type: 'datetime' })
+  bidDt: Date; // 입찰 일시
 
-  @Column({ name: 'bid_tim', type: 'datetime', nullable: true })
-  bidTim: Date;
+  // Many-to-One 관계 설정
+  @ManyToOne(() => Auction, (auction) => auction.auctionBids)
+  auction: Auction; // 경매와의 관계
 
-  @Column({ name: 'bid_is_fin', nullable: true })
-  bidIsFin: string;
-
-  @ManyToOne(() => User, (user) => user.usrSeq)
-  user: User;
-
-  @ManyToOne(() => Auction, (auction) => auction.aucSeq)
-  auction: Auction;
-
-  @ManyToOne(() => Cow, (cow) => cow.cowSeq)
-  cow: Cow;
+  @ManyToOne(() => User, (user) => user.auctionBids)
+  user: User; // 입찰자와의 관계
 }
