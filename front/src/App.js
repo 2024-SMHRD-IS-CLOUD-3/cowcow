@@ -1,3 +1,4 @@
+// App.js
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Main from './components/Main';
@@ -33,7 +34,7 @@ function App() {
         <Route path="/myPage" element={<MyPage user={user} setUser={setUser} />} />
         <Route path="/deleteAccount" element={<DeleteAccount user={user} setUser={setUser} />} />
         <Route path="/transactionHistory" element={<TransactionHistory user={user} setUser={setUser} />} />
-        <Route path="/auctionDetail" element={<AuctionDetail user={user} setUser={setUser} />} />
+        <Route path="/auctionDetail/:id" element={<AuctionDetail user={user} setUser={setUser} />} /> {/* 경매 ID 파라미터 추가 */}
       </Routes>
     </Router>
   );

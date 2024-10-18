@@ -1,26 +1,32 @@
-// src/home/MainPage.js
+// Main.js
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Main.css"; // CSS 파일 불러오기
-import logo from "../images/cowcowlogo.png"
+import logo from "../images/cowcowlogo.png";
 
 const MainPage = ({ user, setUser }) => {
-  // user와 setUser를 props로 추가
-  const auctionData = Array.from({ length: 10 }, (_, index) => ({
-    id: index + 1,
-    title: `소 경매 #${index + 1}`,
-    viewers: Math.floor(Math.random() * 200),
-    status: index % 2 === 0 ? "LIVE" : "종료",
-    thumbnail: `https://placekitten.com/400/200?image=${index + 1}`,
-  }));
-
+  const [auctionData, setAuctionData] = useState([]); // 경매 데이터를 저장할 상태
   const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 관리
   const [showTopButton, setShowTopButton] = useState(false); // 탑 버튼 표시 여부 관리
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
-  const filteredAuctions = auctionData.filter((auction) =>
-    auction.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    const fetchAuctions = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/auctions"); // 경매 데이터 API 호출
+        if (!response.ok) {
+          console.log("MainPage 에러");
+          throw new Error("경매 정보를 가져오는 데 실패했습니다.");
+        }
+        const data = await response.json();
+        setAuctionData(data); // 상태 업데이트
+      } catch (error) {
+        console.error("Error fetching auction data:", error);
+      }
+    };
+
+    fetchAuctions();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,16 +51,20 @@ const MainPage = ({ user, setUser }) => {
     navigate("/"); // 메인 페이지로 리다이렉트
   };
 
+  const filteredAuctions = auctionData.filter((auction) =>
+    auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="main-container">
       <header className="main-header">
         <h1 style={{ display: "inline" }}>
-          <img src={logo}></img>
-          </h1>
+          <img src={logo} alt="logo" />
+        </h1>
         {user && (
           <span style={{ marginLeft: "10px" }}>
             안녕하세요, {user.usrNm}님!
-          </span> // 사용자 이름 표시
+          </span>
         )}
         <div className="search-bar">
           <input
@@ -82,27 +92,23 @@ const MainPage = ({ user, setUser }) => {
 
       <div className="live-auctions">
         <h2>실시간 경매</h2>
-
         <div className="auction-list">
           {filteredAuctions.map((auction) => (
-            <Link to="/auctionDetail">
-              <div
-                key={auction.id}
-                className={`auction-card ${auction.status.toLowerCase()}`}
-              >
+            <Link to={`/auctionDetail/${auction.aucSeq}`} key={auction.aucSeq}>
+              <div className={`auction-card ${auction.aucStatus.toLowerCase()}`}>
                 <div className="thumbnail-container">
                   <img
-                    src={auction.thumbnail}
-                    alt={`Thumbnail of ${auction.title}`}
+                    src={`https://placekitten.com/400/200?image=${auction.aucSeq}`}
+                    alt={`Thumbnail of ${auction.aucBroadcastTitle}`}
                   />
-                  {auction.status === "LIVE" && (
+                  {auction.aucStatus === "LIVE" && (
                     <div className="live-badge">LIVE</div>
                   )}
-                  <div className="viewer-count">{auction.viewers}명</div>
+                  <div className="viewer-count">{Math.floor(Math.random() * 200)}명</div>
                 </div>
                 <div className="auction-info">
-                  <h3>{auction.title}</h3>
-                  <p>경매 상태: {auction.status}</p>
+                  <h3>{auction.aucBroadcastTitle}</h3>
+                  <p>경매 상태: {auction.aucStatus}</p>
                 </div>
               </div>
             </Link>
@@ -119,11 +125,7 @@ const MainPage = ({ user, setUser }) => {
             stroke="currentColor"
             strokeWidth={2}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 15l7-7 7 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
           </svg>
         </button>
       )}
