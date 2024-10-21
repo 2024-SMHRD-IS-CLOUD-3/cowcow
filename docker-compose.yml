@@ -4,7 +4,10 @@ services:
       context: ./front
       dockerfile: Dockerfile
     ports:
-      - "3000:80"
+      - "3000:3000"
+    volumes:
+      - ./front:/app
+      - /app/node_modules # node_modules는 호스트와 공유하지 않음 (호환성 문제 방지)
     depends_on:
       - backend
     networks:
@@ -16,6 +19,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
+    volumes:
+      - ./back:/app
+      - /app/node_modules
     environment:
       - DATABASE_HOST=project-db-cgi.smhrd.com
       - DATABASE_PORT=3307
