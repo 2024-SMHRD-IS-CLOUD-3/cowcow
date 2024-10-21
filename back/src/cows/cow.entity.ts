@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { User } from '../users/user.entity'; // User Entity import
 import { Auction } from '../auctions/auction.entity'; // Auction Entity import
+import { UserBarn } from 'src/user-barns/user-barn.entity';
 
 @Entity('cows')
 export class Cow {
@@ -31,10 +32,20 @@ export class Cow {
   @Column({ name: 'notes', type: 'varchar', length: 255, nullable: true })
   notes: string; // 비고
 
+  @Column({ name: 'cow_region',  nullable: true })
+  cowRegion: string;
+
+  @Column({ name: 'cow_jagigubun', nullable: true})
+  cowJagigubun: string;
+
+  @Column({ name: 'cow_eomigubun', nullable: true})
+  cowEomigubun: string;
+
   @ManyToOne(() => User, (user) => user.cows)
   @JoinColumn({ name: 'usr_seq' }) // 외래 키 컬럼 명시적으로 지정
   user: User; // 사용자와의 관계
 
   @OneToMany(() => Auction, (auction) => auction.cow)
   auctions: Auction[]; // 소와 경매의 관계
+
 }
