@@ -8,7 +8,6 @@ const TransactionHistory = ({ user, setUser }) => { // user와 setUser 추가
     const [filter, setFilter] = useState('전체');
 
     const transactions = [
-        { id: 1, type: '판매', cow: '소001', date: '2024-10-01', price: '₩1,000,000' },
         { id: 2, type: '구매', cow: '소101', date: '2024-09-15', price: '₩900,000' },
         { id: 3, type: '판매', cow: '소002', date: '2024-10-10', price: '₩1,200,000' },
         { id: 4, type: '구매', cow: '소102', date: '2024-09-20', price: '₩850,000' },
