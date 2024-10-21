@@ -10,31 +10,26 @@ export class CowsService {
     private readonly cowRepository: Repository<Cow>,
   ) {}
 
-  // 모든 소 조회
-  async findAll(): Promise<Cow[]> {
-    return this.cowRepository.find();
+  // 소 등록
+  async create(cowData: Partial<Cow>): Promise<Cow> {
+    const cow = this.cowRepository.create(cowData);
+    return this.cowRepository.save(cow);
   }
 
   // 특정 소 조회
-  async findOne(cowSeq: number): Promise<Cow> {
-    const cow = await this.cowRepository.findOne({ where: { cowSeq } });
+  async findOne(id: number): Promise<Cow> {
+    const cow = await this.cowRepository.findOne({
+      where: { cowSeq: id },
+      relations: ['user', 'auctions'], // 연관된 데이터도 조회
+    });
     if (!cow) {
-      throw new NotFoundException(`Cow with ID ${cowSeq} not found`);
+      throw new NotFoundException(`Cow with ID ${id} not found`);
     }
     return cow;
   }
 
-  // 소 생성
-  async create(data: Partial<Cow>): Promise<Cow> {
-    const newCow = this.cowRepository.create(data);
-    return this.cowRepository.save(newCow);
-  }
-
-  // 소 삭제
-  async remove(cowSeq: number): Promise<void> {
-    const result = await this.cowRepository.delete(cowSeq);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Cow with ID ${cowSeq} not found`);
-    }
+  // 모든 소 조회
+  async findAll(): Promise<Cow[]> {
+    return this.cowRepository.find({ relations: ['user', 'auctions'] });
   }
 }

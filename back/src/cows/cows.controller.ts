@@ -1,32 +1,26 @@
-import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { CowsService } from './cows.service';
 import { Cow } from './cow.entity';
 
 @Controller('cows')
 export class CowsController {
-  constructor(private readonly cowsService: CowsService) {}
+  constructor(private readonly cowService: CowsService) {}
 
-  // 모든 소 조회
+  // 소 등록 API
+  @Post()
+  async createCow(@Body() cowData: Partial<Cow>): Promise<Cow> {
+    return this.cowService.create(cowData);
+  }
+
+  // 특정 소 조회 API
+  @Get(':id')
+  async getCowById(@Param('id') id: number): Promise<Cow> {
+    return this.cowService.findOne(id);
+  }
+
+  // 모든 소 조회 API
   @Get()
   async getAllCows(): Promise<Cow[]> {
-    return this.cowsService.findAll();
-  }
-
-  // 특정 소 조회
-  @Get(':id')
-  async getCow(@Param('id') id: number): Promise<Cow> {
-    return this.cowsService.findOne(id);
-  }
-
-  // 소 생성
-  @Post()
-  async createCow(@Body() data: Partial<Cow>): Promise<Cow> {
-    return this.cowsService.create(data);
-  }
-
-  // 소 삭제
-  @Delete(':id')
-  async deleteCow(@Param('id') id: number): Promise<void> {
-    return this.cowsService.remove(id);
+    return this.cowService.findAll();
   }
 }

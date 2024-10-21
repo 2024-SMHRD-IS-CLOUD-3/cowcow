@@ -20,9 +20,6 @@ export class Cow {
   @Column({ name: 'cow_gdr', nullable: true })
   cowGdr: string; // 성별
 
-  @Column({ name: 'cow_gen', nullable: true })
-  cowGen: string; // 유전자 계통
-
   @Column({ name: 'cow_kpn', nullable: true })
   cowKpn: string; // KPN 번호
 
