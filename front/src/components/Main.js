@@ -83,7 +83,7 @@ const MainPage = ({ user, setUser }) => {
             </>
           ) : (
             <>
-              <Link to="/cowPage">경매등록</Link>
+              <Link to="#">경매등록</Link>
               <Link to="/myPage">마이페이지</Link>
               <Link to="/" onClick={handleLogout}>
                 로그아웃

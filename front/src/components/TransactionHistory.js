@@ -89,7 +89,7 @@ const Header = ({ handleLogout }) => (
         </div>
         <nav className="nav-links">
             <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="#">출장우 조회</Link> {/* a 태그를 Link로 변경 */}
+            <Link to="#">경매등록</Link> {/* a 태그를 Link로 변경 */}
             <Link to="/myPage"  className="active">마이페이지</Link> {/* a 태그를 Link로 변경 */}
             <Link to="/" onClick={handleLogout}>로그아웃</Link> {/* 버튼을 Link로 변경 */}
         </nav>
@@ -100,8 +100,8 @@ const Sidebar = () => (
     <aside className="sidebar">
         <ul>
             <li><Link to="/myPage">개인정보 변경</Link></li> {/* a 태그를 Link로 변경 */}
+            <li><Link to="/cowPage">소 등록</Link></li> {/* a 태그를 Link로 변경 */}
             <li><Link to="/transactionHistory" className="active">거래 내역</Link></li> {/* a 태그를 Link로 변경 */}
-            <li><Link to="/cowPage">경매 등록</Link></li> {/* a 태그를 Link로 변경 */}
             <li><Link to="/deleteAccount">회원 탈퇴</Link></li> {/* a 태그를 Link로 변경 */}
         </ul>
     </aside>

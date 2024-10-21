@@ -55,7 +55,7 @@ const Header = ({ handleLogout }) => (
         </div>
         <nav className="nav-links">
             <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="#">출장우 조회</Link> {/* a 태그를 Link로 변경 */}
+            <Link to="#">경매등록</Link> {/* a 태그를 Link로 변경 */}
             <Link to="/myPage" className="active">마이페이지</Link> {/* a 태그를 Link로 변경 */}
             <Link to="/" onClick={handleLogout}>로그아웃</Link> {/* 버튼을 Link로 변경 */}
         </nav>
@@ -66,14 +66,14 @@ const Sidebar = () => (
     <aside className="sidebar">
         <ul>
             <li><Link to="/myPage" className="active">개인정보 변경</Link></li> {/* a 태그를 Link로 변경 */}
+            <li><Link to="/cowPage">소 등록</Link></li> {/* a 태그를 Link로 변경 */}
             <li><Link to="/transactionHistory">거래 내역</Link></li> {/* a 태그를 Link로 변경 */}
-            <li><Link to="/cowPage">경매 등록</Link></li> {/* a 태그를 Link로 변경 */}
             <li><Link to="/deleteAccount">회원 탈퇴</Link></li> {/* a 태그를 Link로 변경 */}
         </ul>
     </aside>
 );
 
-const ProfileInfo = ({ user }) => { // user prop 추가
+const ProfileInfo = ({ user, userBarn }) => { // user prop 추가
     const [addresses, setAddresses] = useState(['소경매왕']); // 초기 주소 1개
 
     const handleAddAddress = () => {
@@ -100,7 +100,7 @@ const ProfileInfo = ({ user }) => { // user prop 추가
             <InputField label="이름" value={user ? user.usrNm : '이름 없음'} /> {/* null 체크 추가 */}
             <InputField label="이메일" value={user ? user.usrEml : '이메일 없음'} /> {/* null 체크 추가 */}
             <InputField label="전화번호" value={user ? user.usrPhn : '전화번호 없음'} /> {/* null 체크 추가 */}
-            <InputField label="농가이름" value="소경매왕" />
+            <InputField label="농가이름" value={userBarn ? userBarn.userBarnName : '농가정보 없음'} />
             <label className="address-label">농가주소</label>
 
             {addresses.map((address, index) => (

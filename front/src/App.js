@@ -21,11 +21,6 @@ function App() {
     }
   }, []);
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user'); // 로그아웃 시 로컬 스토리지에서 사용자 정보 삭제
-  };
-
   return (
     <Router>
       <Routes>
