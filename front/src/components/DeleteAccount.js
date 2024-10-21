@@ -88,6 +88,7 @@ const Sidebar = () => (
         <ul>
             <li><Link to="/myPage">개인정보 변경</Link></li> {/* a 태그를 Link로 변경 */}
             <li><Link to="/transactionHistory">거래 내역</Link></li> {/* a 태그를 Link로 변경 */}
+            <li><Link to="/cowPage">경매 등록</Link></li> {/* a 태그를 Link로 변경 */}
             <li><Link to="/deleteAccount" className="active">회원 탈퇴</Link></li> {/* a 태그를 Link로 변경 */}
         </ul>
     </aside>

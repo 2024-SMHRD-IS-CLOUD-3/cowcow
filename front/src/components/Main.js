@@ -76,11 +76,14 @@ const MainPage = ({ user, setUser }) => {
         </div>
         <nav className="nav-links">
           <Link to="/">홈</Link>
-          <Link to="/auction">경매등록</Link>
           {!user ? (
-            <Link to="/login">로그인</Link>
+            <>
+              <Link to="/login">경매등록</Link>
+              <Link to="/login">로그인</Link>
+            </>
           ) : (
             <>
+              <Link to="/cowPage">경매등록</Link>
               <Link to="/myPage">마이페이지</Link>
               <Link to="/" onClick={handleLogout}>
                 로그아웃
@@ -95,7 +98,9 @@ const MainPage = ({ user, setUser }) => {
         <div className="auction-list">
           {filteredAuctions.map((auction) => (
             <Link to={`/auctionDetail/${auction.aucSeq}`} key={auction.aucSeq}>
-              <div className={`auction-card ${auction.aucStatus.toLowerCase()}`}>
+              <div
+                className={`auction-card ${auction.aucStatus.toLowerCase()}`}
+              >
                 <div className="thumbnail-container">
                   <img
                     src={`https://placekitten.com/400/200?image=${auction.aucSeq}`}
@@ -104,7 +109,9 @@ const MainPage = ({ user, setUser }) => {
                   {auction.aucStatus === "LIVE" && (
                     <div className="live-badge">LIVE</div>
                   )}
-                  <div className="viewer-count">{Math.floor(Math.random() * 200)}명</div>
+                  <div className="viewer-count">
+                    {Math.floor(Math.random() * 200)}명
+                  </div>
                 </div>
                 <div className="auction-info">
                   <h3>{auction.aucBroadcastTitle}</h3>
@@ -125,7 +132,11 @@ const MainPage = ({ user, setUser }) => {
             stroke="currentColor"
             strokeWidth={2}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5 15l7-7 7 7"
+            />
           </svg>
         </button>
       )}

@@ -8,6 +8,7 @@ import MyPage from './components/MyPage';
 import DeleteAccount from './components/DeleteAccount';
 import TransactionHistory from './components/TransactionHistory';
 import AuctionDetail from './components/AuctionDetail';
+import CowPage from './components/CowPage';
 
 function App() {
   const [user, setUser] = useState(null); // 로그인한 사용자 상태 관리
@@ -34,7 +35,8 @@ function App() {
         <Route path="/myPage" element={<MyPage user={user} setUser={setUser} />} />
         <Route path="/deleteAccount" element={<DeleteAccount user={user} setUser={setUser} />} />
         <Route path="/transactionHistory" element={<TransactionHistory user={user} setUser={setUser} />} />
-        <Route path="/auctionDetail/:id" element={<AuctionDetail user={user} setUser={setUser} />} /> {/* 경매 ID 파라미터 추가 */}
+        <Route path="/auctionDetail/:id" element={<AuctionDetail user={user} setUser={setUser} />} />
+        <Route path="/cowPage" element={<CowPage user={user} setUser={setUser} />} />
       </Routes>
     </Router>
   );

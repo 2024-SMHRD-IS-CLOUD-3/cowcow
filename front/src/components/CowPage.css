@@ -1,0 +1,213 @@
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* 헤더 스타일 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #1a1a1a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header .logo-link {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #1e90ff;
+}
+
+.nav-links a.active {
+    color: #63b3ff;
+    font-weight: bold;
+}
+
+/* 레이아웃 스타일 */
+.layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #111;
+}
+
+/* 콘텐츠 컨테이너 */
+.content-container {
+    display: flex;
+    flex: 1;
+}
+
+/* 중앙 정렬 */
+.content-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 20px;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+    width: 250px;
+    background-color: #1a1a1a;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #bbb;
+    font-size: 18px;
+    transition: color 0.3s;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #333;
+    color: #1e90ff;
+}
+
+.sidebar ul li a.active {
+    background-color: #1e90ff;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* 등록 폼 스타일 */
+.registration-form {
+    background-color: #1a1a1a;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 500px;
+}
+
+.registration-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.registration-form input,
+.registration-form select,
+.registration-form textarea {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+}
+
+.registration-form input[type="file"] {
+    padding: 5px;
+}
+
+/* 이미지 미리보기 스타일 */
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.image-container {
+    position: relative;
+    margin: 5px;
+}
+
+.image-container img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #555;
+}
+
+/* 제거 버튼 스타일 (X 아이콘) */
+.image-container .remove-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 2px solid red;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.image-container .remove-button:hover {
+    background-color: red;
+}
+
+.image-container .remove-button::before {
+    content: '×';
+    font-size: 18px;
+    color: red;
+    line-height: 1;
+}
+/* 등록 버튼 스타일 */
+.registration-form .submit-button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    background-color: #1e90ff;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.registration-form .submit-button:hover {
+    background-color: #63b3ff;
+    transform: scale(1.05);
+}
+
+.registration-form .submit-button:active {
+    background-color: #1e70d1;
+    transform: scale(0.95);
+}
