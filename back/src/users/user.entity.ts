@@ -41,4 +41,8 @@ export class User {
 
   @OneToMany(() => AuctionBid, (auctionBid) => auctionBid.user)
   auctionBids: AuctionBid[]; // 사용자와 입찰의 관계
+
+  // 사용자가 낙찰받은 경매들
+  @OneToMany(() => Auction, (auction) => auction.winningUser)
+  auctionsWon: Auction[];
 }

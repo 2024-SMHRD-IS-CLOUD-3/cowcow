@@ -29,13 +29,4 @@ export class AuctionsController {
   async deleteAuction(@Param('id') id: number): Promise<void> {
     return this.auctionsService.delete(id);
   }
-
-  // 경매 상태 업데이트 (PATCH /auctions/:id/status)
-  @Patch(':id/status')
-  async updateAuctionStatus(
-    @Param('id') id: number,
-    @Body('status') status: string,
-  ): Promise<Auction | null> {
-    return this.auctionsService.updateStatus(id, status);
-  }
 }

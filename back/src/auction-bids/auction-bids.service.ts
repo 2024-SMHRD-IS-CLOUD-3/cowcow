@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuctionBid } from './auction-bid.entity';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class AuctionBidsService {
@@ -36,5 +37,25 @@ export class AuctionBidsService {
     if (result.affected === 0) {
       throw new NotFoundException(`Bid with ID ${bidSeq} not found`);
     }
+  }
+
+  async findHighestBid(auctionId: number): Promise<number | null> {
+    const highestBid = await this.auctionBidRepository
+      .createQueryBuilder('bid')
+      .where('bid.aucSeq = :auctionId', { auctionId })
+      .orderBy('bid.bidAmt', 'DESC')
+      .getOne();
+
+    return highestBid ? highestBid.bidAmt : null;
+  }
+
+  async findWinner(auctionId: number): Promise<User | null> {
+    const winner = await this.auctionBidRepository
+      .createQueryBuilder('bid')
+      .where('bid.aucSeq = :auctionId', { auctionId })
+      .orderBy('bid.bidAmt', 'DESC')
+      .getOne();
+
+    return winner ? winner.user : null;
   }
 }

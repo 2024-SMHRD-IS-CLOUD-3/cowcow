@@ -13,8 +13,11 @@ RUN npm install
 # 나머지 소스 코드 복사
 COPY . .
 
+# NestJS 빌드
+RUN npm run build
+
+# 서버 실행
+CMD ["npm", "run", "start:prod"]
+
 # 컨테이너가 사용할 포트
 EXPOSE 3001
-
-# 개발 모드 실행 (핫 리로딩을 위해)
-CMD ["npm", "run", "start:dev"]

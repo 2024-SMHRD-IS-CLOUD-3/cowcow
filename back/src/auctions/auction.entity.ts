@@ -30,18 +30,27 @@ export class Auction {
   @Column({ name: 'auc_crt_dt', type: 'datetime' })
   aucCrtDt: Date;
 
+  // 사용자와의 관계 설정 (경매 등록자)
   @ManyToOne(() => User, (user) => user.auctions)
   @JoinColumn({ name: 'usr_seq' })
   user: User;
 
+  // 축사와의 관계 설정
   @ManyToOne(() => UserBarn, (userBarn) => userBarn.auctions)
   @JoinColumn({ name: 'usr_barn_seq' })
   userBarn: UserBarn;
 
+  // 소와의 관계 설정
   @ManyToOne(() => Cow, (cow) => cow.auctions)
   @JoinColumn({ name: 'cow_seq' })
   cow: Cow;
 
+  // 입찰과의 양방향 관계 설정
   @OneToMany(() => AuctionBid, (auctionBid) => auctionBid.auction)
   bids: AuctionBid[];
+
+  // 낙찰자와의 관계 설정
+  @ManyToOne(() => User, (user) => user.auctionsWon)
+  @JoinColumn({ name: 'winning_usr_seq' }) // 외래 키 컬럼 명시적으로 지정
+  winningUser: User; // 낙찰자 정보
 }

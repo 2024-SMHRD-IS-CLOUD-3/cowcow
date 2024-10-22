@@ -7,6 +7,8 @@ const AuctionDetail = ({ user, setUser }) => {
   const { id } = useParams();
   const [auction, setAuction] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [bidAmount, setBidAmount] = useState(""); // 입찰 금액 상태 추가
+  const [highestBid, setHighestBid] = useState(null); // 현재 최고 입찰가 상태 추가
   const videoRef = useRef(null); // 비디오 요소 참조
   const navigate = useNavigate();
 
@@ -49,6 +51,28 @@ const AuctionDetail = ({ user, setUser }) => {
     fetchAuctionDetail();
   }, [id]);
 
+  // 현재 최고 입찰가를 주기적으로 업데이트하는 useEffect
+  useEffect(() => {
+    const fetchHighestBid = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/auction-bids/highest/${id}`);
+        if (!response.ok) {
+          throw new Error("현재 최고 입찰가를 가져오는 데 실패했습니다.");
+        }
+        const highestBid = await response.json();
+        setHighestBid(highestBid);
+        console.log(highestBid)
+      } catch (error) {
+        console.error("Error fetching highest bid:", error);
+      }
+    };
+        // 주기적으로 최고 입찰가 업데이트 (예: 5초마다)
+      const intervalId = setInterval(fetchHighestBid, 5000);
+
+        // 컴포넌트 언마운트 시 정리
+      return () => clearInterval(intervalId);
+  }, [id]);
+
   useEffect(() => {
     let stream;
 
@@ -74,6 +98,38 @@ const AuctionDetail = ({ user, setUser }) => {
       }
     };
   }, []);
+
+  const handleBidSubmit = async () => {
+    if (!bidAmount) {
+      alert("입찰 금액을 입력해 주세요.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3001/auction-bids`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          aucSeq: auction.aucSeq,
+          bidAcc: user.usrSeq,
+          bidAmt: parseInt(bidAmount, 10),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("입찰에 실패했습니다.");
+      }
+
+      alert("입찰에 성공했습니다!");
+      setBidAmount(""); // 입력한 금액 초기화
+    } catch (error) {
+      console.error("Error during bid submission:", error);
+      alert("입찰에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+
 
   if (!auction) return <p>경매 정보를 불러오는 중...</p>;
 
@@ -135,24 +191,49 @@ const AuctionDetail = ({ user, setUser }) => {
                   <td>{auction?.aucStatus || "정보 없음"}</td>
                 </tr>
                 <tr>
+                  <th>예상가</th>
+                  <td>{300}</td>
+                </tr>
+                <tr>
                   <th>현재 최고 입찰가</th>
-                  <td>{auction?.aucFinalBid?.toLocaleString() || "정보 없음"}원</td>
+                  <td>{highestBid !== null ? `${highestBid.toLocaleString()}원` : "정보 없음"}</td>
                 </tr>
               </tbody>
             </table>
 
             <div className="bid-section-inline">
-              <input
-                type="number"
-                placeholder="입찰 금액 입력"
-                className="bid-input"
-              />
               {!user ? (
-                <Link to="/login">
-                  <button className="btn primary">입찰하기</button>
-                </Link>
+                <>
+                  <input
+                    type="number"
+                    placeholder="입찰 금액 입력"
+                    className="bid-input"
+                  />
+                  <Link to="/login">
+                    <button className="btn primary">입찰하기</button>
+                  </Link>
+                </>
               ) : (
-                <button className="btn primary">입찰하기</button>
+                <>
+                  {auction.usrSeq === user.usrSeq ? (
+                    <button className="btn primary">
+                      낙찰하기
+                    </button>
+                  ) : (
+                    <>
+                      <input
+                        type="number"
+                        placeholder="입찰 금액 입력"
+                        className="bid-input"
+                        value={bidAmount}
+                        onChange={(e) => setBidAmount(e.target.value)}
+                      />
+                      <button className="btn primary" onClick={handleBidSubmit}>
+                        입찰하기
+                      </button>
+                    </>
+                  )}
+                </>
               )}
             </div>
           </div>
