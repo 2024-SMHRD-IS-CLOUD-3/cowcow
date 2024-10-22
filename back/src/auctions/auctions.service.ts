@@ -2,12 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Auction } from './auction.entity';
+import { AuctionBid } from '../auction-bids/auction-bid.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class AuctionsService {
   constructor(
     @InjectRepository(Auction)
     private readonly auctionsRepository: Repository<Auction>,
+    @InjectRepository(AuctionBid)
+    private readonly auctionBidsRepository: Repository<AuctionBid>,
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
   ) {}
 
   // 모든 경매 조회
@@ -19,7 +25,7 @@ export class AuctionsService {
   async findOne(id: number): Promise<Auction | null> {
     return this.auctionsRepository.findOne({
       where: { aucSeq: id },
-      relations: ['user', 'userBarn', 'cow'],
+      relations: ['user', 'userBarn', 'cow', 'winningUser'],
     });
   }
 
@@ -34,12 +40,4 @@ export class AuctionsService {
     await this.auctionsRepository.delete(id);
   }
 
-  // 경매 상태 업데이트 (예: 종료)
-  async updateStatus(id: number, status: string): Promise<Auction | null> {
-    const auction = await this.findOne(id);
-    if (!auction) return null;
-
-    auction.aucStatus = status;
-    return this.auctionsRepository.save(auction);
-  }
 }

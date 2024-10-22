@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { AuctionBidsService } from './auction-bids.service';
 import { AuctionBid } from './auction-bid.entity';
+import {User} from '../users/user.entity';
 
 @Controller('auction-bids')
 export class AuctionBidsController {
@@ -29,4 +30,10 @@ export class AuctionBidsController {
   async deleteBid(@Param('id') id: number): Promise<void> {
     return this.auctionBidsService.remove(id);
   }
+
+  @Get('highest/:auctionId')
+  async getHighestBid(@Param('auctionId') auctionId: number): Promise<number | null> {
+    return this.auctionBidsService.findHighestBid(auctionId);
+  }
+
 }
