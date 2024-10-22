@@ -32,7 +32,7 @@ export class AuctionBidsController {
   }
 
   @Get('highest/:auctionId')
-  async getHighestBid(@Param('auctionId') auctionId: number): Promise<number | null> {
+  async getHighestBid(@Param('auctionId') auctionId: number): Promise<AuctionBid | null> {
     return this.auctionBidsService.findHighestBid(auctionId);
   }
 

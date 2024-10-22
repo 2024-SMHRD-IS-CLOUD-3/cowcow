@@ -130,6 +130,37 @@ const AuctionDetail = ({ user, setUser }) => {
     }
   };
 
+  const handleWinningBid = async () => {
+    if (!highestBid) {
+      alert("낙찰할 입찰가가 없습니다.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:3001/auctions/${auction.aucSeq}/win`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          winningUserSeq: highestBid.bidAcc,
+          finalBidAmount: highestBid.bidAmt,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("낙찰 처리에 실패했습니다.");
+      }
+  
+      alert("낙찰이 성공적으로 처리되었습니다!");
+      navigate("/");
+    } catch (error) {
+      console.error("Error during winning bid submission:", error);
+      alert("낙찰 처리에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+  
+
 
   if (!auction) return <p>경매 정보를 불러오는 중...</p>;
 
@@ -196,7 +227,7 @@ const AuctionDetail = ({ user, setUser }) => {
                 </tr>
                 <tr>
                   <th>현재 최고 입찰가</th>
-                  <td>{highestBid !== null ? `${highestBid.toLocaleString()}원` : "정보 없음"}</td>
+                  <td>{highestBid !== null ? `${highestBid.bidAmt}원` : "정보 없음"}</td>
                 </tr>
               </tbody>
             </table>
@@ -216,7 +247,7 @@ const AuctionDetail = ({ user, setUser }) => {
               ) : (
                 <>
                   {auction.usrSeq === user.usrSeq ? (
-                    <button className="btn primary">
+                    <button className="btn primary" onClick={handleWinningBid}>
                       낙찰하기
                     </button>
                   ) : (
