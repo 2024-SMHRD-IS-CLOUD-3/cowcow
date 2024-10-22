@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Param, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, Put, NotFoundException } from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
 import { Auction } from './auction.entity';
 
@@ -29,4 +29,21 @@ export class AuctionsController {
   async deleteAuction(@Param('id') id: number): Promise<void> {
     return this.auctionsService.delete(id);
   }
+
+  @Put(':id/win')
+  async setWinningBid(
+    @Param('id') aucSeq: number,
+    @Body() body: any,
+  ) {
+    const { winningUserSeq, finalBidAmount } = body;
+    console.log("여기는 컨트롤러단이야.");
+    console.log(winningUserSeq);
+    console.log(finalBidAmount);
+    const updatedAuction = await this.auctionsService.setWinningBid(aucSeq, winningUserSeq, finalBidAmount);
+    if (!updatedAuction) {
+      throw new NotFoundException('경매 정보를 찾을 수 없습니다.');
+    }
+    return updatedAuction;
+  }
+
 }
