@@ -23,4 +23,10 @@ export class CowsController {
   async getAllCows(): Promise<Cow[]> {
     return this.cowService.findAll();
   }
+
+    // 특정 사용자 소 조회 API
+  @Get('/user/:userId')
+  async getCowsByUserId(@Param('userId') userId: number): Promise<Cow[]> {
+    return this.cowService.findByUserId(userId);
+  }
 }
