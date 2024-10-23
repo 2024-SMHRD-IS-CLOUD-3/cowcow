@@ -7,18 +7,18 @@ import { Cow } from './cow.entity';
 export class CowsService {
   constructor(
     @InjectRepository(Cow)
-    private readonly cowRepository: Repository<Cow>,
+    private readonly cowsRepository: Repository<Cow>,
   ) {}
 
   // 소 등록
   async create(cowData: Partial<Cow>): Promise<Cow> {
-    const cow = this.cowRepository.create(cowData);
-    return this.cowRepository.save(cow);
+    const cow = this.cowsRepository.create(cowData);
+    return this.cowsRepository.save(cow);
   }
 
   // 특정 소 조회
   async findOne(id: number): Promise<Cow> {
-    const cow = await this.cowRepository.findOne({
+    const cow = await this.cowsRepository.findOne({
       where: { cowSeq: id },
       relations: ['user', 'auctions'], // 연관된 데이터도 조회
     });
@@ -30,6 +30,13 @@ export class CowsService {
 
   // 모든 소 조회
   async findAll(): Promise<Cow[]> {
-    return this.cowRepository.find({ relations: ['user', 'auctions'] });
+    return this.cowsRepository.find({ relations: ['user', 'auctions'] });
+  }
+
+    // 사용자별 소 조회
+  async findByUserId(userId: number): Promise<Cow[]> {
+    return this.cowsRepository.find({
+      where: { usrSeq: userId },
+    });
   }
 }

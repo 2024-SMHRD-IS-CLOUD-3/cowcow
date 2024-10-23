@@ -75,15 +75,21 @@ body {
     flex: 1;
 }
 
-/* 사이드바 */
+/* 사이드바 스타일 */
 .sidebar {
     width: 250px;
     background-color: #1a1a1a;
     padding: 20px;
+    position: fixed;
+    top: 70px; /* 헤더 높이만큼 아래로 */
+    left: 0;
+    height: calc(100vh - 70px); /* 헤더를 제외한 높이 */
+    overflow-y: auto; /* 스크롤 활성화 */
 }
 
 .sidebar ul {
     list-style: none;
+    padding: 0;
 }
 
 .sidebar ul li {
@@ -95,16 +101,22 @@ body {
     color: #bbb;
     font-size: 18px;
     transition: color 0.3s;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
 }
 
 .sidebar ul li a:hover {
+    background-color: #333;
     color: #1e90ff;
 }
 
 .sidebar ul li a.active {
-    color: #63b3ff;
+    background-color: #1e90ff;
+    color: #fff;
     font-weight: bold;
 }
+
 
 /* 마이페이지 콘텐츠 */
 .mypage-content {

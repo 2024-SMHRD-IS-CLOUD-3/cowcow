@@ -15,9 +15,6 @@ export class Auction {
   @Column({ name: 'usr_barn_seq', unsigned: true, nullable: true })
   usrBarnSeq: number;
 
-  @Column({ name: 'acow_seq', unsigned: true, nullable: true })
-  acowSeq: number;
-
   @Column({ name: 'auc_broadcast_title', nullable: true })
   aucBroadcastTitle: string;
 

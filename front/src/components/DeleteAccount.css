@@ -112,6 +112,11 @@ body {
     width: 250px;
     background-color: #1a1a1a;
     padding: 20px;
+    position: fixed;
+    top: 70px; /* 헤더 높이만큼 아래로 */
+    left: 0;
+    height: calc(100vh - 70px); /* 헤더를 제외한 높이 */
+    overflow-y: auto; /* 스크롤 활성화 */
 }
 
 .sidebar ul {
@@ -143,6 +148,7 @@ body {
     color: #fff;
     font-weight: bold;
 }
+
 
 /* 회원탈퇴 버튼 스타일 */
 .delete-btn {
