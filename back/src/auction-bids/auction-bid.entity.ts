@@ -1,11 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '../users/user.entity'; // User Entity import
 import { Auction } from '../auctions/auction.entity'; // Auction Entity import
+import { AuctionCow } from '../auction-cows/auction-cow.entity';
 
 @Entity('auction_bids')
 export class AuctionBid {
   @PrimaryGeneratedColumn({ name: 'bid_seq', unsigned: true })
   bidSeq: number; // 입찰 시퀀스
+
+  @Column({ name: 'acow_seq', unsigned: true, nullable: true })
+  acowSeq: number;
 
   @Column({ name: 'auc_seq', unsigned: true, nullable: true })
   aucSeq: number; // 경매 시퀀스 (Foreign Key)
@@ -28,4 +32,10 @@ export class AuctionBid {
   @ManyToOne(() => User, (user) => user.auctionBids)
   @JoinColumn({ name: 'bid_acc' }) // 외래 키 컬럼 명시적으로 지정
   user: User; // 입찰자와의 관계
+
+  // 경매소와의 관계 설정
+  @ManyToOne(() => AuctionCow, (auctionCow) => auctionCow.auctionCowBids)
+  @JoinColumn({ name: 'acow_seq' }) // 외래 키 컬럼 명시적으로 지정
+  auctionCow: AuctionCow; // 입찰자와의 관계
+  
 }

@@ -3,6 +3,7 @@ import { UserBarn } from '../user-barns/user-barn.entity'; // UserBarn Entity im
 import { Cow } from '../cows/cow.entity'; // Cow Entity import
 import { Auction } from '../auctions/auction.entity'; // Auction Entity import
 import { AuctionBid } from '../auction-bids/auction-bid.entity'; // AuctionBid Entity import
+import { AuctionCow } from '../auction-cows/auction-cow.entity';
 
 @Entity('users')
 export class User {
@@ -43,6 +44,6 @@ export class User {
   auctionBids: AuctionBid[]; // 사용자와 입찰의 관계
 
   // 사용자가 낙찰받은 경매들
-  @OneToMany(() => Auction, (auction) => auction.winningUser)
-  auctionsWon: Auction[];
+  @OneToMany(() => AuctionCow, (auctionCow) => auctionCow.winningUser)
+  auctionsWon: AuctionCow[];
 }
