@@ -45,6 +45,18 @@ const CowPage = ({ user, setUser }) => {
 
       if (response.ok) {
         alert("소 등록이 완료되었습니다.");
+        setFormData({
+          cowNo: "",
+          cowBirDt: "",
+          usrSeq: user.usrSeq, // 로그인한 사용자 ID 그대로 유지
+          cowRegion: "",
+          cowKpn: "",
+          cowPrt: "",
+          cowGdr: "",
+          cowJagigubun: "",
+          cowEomigubun: "",
+          notes: "",
+        }); // 초기 상태로 되돌리기
         navigate("/cowPage");
       } else {
         throw new Error("소 등록에 실패했습니다.");
@@ -70,7 +82,7 @@ const CowPage = ({ user, setUser }) => {
         </Link>
         <nav className="nav-links">
           <Link to="/">홈</Link>
-          <Link to="#">경매등록</Link>
+          <Link to="/auctionRegister">경매등록</Link>
           <Link to="/myPage" className="active">마이페이지</Link>
           <Link to="/" onClick={handleLogout}>로그아웃</Link>
         </nav>

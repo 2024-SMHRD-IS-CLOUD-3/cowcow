@@ -45,7 +45,7 @@ export class AuctionsService {
     if (!auction) {
       throw new NotFoundException('해당 경매를 찾을 수 없습니다.');
     }
-    console.log("winningUserId In Service: ", winningUserId);
+
     const winningUser = await this.usersRepository.findOne({ where: { usrSeq: winningUserId } });
     if (!winningUser) {
       throw new NotFoundException('낙찰자를 찾을 수 없습니다.');
@@ -54,11 +54,8 @@ export class AuctionsService {
     // 최고 입찰가와 낙찰자 정보를 업데이트합니다.
     auction.winningUser = winningUser;
     auction.aucFinalBid = finalBidAmount;
-    console.log("여기는 서비스단이야.")
-    console.log("winningUser:", winningUser);
-    console.log("aucFinalBid: ", auction.aucFinalBid);
-    console.log("finalBidAmount: ",finalBidAmount);
     auction.aucStatus = '낙찰';
+    auction.aucDelDt = new Date();
 
     return await this.auctionsRepository.save(auction);
   }

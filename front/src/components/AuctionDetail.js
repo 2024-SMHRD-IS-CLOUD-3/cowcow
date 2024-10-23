@@ -61,7 +61,6 @@ const AuctionDetail = ({ user, setUser }) => {
         }
         const highestBid = await response.json();
         setHighestBid(highestBid);
-        console.log(highestBid)
       } catch (error) {
         console.error("Error fetching highest bid:", error);
       }
@@ -102,6 +101,9 @@ const AuctionDetail = ({ user, setUser }) => {
   const handleBidSubmit = async () => {
     if (!bidAmount) {
       alert("입찰 금액을 입력해 주세요.");
+      return;
+    } else if (bidAmount < auction.aucBottomPrice) {
+      alert("입찰 금액은 최저가보다 높아야 합니다.");
       return;
     }
 
@@ -176,7 +178,7 @@ const AuctionDetail = ({ user, setUser }) => {
         </div>
         <nav className="nav-links">
           <Link to="/">홈</Link>
-          <Link to="/auction">경매등록</Link>
+          <Link to="/auctionRegister">경매등록</Link>
           {!user ? (
             <Link to="/login">로그인</Link>
           ) : (
@@ -226,6 +228,10 @@ const AuctionDetail = ({ user, setUser }) => {
                   <td>{300}</td>
                 </tr>
                 <tr>
+                  <th>최저가</th>
+                  <td>{`${auction.aucBottomPrice}원`}</td>
+                </tr>
+                <tr>
                   <th>현재 최고 입찰가</th>
                   <td>{highestBid !== null ? `${highestBid.bidAmt}원` : "정보 없음"}</td>
                 </tr>
@@ -247,7 +253,11 @@ const AuctionDetail = ({ user, setUser }) => {
               ) : (
                 <>
                   {auction.usrSeq === user.usrSeq ? (
-                    <button className="btn primary" onClick={handleWinningBid}>
+                    <button
+                      className="btn primary"
+                      onClick={handleWinningBid}
+                      disabled={ !highestBid }
+                    >
                       낙찰하기
                     </button>
                   ) : (

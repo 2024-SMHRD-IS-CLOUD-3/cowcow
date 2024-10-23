@@ -36,9 +36,6 @@ export class AuctionsController {
     @Body() body: any,
   ) {
     const { winningUserSeq, finalBidAmount } = body;
-    console.log("여기는 컨트롤러단이야.");
-    console.log(winningUserSeq);
-    console.log(finalBidAmount);
     const updatedAuction = await this.auctionsService.setWinningBid(aucSeq, winningUserSeq, finalBidAmount);
     if (!updatedAuction) {
       throw new NotFoundException('경매 정보를 찾을 수 없습니다.');
