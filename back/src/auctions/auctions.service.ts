@@ -18,14 +18,14 @@ export class AuctionsService {
 
   // 모든 경매 조회
   async findAll(): Promise<Auction[]> {
-    return this.auctionsRepository.find({ relations: ['user', 'userBarn', 'cow'] });
+    return this.auctionsRepository.find({ relations: ['user', 'userBarn', 'auctionCows', 'bids'] });
   }
 
   // 특정 경매 조회 by ID
   async findOne(id: number): Promise<Auction | null> {
     return this.auctionsRepository.findOne({
       where: { aucSeq: id },
-      relations: ['user', 'userBarn', 'cow', 'winningUser'],
+      relations: ['user', 'userBarn', 'auctionCows', 'bids'],
     });
   }
 
@@ -40,6 +40,7 @@ export class AuctionsService {
     await this.auctionsRepository.delete(id);
   }
 
+  //Todo#1 : 오류 수정
   async setWinningBid(aucSeq: number, winningUserId: number, finalBidAmount: number): Promise<Auction> {
     const auction = await this.auctionsRepository.findOne({ where: { aucSeq }, relations: ['winningUser'] });
     if (!auction) {
@@ -52,8 +53,8 @@ export class AuctionsService {
     }
 
     // 최고 입찰가와 낙찰자 정보를 업데이트합니다.
-    auction.winningUser = winningUser;
-    auction.aucFinalBid = finalBidAmount;
+    // auction.winningUser = winningUser;
+    // auction.aucFinalBid = finalBidAmount;
     auction.aucStatus = '낙찰';
     auction.aucDelDt = new Date();
 

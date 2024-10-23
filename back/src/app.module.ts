@@ -9,6 +9,7 @@ import { UserBarn } from './user-barns/user-barn.entity';
 import { Cow } from './cows/cow.entity';
 import { Auction } from './auctions/auction.entity';
 import { AuctionBid } from './auction-bids/auction-bid.entity';
+import { AuctionCow } from './auction-cows/auction-cow.entity';
 
 // 모듈 임포트
 import { UsersModule } from './users/users.module';
@@ -16,6 +17,7 @@ import { AuctionsModule } from './auctions/auctions.module';
 import { CowsModule } from './cows/cows.module';
 import { AuctionBidsModule } from './auction-bids/auction-bids.module';
 import { UserBarnsModule } from './user-barns/user-barns.module';
+import { AuctionCowsModule } from './auction-cows/auction-cows.module';
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { UserBarnsModule } from './user-barns/user-barns.module';
       password: 'smart123!',
       database: 'ohi0',
       entities: [
-        User, UserBarn, Cow, Auction, AuctionBid,
+        User, UserBarn, Cow, Auction, AuctionBid, AuctionCow
       ],
       synchronize: false,
     }),
@@ -36,6 +38,7 @@ import { UserBarnsModule } from './user-barns/user-barns.module';
     CowsModule,
     AuctionBidsModule,
     UserBarnsModule,
+    AuctionCowsModule
   ],
   controllers: [AppController],
   providers: [AppService],

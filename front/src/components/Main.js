@@ -9,7 +9,21 @@ const MainPage = ({ user, setUser }) => {
   const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 관리
   const [showTopButton, setShowTopButton] = useState(false); // 탑 버튼 표시 여부 관리
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
+  const handleLogout = () => {
+    setUser(null); // 로그아웃 처리
+    localStorage.removeItem("user");
+    navigate("/"); // 메인 페이지로 리다이렉트
+  };
+
+  const filteredAuctions = auctionData.filter((auction) =>
+    auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
@@ -41,20 +55,7 @@ const MainPage = ({ user, setUser }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleLogout = () => {
-    setUser(null); // 로그아웃 처리
-    localStorage.removeItem("user");
-    navigate("/"); // 메인 페이지로 리다이렉트
-  };
-
-  const filteredAuctions = auctionData.filter((auction) =>
-    auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  
   return (
     <div className="main-container">
       <header className="main-header">

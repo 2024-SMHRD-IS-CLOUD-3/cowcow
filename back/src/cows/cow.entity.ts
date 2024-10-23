@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColum
 import { User } from '../users/user.entity'; // User Entity import
 import { Auction } from '../auctions/auction.entity'; // Auction Entity import
 import { UserBarn } from 'src/user-barns/user-barn.entity';
+import { AuctionCow } from 'src/auction-cows/auction-cow.entity';
 
 @Entity('cows')
 export class Cow {
@@ -42,7 +43,7 @@ export class Cow {
   @JoinColumn({ name: 'usr_seq' }) // 외래 키 컬럼 명시적으로 지정
   user: User; // 사용자와의 관계
 
-  @OneToMany(() => Auction, (auction) => auction.cow)
-  auctions: Auction[]; // 소와 경매의 관계
+  @OneToMany(() => AuctionCow, (auctionCow) => auctionCow.cow)
+  auctions: AuctionCow[]; // 소와 경매의 관계
 
 }
