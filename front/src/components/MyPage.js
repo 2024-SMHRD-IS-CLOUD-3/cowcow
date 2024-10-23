@@ -55,7 +55,7 @@ const Header = ({ handleLogout }) => (
         </div>
         <nav className="nav-links">
             <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="#">경매등록</Link> {/* a 태그를 Link로 변경 */}
+            <Link to="/auctionRegister">경매등록</Link> {/* a 태그를 Link로 변경 */}
             <Link to="/myPage" className="active">마이페이지</Link> {/* a 태그를 Link로 변경 */}
             <Link to="/" onClick={handleLogout}>로그아웃</Link> {/* 버튼을 Link로 변경 */}
         </nav>

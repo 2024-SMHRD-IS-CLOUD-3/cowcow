@@ -9,6 +9,7 @@ import DeleteAccount from './components/DeleteAccount';
 import TransactionHistory from './components/TransactionHistory';
 import AuctionDetail from './components/AuctionDetail';
 import CowPage from './components/CowPage';
+import AuctionRegister from './components/AuctionRegister';
 
 function App() {
   const [user, setUser] = useState(null); // 로그인한 사용자 상태 관리
@@ -32,7 +33,8 @@ function App() {
         <Route path="/transactionHistory" element={<TransactionHistory user={user} setUser={setUser} />} />
         <Route path="/auctionDetail/:id" element={<AuctionDetail user={user} setUser={setUser} />} />
         <Route path="/cowPage" element={<CowPage user={user} setUser={setUser} />} />
-      </Routes>
+        <Route path="/auctionRegister" element={<AuctionRegister user={user} setUser={setUser}/>}/>
+</Routes>
     </Router>
   );
 }

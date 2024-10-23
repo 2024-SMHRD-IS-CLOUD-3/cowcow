@@ -30,6 +30,12 @@ export class Auction {
   @Column({ name: 'auc_crt_dt', type: 'datetime' })
   aucCrtDt: Date;
 
+  @Column({ name: 'auc_bottom_price', nullable: true, default: 0})
+  aucBottomPrice: number;
+
+  @Column({ name: 'auc_del_dt', nullable: true})
+  aucDelDt: Date;
+
   // 사용자와의 관계 설정 (경매 등록자)
   @ManyToOne(() => User, (user) => user.auctions)
   @JoinColumn({ name: 'usr_seq' })
@@ -51,6 +57,6 @@ export class Auction {
 
   // 낙찰자와의 관계 설정
   @ManyToOne(() => User, (user) => user.auctionsWon)
-  @JoinColumn({ name: 'winning_usr_seq' }) // 외래 키 컬럼 명시적으로 지정
+  @JoinColumn({ name: 'auc_winner_seq' }) // 외래 키 컬럼 명시적으로 지정
   winningUser: User; // 낙찰자 정보
 }

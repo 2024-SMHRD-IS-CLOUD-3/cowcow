@@ -6,6 +6,7 @@ import logo from "../images/cowcowlogo.png"
 
 const TransactionHistory = ({ user, setUser }) => { // user와 setUser 추가
     const [filter, setFilter] = useState('전체');
+    const [transaction, setTransaction] = useState(null);
 
     const transactions = [
         { id: 2, type: '구매', cow: '소101', date: '2024-09-15', price: '₩900,000' },
@@ -88,7 +89,7 @@ const Header = ({ handleLogout }) => (
         </div>
         <nav className="nav-links">
             <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="#">경매등록</Link> {/* a 태그를 Link로 변경 */}
+            <Link to="/auctionRegister">경매등록</Link> {/* a 태그를 Link로 변경 */}
             <Link to="/myPage"  className="active">마이페이지</Link> {/* a 태그를 Link로 변경 */}
             <Link to="/" onClick={handleLogout}>로그아웃</Link> {/* 버튼을 Link로 변경 */}
         </nav>
