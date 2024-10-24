@@ -20,8 +20,14 @@ export class AuctionsController {
 
   // 경매 생성 (POST /auctions)
   @Post()
-  async createAuction(@Body() auctionData: Partial<Auction>): Promise<Auction> {
-    return this.auctionsService.create(auctionData);
+  async createAuction(
+    @Body() auctionData: { 
+      title: string; 
+      usrSeq: number; 
+      usrBarnSeq: number; 
+      cows: { cowSeq: number; minValue: number }[] }
+  ){
+    return this.auctionsService.createAuction(auctionData);
   }
 
   // 경매 삭제 (DELETE /auctions/:id)
