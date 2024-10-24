@@ -18,14 +18,14 @@ export class AuctionsService {
 
   // 모든 경매 조회
   async findAll(): Promise<Auction[]> {
-    return this.auctionsRepository.find({ relations: ['user', 'auctionCows', 'bids'] });
+    return this.auctionsRepository.find({ relations: ['user', 'auctionCows'] });
   }
 
   // 특정 경매 조회 by ID
   async findOne(id: number): Promise<Auction | null> {
     return this.auctionsRepository.findOne({
       where: { aucSeq: id },
-      relations: ['user', 'auctionCows', 'bids'],
+      relations: ['user', 'auctionCows'],
     });
   }
 

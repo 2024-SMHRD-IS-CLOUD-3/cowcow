@@ -384,7 +384,7 @@ const CowPage = ({user, setUser}) => {
                                     </td>
                                     </tr>
                                 ))}
-                            </tbody>
+                            </tbody>    
                         </table>
 
                         <div className="pagination">
