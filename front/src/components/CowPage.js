@@ -4,30 +4,27 @@ import "./CowPage.css";
 import logo from "../images/cowcowlogo.png";
 
 const CowPage = ({user, setUser}) => {
+    const [formData, setFormData] = useState({
+        cowId: '',
+        cowBirDt: '',
+        usrSeq: user.usrSeq,
+        cowcowRegion: '',
+        cowKpn: '',
+        cowPrt: '',
+        cowGdr: '',
+        cowJagigubun: '',
+        cowEomigubun: '',
+        note: '',
+        // images: [],
+    });
 
     const classifications = ['예비', '기초', '혈통', '고등', '육종우'];
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        cowId: '',
-        ageInMonths: '',
-        seller: '',
-        region: '',
-        kpn: '',
-        parity: '',
-        gender: '',
-        selfClassification: '',
-        motherClassification: '',
-        note: '',
-        images: [],
-        registrationDate: '',
-    });
-    
     const [cows, setCows] = useState([]);
     const [filterDate, setFilterDate] = useState('');
-    const [filterGender, setFilterGender] = useState('');
+    const [filtercowGdr, setFiltercowGdr] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
-
 
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
     const handleDelete = (index) => {
@@ -99,8 +96,8 @@ const CowPage = ({user, setUser}) => {
 
     const filteredCows = cows.filter((cow) => {
         const matchesDate = filterDate ? cow.registrationDate === filterDate : true;
-        const matchesGender = filterGender ? cow.gender === filterGender : true;
-        return matchesDate && matchesGender;
+        const matchescowGdr = filtercowGdr ? cow.cowGdr === filtercowGdr : true;
+        return matchesDate && matchescowGdr;
     });
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -160,61 +157,59 @@ const CowPage = ({user, setUser}) => {
                         <label htmlFor="cowId">개체번호</label>
                         <input
                             type="text"
-                            id="cowId"
-                            name="cowId"
-                            value={formData.cowId}
+                            id="cowNo"
+                            name="cowNo"
+                            value={formData.cowNo}
                             onChange={handleChange}
                             required
                         />
-                        <label htmlFor="ageInMonths">개월령</label>
+                        <label htmlFor="cowBirDt">출생일</label>
                         <input
-                            type="number"
-                            id="ageInMonths"
-                            name="ageInMonths"
+                            type="date"
+                            id="cowBirDt"
+                            name="cowBirDt"
                             min="0"
-                            value={formData.ageInMonths}
+                            value={formData.cowBirDt}
                             onChange={handleChange}
                             required
                         />
-                        <label htmlFor="seller">출하주</label>
+                        <label htmlFor="usrSeq">출하주</label>
                         <input
                             type="text"
-                            id="seller"
-                            name="seller"
-                            value={formData.seller}
+                            value={user.usrNm}
+                            readOnly
+                        />
+                        <label htmlFor="cowRegion">지역</label>
+                        <input
+                            type="text"
+                            id="cowRegion"
+                            name="cowRegion"
+                            value={formData.cowRegion}
                             onChange={handleChange}
                             required
                         />
-                        <label htmlFor="region">지역</label>
+                        <label htmlFor="cowKpn">KPN</label>
                         <input
                             type="text"
-                            id="region"
-                            name="region"
-                            value={formData.region}
-                            onChange={handleChange}
-                            required
-                        />
-                        <label htmlFor="kpn">KPN</label>
-                        <input
-                            type="text"
-                            id="kpn"
-                            name="kpn"
-                            value={formData.kpn}
+                            id="cowKpn"
+                            name="cowKpn"
+                            value={formData.cowKpn}
                             onChange={handleChange}
                         />
-                        <label htmlFor="parity">산차</label>
+                        <label htmlFor="cowPrt">산차</label>
                         <input
                             type="number"
-                            id="parity"
-                            name="parity"
-                            value={formData.parity}
+                            id="cowPrt"
+                            name="cowPrt"
+                            value={formData.cowPrt}
                             onChange={handleChange}
+                            min="1"
                         />
-                        <label htmlFor="gender">성별</label>
+                        <label htmlFor="cowGdr">성별</label>
                         <select
-                            id="gender"
-                            name="gender"
-                            value={formData.gender}
+                            id="cowGdr"
+                            name="cowGdr"
+                            value={formData.cowGdr}
                             onChange={handleChange}
                             required
                         >
@@ -222,11 +217,11 @@ const CowPage = ({user, setUser}) => {
                             <option value="male">수컷</option>
                             <option value="female">암컷</option>
                         </select>
-                        <label htmlFor="selfClassification">자기구분</label>
+                        <label htmlFor="cowJagigubun">자기구분</label>
                         <select
-                            id="selfClassification"
-                            name="selfClassification"
-                            value={formData.selfClassification}
+                            id="cowJagigubun"
+                            name="cowJagigubun"
+                            value={formData.cowJagigubun}
                             onChange={handleChange}
                         >
                             <option value="">선택</option>
@@ -234,11 +229,11 @@ const CowPage = ({user, setUser}) => {
                                 <option key={item} value={item}>{item}</option>
                             ))}
                         </select>
-                        <label htmlFor="motherClassification">어미구분</label>
+                        <label htmlFor="cowEomigubun">어미구분</label>
                         <select
-                            id="motherClassification"
-                            name="motherClassification"
-                            value={formData.motherClassification}
+                            id="cowEomigubun"
+                            name="cowEomigubun"
+                            value={formData.cowEomigubun}
                             onChange={handleChange}
                         >
                             <option value="">선택</option>
@@ -246,21 +241,14 @@ const CowPage = ({user, setUser}) => {
                                 <option key={item} value={item}>{item}</option>
                             ))}
                         </select>
-                        <label htmlFor="note">비고</label>
+                        <label htmlFor="notes">비고</label>
                         <textarea
-                            id="note"
-                            name="note"
-                            value={formData.note}
+                            id="notes"
+                            name="notes"
+                            value={formData.notes}
                             onChange={handleChange}
                         />
-                        <label htmlFor="registrationDate">등록날짜</label>
-                        <input
-                            type="date"
-                            id="registrationDate"
-                            name="registrationDate"
-                            value={formData.registrationDate}
-                            onChange={handleChange}
-                        />
+
                         <button type="submit" className="submit-button">등록</button>
                     </form>
 
@@ -273,14 +261,14 @@ const CowPage = ({user, setUser}) => {
                                 onChange={(e) => setFilterDate(e.target.value)}
                             />
                             <select
-                                value={filterGender}
-                                onChange={(e) => setFilterGender(e.target.value)}
+                                value={filtercowGdr}
+                                onChange={(e) => setFiltercowGdr(e.target.value)}
                             >
                                 <option value="">성별 선택</option>
                                 <option value="male">수컷</option>
                                 <option value="female">암컷</option>
                             </select>
-                            <button onClick={() => { setFilterDate(''); setFilterGender(''); }}>
+                            <button onClick={() => { setFilterDate(''); setFiltercowGdr(''); }}>
                                 전체조회
                             </button>
                         </div>
@@ -304,9 +292,9 @@ const CowPage = ({user, setUser}) => {
                                 <td>{cow.cowNo}</td>
                                 <td>{cow.cowBirDt}</td>
                                 <td>{cow.cowGdr === 'male' ? '수컷' : '암컷'}</td>
-                                <td>{cow.cowKpn}</td>
+                                <td>{cow.cowcowKpn}</td>
                                 <td>{cow.cowPrt}</td>
-                                <td>{cow.cowRegion}</td>
+                                <td>{cow.cowcowRegion}</td>
                                 <td>{cow.notes}</td>
                                 <td>
                                     <button className="delete-button" onClick={() => handleDelete(index)}>

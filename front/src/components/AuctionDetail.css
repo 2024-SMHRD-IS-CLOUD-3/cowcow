@@ -17,9 +17,14 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: #111;
-    padding-bottom: 0;
-    padding-top: 0;
+    background-color: #1a1a1a;
+    position: fixed; /* 고정된 헤더 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    height: 70px; /* 헤더 높이 */
 }
 
 .header h1 {
@@ -66,7 +71,7 @@ body {
 }
 
 .auction-detail {
-    padding: 50px 20px;
+    padding: 90px;
     text-align: center;
 }
 
