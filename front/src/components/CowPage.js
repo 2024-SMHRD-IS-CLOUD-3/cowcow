@@ -27,12 +27,28 @@ const CowPage = ({user, setUser}) => {
     const itemsPerPage = 5;
 
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
-    const handleDelete = (index) => {
-        const confirmDelete = window.confirm('삭제하시겠습니까?'); // 팝업창
+    
+    const handleDelete = async (cowId) => {
+        const confirmDelete = window.confirm('정말 삭제하시겠습니까?');
         if (confirmDelete) {
-            setCows((prev) => prev.filter((_, i) => i !== index));
+          try {
+            const response = await fetch(`http://localhost:3001/cows/${cowId}`, {
+              method: 'DELETE',
+            });
+      
+            if (response.ok) {
+              alert('삭제되었습니다.');
+              // 삭제된 후 목록 갱신
+              setCows((prevCows) => prevCows.filter((cow) => cow.cowSeq !== cowId));
+            } else {
+              throw new Error('소 삭제에 실패했습니다.');
+            }
+          } catch (error) {
+            console.error('Error deleting cow:', error);
+          }
         }
-    };
+      };
+      
 
     const handleLogout = () => {
         setUser(null);
@@ -287,22 +303,25 @@ const CowPage = ({user, setUser}) => {
                             </tr>
                             </thead>
                             <tbody>
-                            {currentItems.map((cow, index) => (
-                                <tr key={index}>
-                                <td>{cow.cowNo}</td>
-                                <td>{cow.cowBirDt}</td>
-                                <td>{cow.cowGdr === 'male' ? '수컷' : '암컷'}</td>
-                                <td>{cow.cowcowKpn}</td>
-                                <td>{cow.cowPrt}</td>
-                                <td>{cow.cowcowRegion}</td>
-                                <td>{cow.notes}</td>
-                                <td>
-                                    <button className="delete-button" onClick={() => handleDelete(index)}>
-                                    삭제
-                                    </button>
-                                </td>
-                                </tr>
-                            ))}
+                                {currentItems.map((cow) => (
+                                    <tr key={cow.cowSeq}>
+                                    <td>{cow.cowNo}</td>
+                                    <td>{cow.cowBirDt}</td>
+                                    <td>{cow.cowGdr === 'male' ? '수컷' : '암컷'}</td>
+                                    <td>{cow.cowKpn}</td>
+                                    <td>{cow.cowPrt}</td>
+                                    <td>{cow.cowRegion}</td>
+                                    <td>{cow.notes}</td>
+                                    <td>
+                                        <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(cow.cowSeq)}
+                                        >
+                                        삭제
+                                        </button>
+                                    </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
 
