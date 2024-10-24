@@ -18,6 +18,12 @@ export class UserBarnsController {
     return this.userBarnsService.findOne(id);
   }
 
+  // 특정 유저의 농장 목록 가져오기
+  @Get('/user/:usrSeq')
+  async getUserBarns(@Param('usrSeq') usrSeq: number) {
+    return this.userBarnsService.getUserBarnsByUser(usrSeq);
+  }
+
   // 축사 생성
   @Post()
   async createBarn(@Body() data: Partial<UserBarn>): Promise<UserBarn> {

@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { User } from '../users/user.entity'; // User Entity import
-import { Auction } from '../auctions/auction.entity'; // Auction Entity import
+import { Cow } from '../cows/cow.entity';
 
 @Entity('user_barns')
 export class UserBarn {
@@ -17,6 +17,6 @@ export class UserBarn {
   @JoinColumn({ name: 'usr_seq' }) // 외래 키 컬럼 명시적으로 지정
   user: User; // 사용자와의 관계
 
-  @OneToMany(() => Auction, (auction) => auction.userBarn)
-  auctions: Auction[]; // 축사와 경매의 관계
+  @OneToMany(() => Cow, (cow) => cow.userBarn)
+  auctions: Cow[]; // 축사와 경매의 관계
 }

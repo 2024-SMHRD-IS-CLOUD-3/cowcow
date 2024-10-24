@@ -5,22 +5,24 @@ import logo from "../images/cowcowlogo.png";
 
 const CowPage = ({user, setUser}) => {
     const [formData, setFormData] = useState({
-        cowId: '',
+        cowNo: '',
         cowBirDt: '',
         usrSeq: user?.usrSeq || "",
-        cowcowRegion: '',
+        usrBarnSeq: '',
+        cowRegion: '',
         cowKpn: '',
         cowPrt: '',
         cowGdr: '',
         cowJagigubun: '',
         cowEomigubun: '',
-        note: '',
+        notes: '',
         // images: [],
     });
 
     const classifications = ['예비', '기초', '혈통', '고등', '육종우'];
     const navigate = useNavigate();
     const [cows, setCows] = useState([]);
+    const [userBarns, setUserBarn] = useState([]);
     const [filterDate, setFilterDate] = useState('');
     const [filtercowGdr, setFiltercowGdr] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -89,16 +91,17 @@ const CowPage = ({user, setUser}) => {
           if (response.ok) {
             alert("소 등록이 완료되었습니다.");
             setFormData({
-              cowNo: "",
-              cowBirDt: "",
-              usrSeq: user.usrSeq, // 로그인한 사용자 ID 그대로 유지
-              cowRegion: "",
-              cowKpn: "",
-              cowPrt: "",
-              cowGdr: "",
-              cowJagigubun: "",
-              cowEomigubun: "",
-              notes: "",
+                cowNo: '',
+                cowBirDt: '',
+                usrSeq: user.usrSeq,
+                usrBarnSeq: '',
+                cowRegion: '',
+                cowKpn: '',
+                cowPrt: '',
+                cowGdr: '',
+                cowJagigubun: '',
+                cowEomigubun: '',
+                notes: '',
             }); // 초기 상태로 되돌리기
             navigate("/cowPage");
           } else {
@@ -131,6 +134,16 @@ const CowPage = ({user, setUser}) => {
         }
     }, [setUser, navigate]);
 
+    useEffect(() => {
+        if (user) {
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            usrSeq: user.usrSeq, // 유저 시퀀스를 설정
+          }));
+        }
+      }, [user]); // user가 업데이트될 때 실행
+
+
     // 유저가 존재할 때 소 데이터 불러오기
     useEffect(() => {
         if (user?.usrSeq) {
@@ -152,7 +165,28 @@ const CowPage = ({user, setUser}) => {
         }
     }, [user]);
 
-
+    // 유저가 존재할 때 농가 데이터 불러오기
+    useEffect(() => {
+        if (user?.usrSeq) {
+          const fetchUserBarns = async () => {
+            try {
+              const response = await fetch(`http://localhost:3001/user-barns/user/${user.usrSeq}`);
+              if (response.ok) {
+                const data = await response.json();
+                setUserBarn(data); // 응답이 배열이면 설정
+            } else {
+                throw new Error('농장 데이터를 불러오는 데 실패했습니다.');
+              }
+            } catch (error) {
+              console.error('Error fetching user barns:', error);
+              setUserBarn([]); // 에러 발생 시 빈 배열 설정
+            }
+          };
+      
+          fetchUserBarns();
+        }
+      }, [user]);
+      
     return (
         <div className="layout">
             <header className="header">
@@ -182,7 +216,7 @@ const CowPage = ({user, setUser}) => {
                 <main className="content-main">
                     {/* 등록 폼 */}
                     <form className="registration-form" onSubmit={handleSubmit}>
-                        <label htmlFor="cowId">개체번호</label>
+                        <label htmlFor="cowNo">개체번호</label>
                         <input
                             type="text"
                             id="cowNo"
@@ -201,7 +235,7 @@ const CowPage = ({user, setUser}) => {
                             onChange={handleChange}
                             required
                         />
-                        <label htmlFor="usrSeq">출하주</label>
+                        <label htmlFor="usrNm">출하주</label>
                         <input
                             type="text"
                             value={user?.usrNm || ""}
@@ -216,6 +250,25 @@ const CowPage = ({user, setUser}) => {
                             onChange={handleChange}
                             required
                         />
+                        <label htmlFor="usrBarnSeq">농가</label>
+                        <select
+                            id="usrBarnSeq"
+                            name="usrBarnSeq"
+                            value={formData.usrBarnSeq}
+                            onChange={handleChange}
+                            required
+                            >
+                            <option value="">농가 선택</option>
+                            {userBarns.length > 0 ? (
+                                userBarns.map((userBarn) => (
+                                <option key={userBarn.usrBarnSeq} value={userBarn.usrBarnSeq}>
+                                    {userBarn.usrBarnName}
+                                </option>
+                                ))
+                            ) : (
+                                <option disabled>농가가 없습니다</option>
+                            )}
+                            </select>
                         <label htmlFor="cowKpn">KPN</label>
                         <input
                             type="text"

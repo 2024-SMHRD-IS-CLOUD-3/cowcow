@@ -19,16 +19,16 @@ export class AuctionsController {
   }
 
   // 경매 생성 (POST /auctions)
-  @Post()
-  async createAuction(
-    @Body() auctionData: { 
-      title: string; 
-      usrSeq: number; 
-      usrBarnSeq: number; 
-      cows: { cowSeq: number; minValue: number }[] }
-  ){
-    return this.auctionsService.createAuction(auctionData);
-  }
+  // @Post()
+  // async createAuction(
+  //   @Body() auctionData: { 
+  //     title: string; 
+  //     usrSeq: number; 
+  //     usrBarnSeq: number; 
+  //     cows: { cowSeq: number; minValue: number }[] }
+  // ){
+  //   return this.auctionsService.createAuction(auctionData);
+  // }
 
   // 경매 삭제 (DELETE /auctions/:id)
   @Delete(':id')
@@ -36,17 +36,17 @@ export class AuctionsController {
     return this.auctionsService.delete(id);
   }
 
-  @Put(':id/win')
-  async setWinningBid(
-    @Param('id') aucSeq: number,
-    @Body() body: any,
-  ) {
-    const { winningUserSeq, finalBidAmount } = body;
-    const updatedAuction = await this.auctionsService.setWinningBid(aucSeq, winningUserSeq, finalBidAmount);
-    if (!updatedAuction) {
-      throw new NotFoundException('경매 정보를 찾을 수 없습니다.');
-    }
-    return updatedAuction;
-  }
+  // @Put(':id/win')
+  // async setWinningBid(
+  //   @Param('id') aucSeq: number,
+  //   @Body() body: any,
+  // ) {
+  //   const { winningUserSeq, finalBidAmount } = body;
+  //   const updatedAuction = await this.auctionsService.setWinningBid(aucSeq, winningUserSeq, finalBidAmount);
+  //   if (!updatedAuction) {
+  //     throw new NotFoundException('경매 정보를 찾을 수 없습니다.');
+  //   }
+  //   return updatedAuction;
+  // }
 
 }
