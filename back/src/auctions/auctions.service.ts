@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Auction } from './auction.entity';
-import { AuctionBid } from '../auction-bids/auction-bid.entity';
+import { AuctionCow } from '../auction-cows/auction-cow.entity';
 import { User } from '../users/user.entity';
 
 @Injectable()
@@ -10,10 +10,10 @@ export class AuctionsService {
   constructor(
     @InjectRepository(Auction)
     private readonly auctionsRepository: Repository<Auction>,
-    @InjectRepository(AuctionBid)
-    private readonly auctionBidsRepository: Repository<AuctionBid>,
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+    @InjectRepository(AuctionCow)
+    private readonly auctionCowsRepository: Repository<AuctionCow>,
   ) {}
 
   // 모든 경매 조회
@@ -30,11 +30,33 @@ export class AuctionsService {
   }
 
   // 경매 생성
-  async create(auctionData: Partial<Auction>): Promise<Auction> {
-    const newAuction = this.auctionsRepository.create(auctionData);
-    return this.auctionsRepository.save(newAuction);
-  }
+  async createAuction(auctionData: { 
+    title: string; 
+    usrSeq: number; 
+    usrBarnSeq: number; 
+    cows: { cowSeq: number; minValue: number }[] 
+  }) {
+    // 1. 경매 생성 및 저장
+    const newAuction = this.auctionsRepository.create({
+      aucBroadcastTitle: auctionData.title,
+      usrSeq: auctionData.usrSeq,
+      usrBarnSeq: auctionData.usrBarnSeq,
+    });
+    const savedAuction = await this.auctionsRepository.save(newAuction);
 
+    // 2. 각 소 정보를 auction_cow 테이블에 저장
+    const auctionCows = auctionData.cows.map((cow) => {
+      return this.auctionCowsRepository.create({
+        cowSeq: cow.cowSeq,
+        aucSeq: savedAuction.aucSeq,
+        acowBottomPrice: cow.minValue,
+        // Todo : 소 예정가 저장도 해야됨
+      });
+    });
+    await this.auctionCowsRepository.save(auctionCows);
+
+    return savedAuction;
+  }
   // 경매 삭제 by ID
   async delete(id: number): Promise<void> {
     await this.auctionsRepository.delete(id);

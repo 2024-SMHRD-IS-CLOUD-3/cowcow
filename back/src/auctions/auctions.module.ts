@@ -4,10 +4,10 @@ import { AuctionsController } from './auctions.controller';
 import { AuctionsService } from './auctions.service';
 import { Auction } from './auction.entity';
 import { User } from '../users/user.entity';
-import { AuctionBid } from '../auction-bids/auction-bid.entity';
+import { AuctionCow } from '../auction-cows/auction-cow.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Auction, User, AuctionBid])],
+  imports: [TypeOrmModule.forFeature([Auction, User, AuctionCow])],
   controllers: [AuctionsController],
   providers: [AuctionsService],
 })

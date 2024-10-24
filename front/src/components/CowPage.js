@@ -125,32 +125,32 @@ const CowPage = ({user, setUser}) => {
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user")); // 유저 정보 복구
         if (storedUser) {
-        setUser(storedUser);
+            setUser(storedUser);
         } else {
-        navigate("/login"); // 유저 정보가 없으면 로그인 페이지로 이동
+            navigate("/login"); // 유저 정보가 없으면 로그인 페이지로 이동
         }
     }, [setUser, navigate]);
 
-  // 유저가 존재할 때 소 데이터 불러오기
-  useEffect(() => {
-    if (user?.usrSeq) {
-      const fetchCows = async () => {
-        try {
-          const response = await fetch(`http://localhost:3001/cows/user/${user.usrSeq}`);
-          if (response.ok) {
-            const data = await response.json();
-            setCows(data);
-          } else {
-            throw new Error("소 데이터를 불러오지 못했습니다.");
-          }
-        } catch (error) {
-          console.error("Error fetching cows:", error);
+    // 유저가 존재할 때 소 데이터 불러오기
+    useEffect(() => {
+        if (user?.usrSeq) {
+        const fetchCows = async () => {
+            try {
+            const response = await fetch(`http://localhost:3001/cows/user/${user.usrSeq}`);
+            if (response.ok) {
+                const data = await response.json();
+                setCows(data);
+            } else {
+                throw new Error("소 데이터를 불러오지 못했습니다.");
+            }
+            } catch (error) {
+            console.error("Error fetching cows:", error);
+            }
+        };
+        
+        fetchCows();
         }
-      };
-
-      fetchCows();
-    }
-  }, [user]);
+    }, [user]);
 
 
     return (
@@ -296,9 +296,6 @@ const CowPage = ({user, setUser}) => {
                                 <option value="male">수컷</option>
                                 <option value="female">암컷</option>
                             </select>
-                            <button onClick={() => { setFilterDate(''); setFiltercowGdr(''); }}>
-                                전체조회
-                            </button>
                         </div>
 
                         <table className="registered-cows">
