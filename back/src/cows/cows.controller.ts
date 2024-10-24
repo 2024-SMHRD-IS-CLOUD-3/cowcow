@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete, NotFoundException } from '@nestjs/common';
 import { CowsService } from './cows.service';
 import { Cow } from './cow.entity';
 
@@ -29,4 +29,13 @@ export class CowsController {
   async getCowsByUserId(@Param('userId') userId: number): Promise<Cow[]> {
     return this.cowService.findByUserId(userId);
   }
+
+  @Delete(':id')
+  async deleteCow(@Param('id') id: number): Promise<void> {
+    const result = await this.cowService.delete(id);
+    if (!result.affected) {
+      throw new NotFoundException('해당 소를 찾을 수 없습니다.');
+    }
+  }
+
 }

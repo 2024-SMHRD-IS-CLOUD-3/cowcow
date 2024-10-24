@@ -39,4 +39,9 @@ export class CowsService {
       where: { usrSeq: userId },
     });
   }
+
+  // 특정 소 삭제
+  async delete(id: number) {
+    return this.cowsRepository.delete(id);
+  }
 }
