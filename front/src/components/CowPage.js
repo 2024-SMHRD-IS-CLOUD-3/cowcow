@@ -7,7 +7,7 @@ const CowPage = ({user, setUser}) => {
     const [formData, setFormData] = useState({
         cowId: '',
         cowBirDt: '',
-        usrSeq: user.usrSeq,
+        usrSeq: user?.usrSeq || "",
         cowcowRegion: '',
         cowKpn: '',
         cowPrt: '',
@@ -121,24 +121,36 @@ const CowPage = ({user, setUser}) => {
     const currentItems = filteredCows.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(filteredCows.length / itemsPerPage);
 
+    // 페이지 새로고침 시 유저 정보 체크
     useEffect(() => {
-        // 로그인한 사용자의 소 데이터 불러오기
-        const fetchCows = async () => {
-          try {
-            const response = await fetch(`http://localhost:3001/cows/user/${user.usrSeq}`);
-            if (response.ok) {
-              const data = await response.json();
-              setCows(data);
-            } else {
-              throw new Error("소 데이터를 불러오지 못했습니다.");
-            }
-          } catch (error) {
-            console.error("Error fetching cows:", error);
+        const storedUser = JSON.parse(localStorage.getItem("user")); // 유저 정보 복구
+        if (storedUser) {
+        setUser(storedUser);
+        } else {
+        navigate("/login"); // 유저 정보가 없으면 로그인 페이지로 이동
+        }
+    }, [setUser, navigate]);
+
+  // 유저가 존재할 때 소 데이터 불러오기
+  useEffect(() => {
+    if (user?.usrSeq) {
+      const fetchCows = async () => {
+        try {
+          const response = await fetch(`http://localhost:3001/cows/user/${user.usrSeq}`);
+          if (response.ok) {
+            const data = await response.json();
+            setCows(data);
+          } else {
+            throw new Error("소 데이터를 불러오지 못했습니다.");
           }
-        };
-    
-        fetchCows();
-    }, [user.usrSeq]); // 컴포넌트 마운트 시 실행
+        } catch (error) {
+          console.error("Error fetching cows:", error);
+        }
+      };
+
+      fetchCows();
+    }
+  }, [user]);
 
 
     return (
@@ -192,7 +204,7 @@ const CowPage = ({user, setUser}) => {
                         <label htmlFor="usrSeq">출하주</label>
                         <input
                             type="text"
-                            value={user.usrNm}
+                            value={user?.usrNm || ""}
                             readOnly
                         />
                         <label htmlFor="cowRegion">지역</label>
