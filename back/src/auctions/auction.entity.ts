@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { User } from '../users/user.entity';
-import { UserBarn } from '../user-barns/user-barn.entity';
 import { AuctionBid } from '../auction-bids/auction-bid.entity';
 import { AuctionCow } from '../auction-cows/auction-cow.entity';
 
@@ -11,9 +10,6 @@ export class Auction {
 
   @Column({ name: 'usr_seq', unsigned: true, nullable: true })
   usrSeq: number;
-
-  @Column({ name: 'usr_barn_seq', unsigned: true, nullable: true })
-  usrBarnSeq: number;
 
   @Column({ name: 'auc_broadcast_title', nullable: true })
   aucBroadcastTitle: string;
@@ -31,11 +27,6 @@ export class Auction {
   @ManyToOne(() => User, (user) => user.auctions)
   @JoinColumn({ name: 'usr_seq' })
   user: User;
-
-  // 축사와의 관계 설정
-  @ManyToOne(() => UserBarn, (userBarn) => userBarn.auctions)
-  @JoinColumn({ name: 'usr_barn_seq' })
-  userBarn: UserBarn;
 
   @OneToMany(() => AuctionCow, (auctionCow) => auctionCow.auction)
   auctionCows: AuctionCow[];
