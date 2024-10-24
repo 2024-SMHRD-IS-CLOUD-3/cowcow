@@ -41,6 +41,9 @@ export class Cow {
   @Column({ name: 'cow_eomigubun', nullable: true})
   cowEomigubun: string;
 
+  @Column({ name : 'cow_img', nullable: true})
+  cowImg : string;
+
   @ManyToOne(() => User, (user) => user.cows)
   @JoinColumn({ name: 'usr_seq' }) // 외래 키 컬럼 명시적으로 지정
   user: User; // 사용자와의 관계
