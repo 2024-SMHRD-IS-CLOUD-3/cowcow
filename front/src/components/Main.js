@@ -107,7 +107,7 @@ const MainPage = ({ user, setUser }) => {
                     src={`https://placekitten.com/400/200?image=${auction.aucSeq}`}
                     alt={`Thumbnail of ${auction.aucBroadcastTitle}`}
                   />
-                  {auction.aucStatus === "LIVE" && (
+                  {auction.aucStatus === "진행중" && (
                     <div className="live-badge">LIVE</div>
                   )}
                   <div className="viewer-count">
