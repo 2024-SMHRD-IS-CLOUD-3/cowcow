@@ -84,19 +84,39 @@ const AuctionRegister = ({ user, setUser }) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              kpn: cowData.cowKpn,
-              family: cowData.cowFamily,
-              weight: cowData.cowWeight,
-              gender: cowData.cowGdr,
-              type: cowData.cowJagigubun,
-              minValue: cow.minValue,
+              params: {
+                alpha: 0.9,
+                n_estimators: 100,
+                learning_rate: 0.1,
+                random_state: 42,
+              },
+              feature_names: [
+                "kpn", 
+                "family", 
+                "weight", 
+                "minValue", 
+                "성별_수", 
+                "성별_암", 
+                "성별_프", 
+                "종류_혈통우"
+              ],
+              features: {
+                kpn: cowData.cowKpn,
+                family: cowData.cowFamily,
+                weight: cowData.cowWeight,
+                minValue: cow.minValue,
+                "성별_수": cowData.cowGdr === "수" ? 1 : 0,
+                "성별_암": cowData.cowGdr === "암" ? 1 : 0,
+                "성별_프": cowData.cowGdr === "프" ? 1 : 0, // 프리미엄 성별 처리
+                "종류_혈통우": cowData.cowJagigubun === "혈통우" ? 1 : 0,
+              },
             }),
           });
-
+      
           if (!response.ok) {
             throw new Error(`예측 실패: ${cowData.cowNo}`);
           }
-
+      
           const result = await response.json();
           return { ...cow, predictPrice: result.predicted_price };
         })
