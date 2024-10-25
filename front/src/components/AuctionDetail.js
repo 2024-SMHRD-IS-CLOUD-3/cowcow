@@ -179,8 +179,8 @@ const AuctionDetail = ({ user, setUser }) => {
 
   // Auction Detail 슬라이드 데이터
   const slides =
-    acows?.map((cow, index) => (
-      <table className="details-table">
+    acows?.map((cow) => (
+      <table className="details-table" key={cow.acowSeq}>
         <tbody>
           <tr>
             <th>방송 제목</th>
@@ -188,7 +188,7 @@ const AuctionDetail = ({ user, setUser }) => {
           </tr>
           <tr>
             <th>개체 번호</th>
-            <td>{cow.acowSeq || "정보 없음"}</td>
+            <td>{cow?.cow?.cowNo || "정보 없음"}</td>
           </tr>
           <tr>
             <th>출하주</th>
@@ -196,7 +196,7 @@ const AuctionDetail = ({ user, setUser }) => {
           </tr>
           <tr>
             <th>성별</th>
-            <td>acows이용해서 cows조인</td>
+            <td>{cow?.cow?.cowGdr || "정보 없음"}</td>
           </tr>
           <tr>
             <th>경매 상태</th>
