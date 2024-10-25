@@ -23,7 +23,7 @@ export class Cow {
   @Column({ name: 'cow_gdr', nullable: true })
   cowGdr: string; // 성별
 
-  @Column('decimal', { name: 'cow_kpn', precision: 10, scale: 5, nullable: true })
+  @Column('decimal', { name: 'cow_kpn', precision: 10, scale: 1, nullable: true })
   cowKpn: string; // KPN 번호
   
   @Column({ name: 'cow_prt', type: 'int', nullable: true })
@@ -44,7 +44,7 @@ export class Cow {
   @Column({ name : 'cow_img', nullable: true})
   cowImg : string;
 
-  @Column('decimal', { name : 'cow_family',  precision: 10, scale: 5, nullable: true })
+  @Column('decimal', { name : 'cow_family',  precision: 10, scale: 1, nullable: true })
   cowFamily : string;
 
   @Column({ name : 'cow_weight', nullable: true})

@@ -7,37 +7,33 @@ const AuctionRegister = ({ user, setUser }) => {
   const [broadCastTitle, setbroadCastTitle] = useState('');
   const [items, setItems] = useState([{ id: 1, entity: '', minValue: '' }]);
   const [userCows, setUserCows] = useState([]); // 유저의 소 목록
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const navigate = useNavigate();
 
-  // 모달 열기/닫기
   const handleOpenModal = () => setShowModal(true);
-  
   const handleCloseModal = () => {
     setShowModal(false);
-    setItems([{ id: 1, entity: '', minValue: '' }]); // 폼 초기화
-    setbroadCastTitle(''); // 방송 이름 초기화
+    setItems([{ id: 1, entity: '', minValue: '' }]); 
+    setbroadCastTitle('');
   };
 
-  // 유저 정보 체크 (페이지 새로고침 시)
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user')); // 유저 정보 복구
+    const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser) {
       setUser(storedUser);
     } else {
-      navigate('/login'); // 유저 정보가 없으면 로그인 페이지로 이동
+      navigate('/login');
     }
   }, [setUser, navigate]);
 
-  // 유저의 소 목록 불러오기
   useEffect(() => {
     if (!user) return;
-
     const fetchUserCows = async () => {
       try {
         const response = await fetch(`http://localhost:3001/cows/user/${user.usrSeq}`);
         if (response.ok) {
           const data = await response.json();
-          setUserCows(data); // 소 목록 설정
+          setUserCows(data);
         } else {
           throw new Error('소 목록을 불러오는 데 실패했습니다.');
         }
@@ -45,13 +41,10 @@ const AuctionRegister = ({ user, setUser }) => {
         console.error('Error fetching cows:', error);
       }
     };
-
     fetchUserCows();
   }, [user]);
 
-  // 항목 추가 및 삭제
   const handleAddItem = () => setItems([...items, { id: items.length + 1, entity: '', minValue: '' }]);
-
   const handleRemoveItem = (id) => {
     if (items.length > 1) {
       setItems(items.filter((item) => item.id !== id));
@@ -60,7 +53,6 @@ const AuctionRegister = ({ user, setUser }) => {
     }
   };
 
-  // 입력값 변경 처리
   const handleInputChange = (id, field, value) => {
     const updatedItems = items.map((item) =>
       item.id === id ? { ...item, [field]: field === 'minValue' ? Math.max(0, value) : value } : item
@@ -70,7 +62,6 @@ const AuctionRegister = ({ user, setUser }) => {
 
   const handlebroadCastTitleChange = (e) => setbroadCastTitle(e.target.value);
 
-  // 경매 방송 시작
   const handleBroadcastStart = async () => {
     if (!broadCastTitle.trim()) {
       alert('방송 이름을 입력해주세요.');
@@ -83,7 +74,34 @@ const AuctionRegister = ({ user, setUser }) => {
       return;
     }
 
+    setIsLoading(true); // 로딩 시작
+
     try {
+      const predictions = await Promise.all(
+        selectedCows.map(async (cow) => {
+          const cowData = userCows.find((c) => c.cowSeq === Number(cow.entity));
+          const response = await fetch('http://localhost:8081/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              kpn: cowData.cowKpn,
+              family: cowData.cowFamily,
+              weight: cowData.cowWeight,
+              gender: cowData.cowGdr,
+              type: cowData.cowJagigubun,
+              minValue: cow.minValue,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`예측 실패: ${cowData.cowNo}`);
+          }
+
+          const result = await response.json();
+          return { ...cow, predictPrice: result.predicted_price };
+        })
+      );
+
       const response = await fetch('http://localhost:3001/auctions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -91,18 +109,19 @@ const AuctionRegister = ({ user, setUser }) => {
           title: broadCastTitle,
           usrSeq: user.usrSeq,
           usrBarnSeq: user.selectedBarn,
-          cows: selectedCows.map((cow) => ({
-            cowSeq: Number(cow.entity),  // cowSeq가 누락되지 않도록 숫자로 변환
+          cows: predictions.map((cow) => ({
+            cowSeq: Number(cow.entity),
             minValue: Number(cow.minValue),
+            predictPrice: cow.predictPrice,
           })),
         }),
       });
 
       if (response.ok) {
         alert(`"${broadCastTitle}" 방송이 시작되었습니다!`);
-        setItems([{ id: 1, entity: '', minValue: '' }]); // 폼 초기화
-        setbroadCastTitle(''); // 방송 이름 초기화
-        handleCloseModal(); // 모달 닫기
+        setItems([{ id: 1, entity: '', minValue: '' }]);
+        setbroadCastTitle('');
+        handleCloseModal();
         navigate('/');
       } else {
         throw new Error('방송 시작에 실패했습니다.');
@@ -110,6 +129,8 @@ const AuctionRegister = ({ user, setUser }) => {
     } catch (error) {
       console.error('Error starting broadcast:', error);
       alert('서버에 문제가 발생했습니다. 나중에 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false); // 로딩 종료
     }
   };
 
@@ -145,7 +166,7 @@ const AuctionRegister = ({ user, setUser }) => {
                     <option value="">개체 선택</option>
                     {userCows.map((cow) => (
                       <option key={cow.cowSeq} value={cow.cowSeq}>
-                        {cow.cowNo} ({cow.cowGdr === 'male' ? '수컷' : '암컷'})
+                        {cow.cowNo} ({cow.cowGdr})
                       </option>
                     ))}
                   </select>
@@ -181,8 +202,8 @@ const AuctionRegister = ({ user, setUser }) => {
               <button className="close-button" onClick={handleCloseModal}>
                 닫기
               </button>
-              <button onClick={handleBroadcastStart} className="broadcast-button">
-                방송시작
+              <button onClick={handleBroadcastStart} className="broadcast-button" disabled={isLoading}>
+                {isLoading ? '처리 중...' : '방송시작'}
               </button>
             </div>
           </div>

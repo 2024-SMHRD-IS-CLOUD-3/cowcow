@@ -8,7 +8,7 @@ from sklearn.impute import SimpleImputer
 app = Flask(__name__)
 
 # 1. JSON에서 모델 파라미터와 피처 이름 로드
-with open('C:/dev/practice/flask/model_metadata1.json', 'r') as f:
+with open('C:/desktop/cowcow/flask/model_metadata1.json', 'r') as f:
     model_data = json.load(f)
 
 # GradientBoostingRegressor에 유효한 파라미터만 필터링
