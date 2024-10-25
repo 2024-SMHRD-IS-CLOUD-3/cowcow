@@ -13,9 +13,9 @@ export class AuctionBidsController {
   }
 
   // 특정 경매의 최고 입찰가 조회
-  @Get('highest/:aucSeq')
-  async getHighestBid(@Param('aucSeq') aucSeq: number): Promise<AuctionBid> {
-    const highestBid = await this.auctionBidsService.getHighestBid(aucSeq);
+  @Get('highest/:acowSeq')
+  async getHighestBid(@Param('acowSeq') acowSeq: number): Promise<AuctionBid> {
+    const highestBid = await this.auctionBidsService.getHighestBid(acowSeq);
     if (!highestBid) {
       throw new NotFoundException('입찰 기록이 없습니다.');
     }
