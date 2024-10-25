@@ -22,10 +22,6 @@ const AuctionDetail = ({ user, setUser }) => {
     { src: "/images/소4.jfif", alt: "경매 소 이미지 4" },
   ];
 
-  useEffect(() => {
-    console.log("현재 슬라이드:", currentSlide);
-  }, [currentSlide]);
-
   const showSlide = (index) => {
     const newIndex = (index + acows.length) % acows.length; // 슬라이드 인덱스 보정
     setCurrentSlide(newIndex);
@@ -140,7 +136,6 @@ const AuctionDetail = ({ user, setUser }) => {
 
       alert("입찰에 성공했습니다!");
       setBidAmount(""); // 입력한 금액 초기화
-      // fetchHighestBid(); // 입찰 후 최고 입찰가 업데이트
     } catch (error) {
       console.error("Error during bid submission:", error);
       alert("입찰에 실패했습니다. 다시 시도해 주세요.");
@@ -218,11 +213,7 @@ const AuctionDetail = ({ user, setUser }) => {
           <tr>
             <th>현재 최고 입찰가</th>
             <td>
-              {isLoadingBid
-                ? "로딩 중..."
-                : highestBid
-                ? `${highestBid.bidAmt}원`
-                : "정보 없음"}
+                {highestBid ? `${highestBid.bidAmt}원` : "정보 없음"}
             </td>
           </tr>
         </tbody>

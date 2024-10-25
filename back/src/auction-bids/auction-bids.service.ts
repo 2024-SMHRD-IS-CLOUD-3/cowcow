@@ -17,10 +17,10 @@ export class AuctionBidsService {
   }
 
   // 최고 입찰가 조회
-  async getHighestBid(aucSeq: number): Promise<AuctionBid> {
+  async getHighestBid(acowSeq: number): Promise<AuctionBid> {
     return await this.auctionBidsRepository
       .createQueryBuilder('bid')
-      .where('bid.aucSeq = :aucSeq', { aucSeq })
+      .where('bid.acowSeq = :acowSeq', { acowSeq })
       .orderBy('bid.bidAmt', 'DESC')
       .getOne();
   }
