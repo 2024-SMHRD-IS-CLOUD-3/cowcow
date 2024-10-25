@@ -23,9 +23,9 @@ export class Cow {
   @Column({ name: 'cow_gdr', nullable: true })
   cowGdr: string; // 성별
 
-  @Column({ name: 'cow_kpn', nullable: true })
+  @Column('decimal', { name: 'cow_kpn', precision: 10, scale: 5, nullable: true })
   cowKpn: string; // KPN 번호
-
+  
   @Column({ name: 'cow_prt', type: 'int', nullable: true })
   cowPrt: number; // 산차
 
@@ -43,6 +43,13 @@ export class Cow {
 
   @Column({ name : 'cow_img', nullable: true})
   cowImg : string;
+
+  @Column('decimal', { name : 'cow_family',  precision: 10, scale: 5, nullable: true })
+  cowFamily : string;
+
+  @Column({ name : 'cow_weight', nullable: true})
+  cowWeight : number;
+
 
   @ManyToOne(() => User, (user) => user.cows)
   @JoinColumn({ name: 'usr_seq' }) // 외래 키 컬럼 명시적으로 지정
