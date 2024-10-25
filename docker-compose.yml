@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   frontend:
     build:
@@ -24,6 +26,19 @@ services:
       - DATABASE_NAME=mydb
     networks:
       - mynetwork
+
+  flask:
+    build:
+      context: ./flask
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"  # Flask 서버 포트 매핑
+    volumes:
+      - ./flask:/app  # flask 폴더를 컨테이너 내부 /app에 매핑
+    networks:
+      - mynetwork
+    depends_on:
+      - backend  # Flask가 백엔드와의 의존성
 
 volumes:
   db_data:

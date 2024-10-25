@@ -34,7 +34,7 @@ export class AuctionCow {
   @Column({ name: 'acow_bottom_price', default: 0})
   acowBottomPrice: number;
 
-  @Column({ name: 'acow_predict_price', default: 0})
+  @Column({ name: 'acow_predict_price', default: 0, nullable: true})
   acowPredictPrice: number;
 
   // 소와의 관계 설정
