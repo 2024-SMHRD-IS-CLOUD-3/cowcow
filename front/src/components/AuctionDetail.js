@@ -11,6 +11,7 @@ const AuctionDetail = ({ user, setUser }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [bidAmount, setBidAmount] = useState(""); // 입찰 금액 상태 추가
   const [highestBid, setHighestBid] = useState(null); // 현재 최고 입찰가 상태 추가
+  const [isLoadingBid, setIsLoadingBid] = useState(false); // 로딩 상태 추가
   const videoRef = useRef(null); // 비디오 요소 참조
   const navigate = useNavigate();
 
@@ -21,30 +22,18 @@ const AuctionDetail = ({ user, setUser }) => {
     { src: "/images/소4.jfif", alt: "경매 소 이미지 4" },
   ];
 
-  // const showSlide = (index) => {
-  //   if (index >= slides.length) setCurrentSlide(0);
-  //   else if (index < 0) setCurrentSlide(slides.length - 1);
-  //   else setCurrentSlide(index);
-  // };
+  useEffect(() => {
+    console.log("현재 슬라이드:", currentSlide);
+  }, [currentSlide]);
 
-  // const nextSlide = () => showSlide(currentSlide + 1);
-  // const prevSlide = () => showSlide(currentSlide - 1);
-
-  const nextSlide = () => {
-    if (auction) {
-      acows.map((cow, index) =>(console.log(cow)));
-
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % auction.auctionCows.length);
-    }
+  const showSlide = (index) => {
+    const newIndex = (index + acows.length) % acows.length; // 슬라이드 인덱스 보정
+    setCurrentSlide(newIndex);
   };
+  
 
-  const prevSlide = () => {
-    if (auction) {
-      setCurrentSlide((prevSlide) =>
-        prevSlide === 0 ? auction.length - 1 : prevSlide - 1
-      );
-    }
-  };
+  const nextSlide = () => showSlide(currentSlide + 1);
+  const prevSlide = () => showSlide(currentSlide - 1);
 
   const handleLogout = () => {
     setUser(null);
@@ -70,26 +59,30 @@ const AuctionDetail = ({ user, setUser }) => {
     fetchAuctionDetail();
   }, [id]);
 
-  // 현재 최고 입찰가를 주기적으로 업데이트하는 useEffect
-  // useEffect(() => {
-  //   const fetchHighestBid = async () => {
-  //     try {
-  //       const response = await fetch(`http://localhost:3001/auction-bids/highest/${id}`);
-  //       if (!response.ok) {
-  //         throw new Error("현재 최고 입찰가를 가져오는 데 실패했습니다.");
-  //       }
-  //       const highestBid = await response.json();
-  //       setHighestBid(highestBid);
-  //     } catch (error) {
-  //       console.error("Error fetching highest bid:", error);
-  //     }
-  //   };
-  //       // 주기적으로 최고 입찰가 업데이트 (예: 5초마다)
-  //     const intervalId = setInterval(fetchHighestBid, 5000);
+  const fetchHighestBid = async (acowSeq) => {
+    setIsLoadingBid(true); // 로딩 시작
+    try {
+      const response = await fetch(
+        `http://localhost:3001/auction-bids/highest/${acowSeq}`
+      );
+      if (!response.ok) {
+        throw new Error("최고 입찰가를 가져오는 데 실패했습니다.");
+      }
+      const bidData = await response.json();
+      setHighestBid(bidData);
+    } catch (error) {
+      console.error("Error fetching highest bid:", error);
+      setHighestBid(null); // 오류 시 입찰가 초기화
+    } finally {
+      setIsLoadingBid(false); // 로딩 끝
+    }
+  };
 
-  //       // 컴포넌트 언마운트 시 정리
-  //     return () => clearInterval(intervalId);
-  // }, [id]);
+  useEffect(() => {
+    if (acows[currentSlide]) {
+      fetchHighestBid(acows[currentSlide].acowSeq); // 슬라이드 변경 시 입찰가 갱신
+    }
+  }, [currentSlide, acows]);
 
   useEffect(() => {
     let stream;
@@ -134,8 +127,10 @@ const AuctionDetail = ({ user, setUser }) => {
         },
         body: JSON.stringify({
           aucSeq: auction.aucSeq,
+          acowSeq: acows[currentSlide].acowSeq,
           bidAcc: user.usrSeq,
           bidAmt: parseInt(bidAmount, 10),
+          bidDt: new Date(),
         }),
       });
 
@@ -145,6 +140,7 @@ const AuctionDetail = ({ user, setUser }) => {
 
       alert("입찰에 성공했습니다!");
       setBidAmount(""); // 입력한 금액 초기화
+      // fetchHighestBid(); // 입찰 후 최고 입찰가 업데이트
     } catch (error) {
       console.error("Error during bid submission:", error);
       alert("입찰에 실패했습니다. 다시 시도해 주세요.");
@@ -156,23 +152,26 @@ const AuctionDetail = ({ user, setUser }) => {
       alert("낙찰할 입찰가가 없습니다.");
       return;
     }
-  
+
     try {
-      const response = await fetch(`http://localhost:3001/auctions/${auction.aucSeq}/win`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          winningUserSeq: highestBid.bidAcc,
-          finalBidAmount: highestBid.bidAmt,
-        }),
-      });
-  
+      const response = await fetch(
+        `http://localhost:3001/auctions/${auction.aucSeq}/win`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            winningUserSeq: highestBid.bidAcc,
+            finalBidAmount: highestBid.bidAmt,
+          }),
+        }
+      );
+
       if (!response.ok) {
         throw new Error("낙찰 처리에 실패했습니다.");
       }
-  
+
       alert("낙찰이 성공적으로 처리되었습니다!");
       navigate("/");
     } catch (error) {
@@ -180,14 +179,12 @@ const AuctionDetail = ({ user, setUser }) => {
       alert("낙찰 처리에 실패했습니다. 다시 시도해 주세요.");
     }
   };
-  
-
 
   if (!auction) return <p>경매 정보를 불러오는 중...</p>;
-  
+
   // Auction Detail 슬라이드 데이터
-  const slides = acows?.map((cow, index) =>
-    (
+  const slides =
+    acows?.map((cow, index) => (
       <table className="details-table">
         <tbody>
           <tr>
@@ -216,17 +213,21 @@ const AuctionDetail = ({ user, setUser }) => {
           </tr>
           <tr>
             <th>최저가</th>
-            <td>{cow?.acowBottomPrice || 0 } 원</td>
+            <td>{cow?.acowBottomPrice || 0} 원</td>
           </tr>
           <tr>
             <th>현재 최고 입찰가</th>
-            <td>{highestBid !== null ? `${highestBid.bidAmt}원` : "정보 없음"}</td>
+            <td>
+              {isLoadingBid
+                ? "로딩 중..."
+                : highestBid
+                ? `${highestBid.bidAmt}원`
+                : "정보 없음"}
+            </td>
           </tr>
         </tbody>
       </table>
     )) || [];
-
-
 
   return (
     <div className="auction-detail-container">
@@ -277,44 +278,44 @@ const AuctionDetail = ({ user, setUser }) => {
               </button> */}
             </div>
 
-              <div className="bid-section-inline">
-                {!user ? (
-                  <>
-                    <input
-                      type="number"
-                      placeholder="입찰 금액 입력"
-                      className="bid-input"
-                    />
-                    <Link to="/login">
-                      <button className="btn primary">입찰하기</button>
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    {auction.usrSeq === user.usrSeq ? (
-                      <button
-                        className="btn primary"
-                        onClick={handleWinningBid}
-                        disabled={ !highestBid }
-                      >
-                        낙찰하기
+            <div className="bid-section-inline">
+              {!user ? (
+                <>
+                  <input
+                    type="number"
+                    placeholder="입찰 금액 입력"
+                    className="bid-input"
+                  />
+                  <Link to="/login">
+                    <button className="btn primary">입찰하기</button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  {auction.usrSeq === user.usrSeq ? (
+                    <button
+                      className="btn primary"
+                      onClick={handleWinningBid}
+                      disabled={!highestBid}
+                    >
+                      낙찰하기
+                    </button>
+                  ) : (
+                    <>
+                      <input
+                        type="number"
+                        placeholder="입찰 금액 입력"
+                        className="bid-input"
+                        value={bidAmount}
+                        onChange={(e) => setBidAmount(e.target.value)}
+                      />
+                      <button className="btn primary" onClick={handleBidSubmit}>
+                        입찰하기
                       </button>
-                    ) : (
-                      <>
-                        <input
-                          type="number"
-                          placeholder="입찰 금액 입력"
-                          className="bid-input"
-                          value={bidAmount}
-                          onChange={(e) => setBidAmount(e.target.value)}
-                        />
-                        <button className="btn primary" onClick={handleBidSubmit}>
-                          입찰하기
-                        </button>
-                      </>
-                    )}
-                  </>
-                )}
+                    </>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
