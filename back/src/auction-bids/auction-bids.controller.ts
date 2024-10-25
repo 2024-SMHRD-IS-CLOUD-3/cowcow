@@ -1,39 +1,24 @@
-import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, NotFoundException } from '@nestjs/common';
 import { AuctionBidsService } from './auction-bids.service';
 import { AuctionBid } from './auction-bid.entity';
-import {User} from '../users/user.entity';
 
 @Controller('auction-bids')
 export class AuctionBidsController {
   constructor(private readonly auctionBidsService: AuctionBidsService) {}
 
-  // 모든 입찰 조회
-  @Get()
-  async getAllBids(): Promise<AuctionBid[]> {
-    return this.auctionBidsService.findAll();
-  }
-
-  // 특정 입찰 조회
-  @Get(':id')
-  async getBid(@Param('id') id: number): Promise<AuctionBid> {
-    return this.auctionBidsService.findOne(id);
-  }
-
-  // 입찰 생성
+  // 입찰 등록
   @Post()
-  async createBid(@Body() data: Partial<AuctionBid>): Promise<AuctionBid> {
-    return this.auctionBidsService.create(data);
+  async createBid(@Body() bidData: Partial<AuctionBid>): Promise<AuctionBid> {
+    return this.auctionBidsService.createBid(bidData);
   }
 
-  // 입찰 삭제
-  @Delete(':id')
-  async deleteBid(@Param('id') id: number): Promise<void> {
-    return this.auctionBidsService.remove(id);
+  // 특정 경매의 최고 입찰가 조회
+  @Get('highest/:aucSeq')
+  async getHighestBid(@Param('aucSeq') aucSeq: number): Promise<AuctionBid> {
+    const highestBid = await this.auctionBidsService.getHighestBid(aucSeq);
+    if (!highestBid) {
+      throw new NotFoundException('입찰 기록이 없습니다.');
+    }
+    return highestBid;
   }
-
-  @Get('highest/:auctionId')
-  async getHighestBid(@Param('auctionId') auctionId: number): Promise<AuctionBid | null> {
-    return this.auctionBidsService.findHighestBid(auctionId);
-  }
-
 }
