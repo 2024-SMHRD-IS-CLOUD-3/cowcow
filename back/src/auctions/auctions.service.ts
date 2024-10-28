@@ -91,32 +91,4 @@ export class AuctionsService {
       throw new NotFoundException('해당 경매를 찾을 수 없습니다.');
     }
   }
-
-  async setWinningBid(
-    aucSeq: number,
-    winningUserId: number,
-    finalBidAmount: number,
-  ): Promise<Auction> {
-    const auction = await this.auctionsRepository.findOne({
-      where: { aucSeq },
-      relations: ['user'],
-    });
-
-    if (!auction) {
-      throw new NotFoundException('해당 경매를 찾을 수 없습니다.');
-    }
-
-    const winningUser = await this.usersRepository.findOne({
-      where: { usrSeq: winningUserId },
-    });
-
-    if (!winningUser) {
-      throw new NotFoundException('낙찰자를 찾을 수 없습니다.');
-    }
-
-    auction.aucStatus = '낙찰';
-    auction.aucDelDt = new Date();
-
-    return await this.auctionsRepository.save(auction);
-  }
 }

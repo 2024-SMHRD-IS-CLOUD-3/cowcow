@@ -26,6 +26,7 @@ const AuctionDetail = ({ user, setUser }) => {
     const newIndex = (index + acows.length) % acows.length; // 슬라이드 인덱스 보정
     setCurrentSlide(newIndex);
   };
+  
 
   const nextSlide = () => showSlide(currentSlide + 1);
   const prevSlide = () => showSlide(currentSlide - 1);
@@ -109,11 +110,8 @@ const AuctionDetail = ({ user, setUser }) => {
     if (!bidAmount) {
       alert("입찰 금액을 입력해 주세요.");
       return;
-    } else if (bidAmount < acows[currentSlide].acowBottomPrice) {
+    } else if (bidAmount < auction.aucBottomPrice) {
       alert("입찰 금액은 최저가보다 높아야 합니다.");
-      return;
-    } else if (bidAmount < highestBid.bidAmt) {
-      alert("입찰 금액은 현재 최고입찰가보다 높아야 합니다.");
       return;
     }
 
@@ -215,11 +213,7 @@ const AuctionDetail = ({ user, setUser }) => {
           <tr>
             <th>현재 최고 입찰가(입찰자)</th>
             <td>
-              {highestBid
-                ? `${highestBid.bidAmt}만원(${
-                    highestBid.user?.usrNm || "알 수 없음"
-                  })`
-                : "정보 없음"}
+                {highestBid ? `${highestBid.bidAmt}만원(${highestBid.user?.usrNm || '알 수 없음'})` : "정보 없음"}
             </td>
           </tr>
         </tbody>
