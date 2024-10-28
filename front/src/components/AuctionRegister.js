@@ -101,7 +101,6 @@ const AuctionRegister = ({ user, setUser }) => {
           }
 
           const result = await response.json();
-          console.log("predict한 result: ", result);
           return { ...cow, predictPrice: result.predicted_price };
         })
       );
