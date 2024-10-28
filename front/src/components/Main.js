@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Main.css"; // CSS 파일 불러오기
 import logo from "../images/cowcowlogo.png";
+import thumbnail from "../images/thumbnail.png"
+import thumbnail2 from "../images/thumbnail2.png"
 
 const MainPage = ({ user, setUser }) => {
   const [auctionData, setAuctionData] = useState([]); // 경매 데이터를 저장할 상태
@@ -104,7 +106,7 @@ const MainPage = ({ user, setUser }) => {
               >
                 <div className="thumbnail-container">
                   <img
-                    src={`https://placekitten.com/400/200?image=${auction.aucSeq}`}
+                    src={thumbnail}
                     alt={`Thumbnail of ${auction.aucBroadcastTitle}`}
                   />
                   {auction.aucStatus === "진행중" && (
