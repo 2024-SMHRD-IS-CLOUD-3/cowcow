@@ -41,9 +41,10 @@ export class AuctionsService {
 
   // 2. 경매 생성
   async createAuction(auctionData: {
-    title: string;
-    usrSeq: number;
-    cows: { cowSeq: number; minValue: number }[];
+    title: string; 
+    usrSeq: number; 
+    usrBarnSeq: number; 
+    cows: { cowSeq: number; minValue: number; predictPrice: number }[] 
   }): Promise<Auction> {
     const newAuction = this.auctionsRepository.create({
       aucBroadcastTitle: auctionData.title,
@@ -54,30 +55,15 @@ export class AuctionsService {
     const savedAuction = await this.auctionsRepository.save(newAuction);
 
     try {
-      const auctionCowPromises = auctionData.cows.map(async (cow) => {
-        // 소 데이터를 가져와서 Flask에 예측 요청
-        const cowData = await this.getCowDataForPrediction(cow.cowSeq);
-        const response = await fetch('http://localhost:8081/predict', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...cowData, minValue: cow.minValue }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to get prediction');
-        }
-
-        const { predicted_price } = await response.json();
-
-        // 예측가와 함께 auction_cow에 저장
-        return this.auctionCowsRepository.save({
+      const auctionCowPromises = auctionData.cows.map((cow) =>
+        this.auctionCowsRepository.save({
           cowSeq: cow.cowSeq,
           aucSeq: savedAuction.aucSeq,
           acowBottomPrice: cow.minValue,
-          acowPredictPrice: predicted_price,
+          acowPredictPrice: cow.predictPrice, // 이미 예측된 가격 사용
           acowCrtDt: new Date(),
-        });
-      });
+        })
+      );
 
       await Promise.all(auctionCowPromises);
     } catch (error) {

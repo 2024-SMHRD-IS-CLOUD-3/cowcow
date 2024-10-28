@@ -30,16 +30,17 @@ export class AuctionsController {
     @Body() auctionData: { 
       title: string; 
       usrSeq: number; 
-      cows: { cowSeq: number; minValue: number }[] 
+      usrBarnSeq: number; 
+      cows: { cowSeq: number; minValue: number; predictPrice: number }[] 
     }
-  ): Promise<Auction> {
-    const auction = await this.auctionsService.createAuction({
-      title: auctionData.title,
-      usrSeq: auctionData.usrSeq,
-      cows: auctionData.cows,
-    });
-
-    return auction;
+  ) {
+    try {
+      const newAuction = await this.auctionsService.createAuction(auctionData);
+      return { message: '경매가 성공적으로 등록되었습니다.', auction: newAuction };
+    } catch (error) {
+      console.error('경매 등록 중 오류 발생:', error);
+      throw new NotFoundException('경매를 생성할 수 없습니다.');
+    }
   }
 
   // 경매 삭제 (DELETE /auctions/:id)
