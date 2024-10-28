@@ -18,5 +18,5 @@ export class UserBarn {
   user: User; // 사용자와의 관계
 
   @OneToMany(() => Cow, (cow) => cow.userBarn)
-  auctions: Cow[]; // 축사와 경매의 관계
+  cow: Cow[]; // 축사와 경매의 관계
 }

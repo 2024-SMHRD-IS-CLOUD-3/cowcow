@@ -56,7 +56,7 @@ export class Cow {
   user: User; // 사용자와의 관계
 
   // 축사와의 관계 설정
-  @ManyToOne(() => UserBarn, (userBarn) => userBarn.auctions)
+  @ManyToOne(() => UserBarn, (userBarn) => userBarn.cow)
   @JoinColumn({ name: 'usr_barn_seq' })
   userBarn: UserBarn;
 

@@ -183,8 +183,8 @@ const AuctionDetail = ({ user, setUser }) => {
 
   // Auction Detail 슬라이드 데이터
   const slides =
-    acows?.map((cow) => (
-      <table className="details-table" key={cow.acowSeq}>
+    acows?.map((acow) => (
+      <table className="details-table" key={acow.acowSeq}>
         <tbody>
           <tr>
             <th>방송 제목</th>
@@ -192,27 +192,31 @@ const AuctionDetail = ({ user, setUser }) => {
           </tr>
           <tr>
             <th>개체 번호</th>
-            <td>{cow?.cow?.cowNo || "정보 없음"}</td>
+            <td>{acow?.cow?.cowNo || "정보 없음"}</td>
           </tr>
           <tr>
             <th>출하주</th>
             <td>{auction?.user?.usrNm || "정보 없음"}</td>
           </tr>
           <tr>
+            <th>농장 이름</th>
+            <td>{acow?.cow?.userBarn?.usrBarnName|| "정보 없음"}</td>
+          </tr>
+          <tr>
             <th>성별</th>
-            <td>{cow?.cow?.cowGdr || "정보 없음"}</td>
+            <td>{acow?.cow?.cowGdr || "정보 없음"}</td>
           </tr>
           <tr>
             <th>경매 상태</th>
-            <td>{cow?.acowStatus || "정보 없음"}</td>
+            <td>{acow?.acowStatus || "정보 없음"}</td>
           </tr>
           <tr>
             <th>예상가</th>
-            <td>{cow?.acowPredictPrice || 0}만원</td>
+            <td>{acow?.acowPredictPrice || 0}만원</td>
           </tr>
           <tr>
             <th>최저가</th>
-            <td>{cow?.acowBottomPrice || 0}만원</td>
+            <td>{acow?.acowBottomPrice || 0}만원</td>
           </tr>
           <tr>
             <th>현재 최고 입찰가(입찰자)</th>

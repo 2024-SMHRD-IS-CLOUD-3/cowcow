@@ -31,7 +31,7 @@ export class AuctionCowsService {
   async findOne(id: number): Promise<AuctionCow> {
     const auctionCow = await this.auctionCowRepository.findOne({
       where: { acowSeq: id },
-      relations: ['auction', 'cow'],
+      relations: ['auction', 'cow', 'cow.userBarn'],
     });
 
     if (!auctionCow) {

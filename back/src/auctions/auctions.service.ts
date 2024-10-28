@@ -81,7 +81,7 @@ export class AuctionsService {
   async findOne(id: number): Promise<Auction | null> {
     return this.auctionsRepository.findOne({
       where: { aucSeq: id },
-      relations: ['user', 'auctionCows', 'auctionCows.cow'],
+      relations: ['user', 'auctionCows', 'auctionCows.cow', 'auctionCows.cow.userBarn'],
     });
   }
 

@@ -20,7 +20,7 @@ export class CowsService {
   async findOne(id: number): Promise<Cow> {
     const cow = await this.cowsRepository.findOne({
       where: { cowSeq: id },
-      relations: ['user', 'auctions'], // 연관된 데이터도 조회
+      relations: ['user', 'auctions', 'userBarn'], // 연관된 데이터도 조회
     });
     if (!cow) {
       throw new NotFoundException(`Cow with ID ${id} not found`);
@@ -30,7 +30,7 @@ export class CowsService {
 
   // 모든 소 조회
   async findAll(): Promise<Cow[]> {
-    return this.cowsRepository.find({ relations: ['user', 'auctions'] });
+    return this.cowsRepository.find({ relations: ['user', 'auctions', 'userBarn'] });
   }
 
     // 사용자별 소 조회
