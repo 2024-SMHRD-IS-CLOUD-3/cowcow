@@ -49,23 +49,4 @@ export class AuctionsController {
     await this.auctionsService.delete(id);
   }
 
-  // 경매 낙찰 처리 (PUT /auctions/:id/win)
-  @Put(':id/win')
-  async setWinningBid(
-    @Param('id') aucSeq: number,
-    @Body() body: { winningUserSeq: number; finalBidAmount: number }
-  ): Promise<Auction> {
-    const { winningUserSeq, finalBidAmount } = body;
-    const updatedAuction = await this.auctionsService.setWinningBid(
-      aucSeq,
-      winningUserSeq,
-      finalBidAmount,
-    );
-
-    if (!updatedAuction) {
-      throw new NotFoundException('경매 정보를 찾을 수 없습니다.');
-    }
-
-    return updatedAuction;
-  }
 }

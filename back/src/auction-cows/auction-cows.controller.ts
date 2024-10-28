@@ -28,18 +28,39 @@ export class AuctionCowsController {
     return auctionCow;
   }
 
-  // 경매 소 정보 업데이트 (PUT /auction-cows/:id)
-  @Put(':id')
-  async update(
-    @Param('id') id: number,
-    @Body() auctionCowData: Partial<AuctionCow>,
+  // // 경매 소 정보 업데이트 (PUT /auction-cows/:id)
+  // @Put(':id')
+  // async update(
+  //   @Param('id') id: number,
+  //   @Body() auctionCowData: Partial<AuctionCow>,
+  // ): Promise<AuctionCow> {
+  //   const updatedAuctionCow = await this.auctionCowsService.update(id, auctionCowData);
+  //   if (!updatedAuctionCow) {
+  //     throw new NotFoundException('경매 소를 찾을 수 없습니다.');
+  //   }
+  //   return updatedAuctionCow;
+  // }
+
+  // 경매 낙찰 처리 (PUT /auctions/:id/win)
+  @Put(':id/win')
+  async setWinningBid(
+    @Param('id') acowSeq: number,
+    @Body() body: { acowWinnerSeq: number; acowFinalBid: number }
   ): Promise<AuctionCow> {
-    const updatedAuctionCow = await this.auctionCowsService.update(id, auctionCowData);
-    if (!updatedAuctionCow) {
-      throw new NotFoundException('경매 소를 찾을 수 없습니다.');
+    const { acowWinnerSeq, acowFinalBid } = body;
+    const updatedAuction = await this.auctionCowsService.setWinningBid(
+      acowSeq,
+      acowWinnerSeq,
+      acowFinalBid,
+    );
+
+    if (!updatedAuction) {
+      throw new NotFoundException('경매 정보를 찾을 수 없습니다.');
     }
-    return updatedAuctionCow;
+
+    return updatedAuction;
   }
+
 
   // 경매 소 삭제 (DELETE /auction-cows/:id)
   @Delete(':id')
