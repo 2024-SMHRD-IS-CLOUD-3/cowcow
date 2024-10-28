@@ -48,17 +48,22 @@ export class AuctionCowsController {
     @Body() body: { acowWinnerSeq: number; acowFinalBid: number }
   ): Promise<AuctionCow> {
     const { acowWinnerSeq, acowFinalBid } = body;
-    const updatedAuction = await this.auctionCowsService.setWinningBid(
+    const updatedAuctionCow = await this.auctionCowsService.setWinningBid(
       acowSeq,
       acowWinnerSeq,
       acowFinalBid,
     );
 
-    if (!updatedAuction) {
+    console.log("controller Page : ")
+    console.log(acowSeq)
+    console.log(acowWinnerSeq)
+    console.log(acowFinalBid)
+
+    if (!updatedAuctionCow) {
       throw new NotFoundException('경매 정보를 찾을 수 없습니다.');
     }
 
-    return updatedAuction;
+    return updatedAuctionCow;
   }
 
 

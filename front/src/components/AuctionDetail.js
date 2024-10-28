@@ -147,6 +147,10 @@ const AuctionDetail = ({ user, setUser }) => {
       alert("낙찰할 입찰가가 없습니다.");
       return;
     }
+    console.log("AuctionDetail Page : ")
+    console.log(acows[currentSlide].acowSeq);
+    console.log(highestBid.bidAcc)
+    console.log(highestBid.bidAmt)
 
     try {
       const response = await fetch(
