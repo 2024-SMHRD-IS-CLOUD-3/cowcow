@@ -150,15 +150,15 @@ const AuctionDetail = ({ user, setUser }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/auctions/${auction.aucSeq}/win`,
+        `http://localhost:3001/auction-cows/${acows[currentSlide].acowSeq}/win`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            winningUserSeq: highestBid.bidAcc,
-            finalBidAmount: highestBid.bidAmt,
+            acowWinnerSeq: highestBid.bidAcc,
+            acowFinalBid: highestBid.bidAmt,
           }),
         }
       );
