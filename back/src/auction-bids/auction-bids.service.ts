@@ -16,12 +16,12 @@ export class AuctionBidsService {
     return await this.auctionBidsRepository.save(newBid);
   }
 
-  // 최고 입찰가 조회
-  async getHighestBid(acowSeq: number): Promise<AuctionBid> {
-    return await this.auctionBidsRepository
-      .createQueryBuilder('bid')
-      .where('bid.acowSeq = :acowSeq', { acowSeq })
-      .orderBy('bid.bidAmt', 'DESC')
-      .getOne();
+  // 특정 경매소의 최고 입찰가 조회 (입찰자 정보 포함)
+  async getHighestBid(acowSeq: number): Promise<AuctionBid | null> {
+    return this.auctionBidsRepository.findOne({
+      where: { acowSeq },
+      relations: ['user'], // 입찰자 정보 포함
+      order: { bidAmt: 'DESC' }, // 최고 입찰가 기준 정렬
+    });
   }
 }

@@ -204,16 +204,16 @@ const AuctionDetail = ({ user, setUser }) => {
           </tr>
           <tr>
             <th>예상가</th>
-            <td>{cow?.acowPredictPrice || 0} 원</td>
+            <td>{cow?.acowPredictPrice || 0}만원</td>
           </tr>
           <tr>
             <th>최저가</th>
-            <td>{cow?.acowBottomPrice || 0} 원</td>
+            <td>{cow?.acowBottomPrice || 0}만원</td>
           </tr>
           <tr>
-            <th>현재 최고 입찰가</th>
+            <th>현재 최고 입찰가(입찰자)</th>
             <td>
-                {highestBid ? `${highestBid.bidAmt}원` : "정보 없음"}
+                {highestBid ? `${highestBid.bidAmt}만원(${highestBid.user?.usrNm || '알 수 없음'})` : "정보 없음"}
             </td>
           </tr>
         </tbody>
