@@ -64,12 +64,12 @@ export class AuctionCowsService {
   ): Promise<AuctionCow> {
     const auctionCow = await this.auctionCowRepository.findOne({
       where: { acowSeq },
-      relations: ['user'],
     });
 
     if (!auctionCow) {
       throw new NotFoundException('해당 경매를 찾을 수 없습니다.');
     }
+
 
     const winningUser = await this.usersRepository.findOne({
       where: { usrSeq: acowWinnerSeq },
@@ -81,6 +81,7 @@ export class AuctionCowsService {
 
     auctionCow.acowStatus = '낙찰';
     auctionCow.acowFinalBid = acowFinalBid;
+    auctionCow.acowWinnerSeq = acowWinnerSeq;
     auctionCow.acowDelDt = new Date();
 
     return await this.auctionCowRepository.save(auctionCow);
