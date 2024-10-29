@@ -16,10 +16,20 @@ const MainPage = ({ user, setUser }) => {
   };
 
   const handleLogout = () => {
-    setUser(null); // 로그아웃 처리
+    setUser(null);
     localStorage.removeItem("user");
-    navigate("/"); // 메인 페이지로 리다이렉트
+    navigate("/");
+    if (window.Kakao.Auth.getAccessToken()) {
+      console.log("카카오 로그아웃 중...");
+      window.Kakao.Auth.logout(() => {
+        console.log("카카오 로그아웃 완료");
+        setUser(null);
+        localStorage.removeItem("user");
+        navigate("/login");
+      });
+    }
   };
+  
 
   const filteredAuctions = auctionData.filter((auction) =>
     auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())

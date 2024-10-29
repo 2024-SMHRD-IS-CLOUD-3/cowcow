@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Delete, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, Param, Res, HttpStatus } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 
@@ -24,5 +24,16 @@ export class UsersController {
   @Delete(':id') // DELETE /users/:id
   async deleteUser(@Param('id') id: number): Promise<void> {
     return this.usersService.deleteUser(id);
+  }
+
+  @Post('kakao-login')
+  async kakaoLogin(@Body() userData: any, @Res() res) {
+    try {
+      const user = await this.usersService.findOrCreateUser(userData);
+      return res.status(HttpStatus.OK).json(user);
+    } catch (error) {
+      console.error('카카오 로그인 처리 실패:', error);
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: '카카오 로그인 처리 실패' });
+    }
   }
 }

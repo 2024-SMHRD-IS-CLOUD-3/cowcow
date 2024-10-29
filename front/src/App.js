@@ -10,6 +10,7 @@ import TransactionHistory from './components/TransactionHistory';
 import AuctionDetail from './components/AuctionDetail';
 import CowPage from './components/CowPage';
 import AuctionRegister from './components/AuctionRegister';
+import KakaoCallback from './oauth/KakaoCallback';
 
 function App() {
   const [user, setUser] = useState(null); // 로그인한 사용자 상태 관리
@@ -27,6 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main user={user} setUser={setUser} />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/kakao-callback" element={<KakaoCallback setUser={setUser}/>} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/myPage" element={<MyPage user={user} setUser={setUser} />} />
         <Route path="/deleteAccount" element={<DeleteAccount user={user} setUser={setUser} />} />

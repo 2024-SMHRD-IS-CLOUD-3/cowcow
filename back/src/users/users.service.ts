@@ -24,9 +24,12 @@ export class UsersService {
 
   // 비밀번호 확인 메서드 추가
   async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.usersRepository.findOne({ where: { usrEml: email } });
-    if (user && user.usrPwd === password) { // 비밀번호가 일치하는 경우
-        return user; // 사용자 반환
+    const user = await this.usersRepository.findOne({
+      where: { usrEml: email },
+    });
+    if (user && user.usrPwd === password) {
+      // 비밀번호가 일치하는 경우
+      return user; // 사용자 반환
     }
     return null; // 비밀번호가 일치하지 않는 경우 null 반환
   }
@@ -36,4 +39,23 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
+  async findOrCreateUser(userData: any): Promise<User> {
+    const { kakaoId, email, nickname } = userData;
+
+    // DB에서 카카오 아이디로 유저 조회
+    let user = await this.usersRepository.findOne({ where: { usrEml: email } });
+
+    // 유저가 없으면 새로 생성
+    if (!user) {
+      user = this.usersRepository.create({
+        usrAcc: kakaoId,
+        usrEml: email,
+        usrNm: nickname,
+        usrCrtDt: new Date(),
+      });
+      await this.usersRepository.save(user);
+    }
+
+    return user;
+  }
 }
