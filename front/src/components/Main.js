@@ -1,21 +1,35 @@
-// Main.js
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Main.css"; // CSS 파일 불러오기
 import logo from "../images/cowcowlogo.png";
 import thumbnail from "../images/thumbnail.png";
-import thumbnail2 from "../images/thumbnail2.png";
 
 const MainPage = ({ user, setUser }) => {
-  const [auctionData, setAuctionData] = useState([]); // 경매 데이터를 저장할 상태
-  const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 관리
-  const [showTopButton, setShowTopButton] = useState(false); // 탑 버튼 표시 여부 관리
-  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+  const [auctionData, setAuctionData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showTopButton, setShowTopButton] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("theme") === "dark"
+  );
+  const navigate = useNavigate();
+
+  const toggleTheme = () => {
+    const newTheme = isDarkMode ? "light" : "dark";
+    setIsDarkMode(!isDarkMode);
+    localStorage.setItem("theme", newTheme);
+    document.body.className = newTheme + "-mode";
+  };
+
+  useEffect(() => {
+    document.body.className = isDarkMode ? "dark-mode" : "light-mode";
+  }, [isDarkMode]);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleLogout = () => {
+    if (window.Kakao.Auth.getAccessToken()) {
     // if (window.Kakao.Auth.getAccessToken()) {
     //   console.log("카카오 로그아웃 중...");
     //   window.Kakao.Auth.logout(() => {
@@ -34,7 +48,7 @@ const MainPage = ({ user, setUser }) => {
     localStorage.removeItem("user");
     navigate("/");
   };
-
+  }
   const filteredAuctions = auctionData.filter((auction) =>
     auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -42,28 +56,23 @@ const MainPage = ({ user, setUser }) => {
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
-        const response = await fetch("http://localhost:3001/auctions"); // 경매 데이터 API 호출
+        const response = await fetch("http://localhost:3001/auctions");
         if (!response.ok) {
           console.log("MainPage 에러");
-          throw new Error("경매 정보를 가져오는 데 실패했습니다.");
+          throw new Error("Failed to fetch auctions.");
         }
         const data = await response.json();
-        setAuctionData(data); // 상태 업데이트
+        setAuctionData(data);
       } catch (error) {
         console.error("Error fetching auction data:", error);
       }
     };
-
     fetchAuctions();
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowTopButton(true);
-      } else {
-        setShowTopButton(false);
-      }
+      setShowTopButton(window.scrollY > 300);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -72,15 +81,10 @@ const MainPage = ({ user, setUser }) => {
 
   return (
     <div className="main-container">
-      <header className="main-header">
-        <h1 style={{ display: "inline" }}>
+      <header className={`main-header ${isDarkMode ? "dark" : "light"}`}>
+        <h1>
           <img src={logo} alt="logo" />
         </h1>
-        {user && (
-          <span style={{ marginLeft: "10px" }}>
-            안녕하세요, {user.usrNm}님!
-          </span>
-        )}
         <div className="search-bar">
           <input
             type="text"
@@ -109,13 +113,10 @@ const MainPage = ({ user, setUser }) => {
       </header>
 
       <div className="live-auctions">
-        <h2>실시간 경매</h2>
         <div className="auction-list">
           {filteredAuctions.map((auction) => (
             <Link to={`/auctionDetail/${auction.aucSeq}`} key={auction.aucSeq}>
-              <div
-                className={`auction-card ${auction.aucStatus.toLowerCase()}`}
-              >
+              <div className={`auction-card ${auction.aucStatus.toLowerCase()}`}>
                 <div className="thumbnail-container">
                   <img
                     src={thumbnail}
@@ -128,10 +129,10 @@ const MainPage = ({ user, setUser }) => {
                     {Math.floor(Math.random() * 200)}명
                   </div>
                 </div>
-                <div className="auction-info">
-                  <h3>{auction.aucBroadcastTitle}</h3>
-                  <p>경매 상태: {auction.aucStatus}</p>
-                </div>
+              </div>
+              <div>
+                <h3 className={`auction-info ${isDarkMode ? "dark" : "light"}`}>{auction.aucBroadcastTitle}</h3>
+                <p className={`auction-info ${isDarkMode ? "dark" : "light"}`}>경매 상태: {auction.aucStatus}</p>
               </div>
             </Link>
           ))}
@@ -147,14 +148,17 @@ const MainPage = ({ user, setUser }) => {
             stroke="currentColor"
             strokeWidth={2}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 15l7-7 7 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
           </svg>
         </button>
       )}
+
+      <button
+        className={`theme-toggle-button ${isDarkMode ? "dark" : "light"}`}
+        onClick={toggleTheme}
+      >
+        {isDarkMode ? "🌞" : "🌙"}
+      </button>
     </div>
   );
 };
