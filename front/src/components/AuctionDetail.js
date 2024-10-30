@@ -32,9 +32,19 @@ const AuctionDetail = ({ user, setUser }) => {
   const prevSlide = () => showSlide(currentSlide - 1);
 
   const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    navigate("/");
+    if (window.Kakao.Auth.getAccessToken()) {
+      console.log("카카오 로그아웃 중...");
+      window.Kakao.Auth.logout(() => {
+        console.log("카카오 로그아웃 완료");
+        setUser(null);
+        localStorage.removeItem("user");
+        navigate("/");
+      });
+    } else {
+      setUser(null);
+      localStorage.removeItem("user");
+      navigate("/");
+    }
   };
 
   useEffect(() => {

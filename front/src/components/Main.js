@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Main.css"; // CSS 파일 불러오기
 import logo from "../images/cowcowlogo.png";
-import thumbnail from "../images/thumbnail.png"
-import thumbnail2 from "../images/thumbnail2.png"
+import thumbnail from "../images/thumbnail.png";
+import thumbnail2 from "../images/thumbnail2.png";
 
 const MainPage = ({ user, setUser }) => {
   const [auctionData, setAuctionData] = useState([]); // 경매 데이터를 저장할 상태
@@ -16,16 +16,25 @@ const MainPage = ({ user, setUser }) => {
   };
 
   const handleLogout = () => {
-    setUser(null); // 로그아웃 처리
-    localStorage.removeItem("user");
-    navigate("/"); // 메인 페이지로 리다이렉트
+    if (window.Kakao.Auth.getAccessToken()) {
+      console.log("카카오 로그아웃 중...");
+      window.Kakao.Auth.logout(() => {
+        console.log("카카오 로그아웃 완료");
+        setUser(null);
+        localStorage.removeItem("user");
+        navigate("/");
+      });
+    } else {
+      setUser(null);
+      localStorage.removeItem("user");
+      navigate("/");
+    }
   };
 
   const filteredAuctions = auctionData.filter((auction) =>
     auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
@@ -57,7 +66,6 @@ const MainPage = ({ user, setUser }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  
   return (
     <div className="main-container">
       <header className="main-header">
