@@ -7,6 +7,7 @@ import {
   Body,
   Put,
   NotFoundException,
+  Query
 } from '@nestjs/common';
 import { AuctionCowsService } from './auction-cows.service';
 import { AuctionCow } from './auction-cow.entity';
@@ -88,12 +89,9 @@ export class AuctionCowsController {
       );
     }
   }
-  
-  // '낙찰'된 경매 데이터 조회
-  @Get('completed')
-  async getCompletedAuctions(): Promise<AuctionCow[]> {
-    const data = await this.auctionCowsService.getCompletedAuctions();
-    console.log(data);
-    return data;
+  // '낙찰'된 경매 조회 API
+  @Get('/completed')
+  async getCompletedAuctions(@Query('userSeq') userSeq: number) {
+    return this.auctionCowsService.getCompletedAuctions(userSeq);
   }
 }

@@ -11,19 +11,18 @@ const TransactionHistory = ({ user, setUser }) => {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const response = await fetch(`http://localhost:3001/auction-cows/completed`);
+                const response = await fetch(`http://localhost:3001/auction-cows/completed?userSeq=${user.usrSeq}`);
                 if (!response.ok) throw new Error('거래 내역을 불러오는 데 실패했습니다.');
 
                 const data = await response.json();
                 setTransactions(data); // 거래 내역 설정
             } catch (error) {
-                console.error('Error fetching transactions:', error);
-                alert('거래 내역을 불러오지 못했습니다.');
             }
         };
 
         fetchTransactions();
-    }, []);
+
+    }, [user]);
 
     const handleFilterChange = (event) => {
         setFilter(event.target.value);
@@ -87,7 +86,7 @@ const TransactionTable = ({ transactions }) => (
             {transactions.map((tx, index) => (
                 <tr key={tx.acowSeq}>
                     <td>{index + 1}</td>
-                    <td>{tx.type || "보류"}</td>
+                    <td>{tx.type || "없음"}</td>
                     <td>{tx.cow?.cowNo || "정보없음"}</td>
                     <td>{new Date(tx.acowDelDt).toLocaleDateString()}</td>
                     <td>{tx.acowFinalBid.toLocaleString()}만원</td>
