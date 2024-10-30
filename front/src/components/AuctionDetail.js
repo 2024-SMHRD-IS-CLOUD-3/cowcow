@@ -26,7 +26,7 @@ const AuctionDetail = ({ user, setUser }) => {
     const newIndex = (index + acows.length) % acows.length; // 슬라이드 인덱스 보정
     setCurrentSlide(newIndex);
   };
-  
+
 
   const nextSlide = () => showSlide(currentSlide + 1);
   const prevSlide = () => showSlide(currentSlide - 1);
@@ -214,19 +214,11 @@ const AuctionDetail = ({ user, setUser }) => {
           </tr>
           <tr>
             <th>농장 이름</th>
-            <td>{acow?.cow?.userBarn?.usrBarnName|| "정보 없음"}</td>
+            <td>{acow?.cow?.userBarn?.usrBarnName || "정보 없음"}</td>
           </tr>
           <tr>
             <th>성별</th>
             <td>{acow?.cow?.cowGdr || "정보 없음"}</td>
-          </tr>
-          <tr>
-            <th>경매 상태</th>
-            <td>{acow?.acowStatus || "정보 없음"}</td>
-          </tr>
-          <tr>
-            <th>예상가</th>
-            <td>{acow?.acowPredictPrice || 0}만원</td>
           </tr>
           <tr>
             <th>최저가</th>
@@ -235,7 +227,23 @@ const AuctionDetail = ({ user, setUser }) => {
           <tr>
             <th>현재 최고 입찰가(입찰자)</th>
             <td>
-                {highestBid ? `${highestBid.bidAmt}만원(${highestBid.user?.usrNm || '알 수 없음'})` : "정보 없음"}
+              {highestBid ? `${highestBid.bidAmt}만원(${highestBid.user?.usrNm || '알 수 없음'})` : "정보 없음"}
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <h1>경매 상태</h1>
+            </th>
+            <td>
+              <h1
+                className={
+                  acows[currentSlide]?.acowStatus === "진행중"
+                    ? "state-progressing"
+                    : "state-won"
+                }
+              >
+                {acows[currentSlide]?.acowStatus || "정보 없음"}
+              </h1>
             </td>
           </tr>
         </tbody>
@@ -332,6 +340,11 @@ const AuctionDetail = ({ user, setUser }) => {
             </div>
           </div>
         </div>
+
+        <div className="expected-price">
+          예상가: {acows[currentSlide]?.acowPredictPrice || 0}만원
+        </div>
+
         <div className="slider-container">
           <div
             className="slider"
