@@ -7,19 +7,23 @@ const DeleteAccount = ({ user, setUser }) => { // user, setUser prop 추가
     const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
     const handleLogout = () => {
-        if (window.Kakao.Auth.getAccessToken()) {
-          console.log("카카오 로그아웃 중...");
-          window.Kakao.Auth.logout(() => {
-            console.log("카카오 로그아웃 완료");
-            setUser(null);
-            localStorage.removeItem("user");
-            navigate("/");
-          });
-        } else {
-          setUser(null);
-          localStorage.removeItem("user");
-          navigate("/");
-        }
+        // if (window.Kakao.Auth.getAccessToken()) {
+        //   console.log("카카오 로그아웃 중...");
+        //   window.Kakao.Auth.logout(() => {
+        //     console.log("카카오 로그아웃 완료");
+        //     setUser(null);
+        //     localStorage.removeItem("user");
+        //     navigate("/");
+        //   });
+        // } else {
+        //   setUser(null);
+        //   localStorage.removeItem("user");
+        //   navigate("/");
+        // }
+
+        setUser(null);
+        localStorage.removeItem("user");
+        navigate("/");
       };
       
 
@@ -57,7 +61,7 @@ const DeleteAccount = ({ user, setUser }) => { // user, setUser prop 추가
 
     return (
         <div className="delete-account-layout">
-            <Header handleLogout={() => setUser(null)} /> {/* handleLogout 추가 */}
+            <Header handleLogout= {handleLogout}/>
             <div className="content-container">
                 <Sidebar />
                 <div className="content-center">
@@ -88,8 +92,8 @@ const Header = ({ handleLogout }) => (
         </div>
         <nav className="nav-links">
             <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="/auctionRegister">경매등록</Link>
-            <Link to="/myPage" className="active">마이페이지</Link> {/* a 태그를 Link로 변경 */}
+            <Link to="/auctionRegister">경매등록</Link> {/* a 태그를 Link로 변경 */}
+            <Link to="/myPage"  className="active">마이페이지</Link> {/* a 태그를 Link로 변경 */}
             <Link to="/" onClick={handleLogout}>로그아웃</Link> {/* 버튼을 Link로 변경 */}
         </nav>
     </header>
