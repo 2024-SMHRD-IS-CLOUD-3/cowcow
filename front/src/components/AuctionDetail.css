@@ -70,6 +70,12 @@ body {
     color: #ff4444;
 }
 
+.auction-detail-container {
+    max-width: 1200px; /* Ensure it doesn't stretch too wide */
+    margin: 0 auto;
+    padding: 20px;
+}
+
 .auction-detail {
     padding: 90px;
     text-align: center;
@@ -92,7 +98,7 @@ body {
 
 video {
     width: 100%;
-    height: auto;
+    height: 490px;
     object-fit: cover;
 }
 
@@ -104,9 +110,12 @@ video {
 }
 
 .details-table {
+    margin-top: 15px;
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    overflow: hidden; /* 넘치는 텍스트 숨기기 */
+    white-space: nowrap; /* 줄바꿈 방지 */
+    text-overflow: clip; /* 말줄임표 없이 잘리도록 처리 */
 }
 
 .details-table th,
@@ -122,6 +131,17 @@ video {
     font-weight: bold;
 }
 
+.state-gyeong {
+    color: red;
+}
+
+.state-progressing {
+    color: #1e90ff;
+}
+
+.state-won {
+    color: red;
+}
 .bid-section-inline {
     display: flex;
     align-items: center; /* 수직 중앙 정렬 */
@@ -151,11 +171,23 @@ video {
     background-color: #63b3ff;
 }
 
+.expected-price {
+    width: 100%; /* Matches the auction-detail-container width */
+    padding: 15px 0;
+    margin: 30px auto 20px auto; /* Centered and spaced from the slider */
+    background-color: yellow;
+    color: red;
+    font-size: 28px;
+    text-align: center;
+    border-radius: 8px;
+    letter-spacing: 1px;
+}
+
 
 /* 슬라이더 컨테이너 */
 .slider-container {
     position: relative;
-    width: 70%; /* 슬라이더의 가로폭을 70%로 유지 */
+    width: 100%; /* 슬라이더의 가로폭을 70%로 유지 */
     height: 500px; /* 슬라이더의 세로폭을 500px로 증가 */
     margin: 30px auto; /* 슬라이더를 가운데 정렬 */
     overflow: hidden;
