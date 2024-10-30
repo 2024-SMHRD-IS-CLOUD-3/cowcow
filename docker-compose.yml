@@ -21,7 +21,7 @@ services:
       - DATABASE_PORT=3307
       - DATABASE_USER=ohi0
       - DATABASE_PASSWORD=smart123!
-      - DATABASE_NAME=mydb
+      - DATABASE_NAME=ohi0
     networks:
       - mynetwork
 
