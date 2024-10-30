@@ -86,4 +86,39 @@ export class AuctionCowsService {
 
     return await this.auctionCowRepository.save(auctionCow);
   }
+
+   // 로그인한 유저의 '낙찰'된 경매 데이터 조회
+  async getCompletedAuctions(userSeq: number): Promise<any[]> {
+    const auctions = await this.auctionCowRepository.find({
+      where: { acowStatus: '낙찰' },
+      relations: ['cow', 'cow.user', 'auction', 'winningUser'],
+    });
+
+    if (!auctions) {
+      throw new NotFoundException('거래 내역이 없습니다.');
+    }
+
+    // 거래 유형을 추가
+    const completedAuctions = auctions.map((auction) => {
+
+
+      let type = ''; // 기본값
+      if (auction.cow?.usrSeq == userSeq) {
+        type = '판매'; // 소의 소유자가 현재 로그인한 유저인 경우
+      } else if (auction.acowWinnerSeq == userSeq) {
+        type = '구매'; // 낙찰자가 현재 로그인한 유저인 경우
+      }
+
+      return {
+        ...auction,
+        type,
+      };
+    });
+
+    return completedAuctions.filter((zz) =>
+      zz.type !== ''
+    );
+  }
+
+
 }

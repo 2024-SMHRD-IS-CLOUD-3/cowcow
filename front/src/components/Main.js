@@ -30,18 +30,25 @@ const MainPage = ({ user, setUser }) => {
 
   const handleLogout = () => {
     if (window.Kakao.Auth.getAccessToken()) {
-      window.Kakao.Auth.logout(() => {
-        setUser(null);
-        localStorage.removeItem("user");
-        navigate("/");
-      });
-    } else {
-      setUser(null);
-      localStorage.removeItem("user");
-      navigate("/");
-    }
-  };
+    // if (window.Kakao.Auth.getAccessToken()) {
+    //   console.log("카카오 로그아웃 중...");
+    //   window.Kakao.Auth.logout(() => {
+    //     console.log("카카오 로그아웃 완료");
+    //     setUser(null);
+    //     localStorage.removeItem("user");
+    //     navigate("/");
+    //   });
+    // } else {
+    //   setUser(null);
+    //   localStorage.removeItem("user");
+    //   navigate("/");
+    // }
 
+    setUser(null);
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+  }
   const filteredAuctions = auctionData.filter((auction) =>
     auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -50,7 +57,10 @@ const MainPage = ({ user, setUser }) => {
     const fetchAuctions = async () => {
       try {
         const response = await fetch("http://localhost:3001/auctions");
-        if (!response.ok) throw new Error("Failed to fetch auctions.");
+        if (!response.ok) {
+          console.log("MainPage 에러");
+          throw new Error("Failed to fetch auctions.");
+        }
         const data = await response.json();
         setAuctionData(data);
       } catch (error) {
@@ -64,6 +74,7 @@ const MainPage = ({ user, setUser }) => {
     const handleScroll = () => {
       setShowTopButton(window.scrollY > 300);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

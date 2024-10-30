@@ -1,48 +1,46 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Link import 추가
-import './TransactionHistory.css'; // CSS 파일 import
-import logo from "../images/cowcowlogo.png"
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import './TransactionHistory.css';
+import logo from "../images/cowcowlogo.png";
 
-
-const TransactionHistory = ({ user, setUser }) => { // user와 setUser 추가
+const TransactionHistory = ({ user, setUser }) => {
     const [filter, setFilter] = useState('전체');
-    const [transaction, setTransaction] = useState(null);
+    const [transactions, setTransactions] = useState([]); // 초기 상태를 빈 배열로 설정
+    const navigate = useNavigate();
 
-    const transactions = [
-        { id: 2, type: '구매', cow: '소101', date: '2024-09-15', price: '₩900,000' },
-        { id: 3, type: '판매', cow: '소002', date: '2024-10-10', price: '₩1,200,000' },
-        { id: 4, type: '구매', cow: '소102', date: '2024-09-20', price: '₩850,000' },
-    ];
+    useEffect(() => {
+        const fetchTransactions = async () => {
+            try {
+                const response = await fetch(`http://localhost:3001/auction-cows/completed?userSeq=${user.usrSeq}`);
+                if (!response.ok) throw new Error('거래 내역을 불러오는 데 실패했습니다.');
 
-    const filteredTransactions = transactions.filter(tx =>
-        filter === '전체' ? true : tx.type === filter
-    );
+                const data = await response.json();
+                setTransactions(data); // 거래 내역 설정
+            } catch (error) {
+            }
+        };
+
+        fetchTransactions();
+
+    }, [user]);
 
     const handleFilterChange = (event) => {
         setFilter(event.target.value);
     };
 
     const handleLogout = () => {
-        if (window.Kakao.Auth.getAccessToken()) {
-          console.log("카카오 로그아웃 중...");
-          window.Kakao.Auth.logout(() => {
-            console.log("카카오 로그아웃 완료");
-            setUser(null);
-            localStorage.removeItem("user");
-            navigate("/");
-          });
-        } else {
-          setUser(null);
-          localStorage.removeItem("user");
-          navigate("/");
-        }
-      };
-      
-    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+        setUser(null);
+        localStorage.removeItem("user");
+        navigate("/");
+    };
+
+    const filteredTransactions = transactions.filter((tx) =>
+        filter === '전체' ? true : tx.type === filter
+    );
 
     return (
         <div className="transaction-layout">
-            <Header handleLogout={handleLogout} /> {/* handleLogout 추가 */}
+            <Header handleLogout={handleLogout} />
             <div className="content-container">
                 <Sidebar />
                 <section className="transaction-content">
@@ -60,7 +58,12 @@ const TransactionHistory = ({ user, setUser }) => { // user와 setUser 추가
                         </select>
                     </div>
 
-                    <TransactionTable transactions={filteredTransactions} />
+                    {/* TransactionTable 컴포넌트 조건부 렌더링 */}
+                    {filteredTransactions.length > 0 ? (
+                        <TransactionTable transactions={filteredTransactions} />
+                    ) : (
+                        <p>거래 내역이 없습니다.</p>
+                    )}
                 </section>
             </div>
             <Footer />
@@ -81,12 +84,12 @@ const TransactionTable = ({ transactions }) => (
         </thead>
         <tbody>
             {transactions.map((tx, index) => (
-                <tr key={tx.id}>
+                <tr key={tx.acowSeq}>
                     <td>{index + 1}</td>
-                    <td>{tx.type}</td>
-                    <td>{tx.cow}</td>
-                    <td>{tx.date}</td>
-                    <td>{tx.price}</td>
+                    <td>{tx.type || "없음"}</td>
+                    <td>{tx.cow?.cowNo || "정보없음"}</td>
+                    <td>{new Date(tx.acowDelDt).toLocaleDateString()}</td>
+                    <td>{tx.acowFinalBid.toLocaleString()}만원</td>
                 </tr>
             ))}
         </tbody>
@@ -96,13 +99,15 @@ const TransactionTable = ({ transactions }) => (
 const Header = ({ handleLogout }) => (
     <header className="header">
         <div className="logo">
-            <Link to="/" className="logo-link"><img src={logo}></img></Link> {/* a 태그를 Link로 변경 */}
+            <Link to="/" className="logo-link">
+                <img src={logo} alt="logo" />
+            </Link>
         </div>
         <nav className="nav-links">
-            <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="/auctionRegister">경매등록</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="/myPage"  className="active">마이페이지</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="/" onClick={handleLogout}>로그아웃</Link> {/* 버튼을 Link로 변경 */}
+            <Link to="/">홈</Link>
+            <Link to="/auctionRegister">경매등록</Link>
+            <Link to="/myPage">마이페이지</Link>
+            <Link to="/" onClick={handleLogout}>로그아웃</Link>
         </nav>
     </header>
 );
@@ -110,10 +115,10 @@ const Header = ({ handleLogout }) => (
 const Sidebar = () => (
     <aside className="sidebar">
         <ul>
-            <li><Link to="/myPage">개인정보 변경</Link></li> {/* a 태그를 Link로 변경 */}
-            <li><Link to="/cowPage">소 등록</Link></li> {/* a 태그를 Link로 변경 */}
-            <li><Link to="/transactionHistory" className="active">거래 내역</Link></li> {/* a 태그를 Link로 변경 */}
-            <li><Link to="/deleteAccount">회원 탈퇴</Link></li> {/* a 태그를 Link로 변경 */}
+            <li><Link to="/myPage">개인정보 변경</Link></li>
+            <li><Link to="/cowPage">소 등록</Link></li>
+            <li><Link to="/transactionHistory" className="active">거래 내역</Link></li>
+            <li><Link to="/deleteAccount">회원 탈퇴</Link></li>
         </ul>
     </aside>
 );
