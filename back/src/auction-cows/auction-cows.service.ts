@@ -27,19 +27,19 @@ export class AuctionCowsService {
     });
   }
 
-  // 특정 경매 소 조회 (ID로 조회)
-  async findOne(id: number): Promise<AuctionCow> {
-    const auctionCow = await this.auctionCowRepository.findOne({
-      where: { acowSeq: id },
-      relations: ['auction', 'cow', 'cow.userBarn'],
-    });
+  // // 특정 경매 소 조회 (ID로 조회)
+  // async findOne(id: number): Promise<AuctionCow> {
+  //   const auctionCow = await this.auctionCowRepository.findOne({
+  //     where: { acowSeq: id },
+  //     relations: ['auction', 'cow', 'cow.userBarn'],
+  //   });
 
-    if (!auctionCow) {
-      throw new NotFoundException(`ID ${id}에 해당하는 경매 소를 찾을 수 없습니다.`);
-    }
+  //   if (!auctionCow) {
+  //     throw new NotFoundException(`ID ${id}에 해당하는 경매 소를 찾을 수 없습니다.`);
+  //   }
 
-    return auctionCow;
-  }
+  //   return auctionCow;
+  // }
 
   // 경매 소 삭제
   async delete(id: number): Promise<DeleteResult> {
@@ -91,7 +91,7 @@ export class AuctionCowsService {
    async getCompletedAuctions(): Promise<AuctionCow[]> {
     return this.auctionCowRepository.find({
       where: { acowStatus: '낙찰' },
-      relations: [ 'auction', 'cow', 'cow.user', 'winningUser'],
+      relations: [ 'auction', 'cow', 'winningUser'],
     });
   }
 }
