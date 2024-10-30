@@ -34,7 +34,7 @@ const DeleteAccount = ({ user, setUser }) => { // user, setUser prop 추가
                 console.log(user.usrSeq)
                 if (user && user.usrSeq) {
                     // 회원 탈퇴 API 호출
-                    const response = await fetch(`http://localhost:3001/users/${user.usrSeq}`, {
+                    const response = await fetch(`http://223.130.160.153:3001/users/${user.usrSeq}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',

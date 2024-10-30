@@ -18,7 +18,7 @@ const KakaoCallback = ({ setUser }) => {
                     body: new URLSearchParams({
                         grant_type: 'authorization_code',
                         client_id: '81c842986d27d47050e09dff84737fa7', // 클라이언트 ID
-                        redirect_uri: 'http://localhost:3000/kakao-callback', // 발급받은 Redirect URI
+                        redirect_uri: 'http://223.130.160.153:3000/kakao-callback', // 발급받은 Redirect URI
                         code: code, // 인증 코드
                     }),
                 });

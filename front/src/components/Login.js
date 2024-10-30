@@ -31,7 +31,7 @@ const LoginPage = ({ setUser }) => {
 
           // 서버로 사용자 정보 전달
           const serverResponse = await fetch(
-            "http://localhost:3001/users/kakao-login",
+            "http://223.130.160.153:3001/users/kakao-login",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -71,7 +71,7 @@ const LoginPage = ({ setUser }) => {
     const userData = { usrEml: email, usrPwd: password };
 
     try {
-      const response = await fetch("http://localhost:3001/users/login", {
+      const response = await fetch("http://223.130.160.153:3001/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
