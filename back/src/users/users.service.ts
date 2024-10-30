@@ -43,12 +43,13 @@ export class UsersService {
     const { kakaoId, email, nickname } = userData;
 
     // DB에서 카카오 아이디로 유저 조회
-    let user = await this.usersRepository.findOne({ where: { usrEml: email } });
+    let user = await this.usersRepository.findOne({ where: { usrAcc: kakaoId } });
 
     // 유저가 없으면 새로 생성
     if (!user) {
       user = this.usersRepository.create({
         usrAcc: kakaoId,
+        usrTyp: '카카오로그인',
         usrEml: email,
         usrNm: nickname,
         usrCrtDt: new Date(),
