@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Param, Delete, Body, Put, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Delete,
+  Body,
+  Put,
+  NotFoundException,
+} from '@nestjs/common';
 import { AuctionCowsService } from './auction-cows.service';
 import { AuctionCow } from './auction-cow.entity';
 
@@ -8,7 +17,9 @@ export class AuctionCowsController {
 
   // 경매 소 생성 (POST /auction-cows)
   @Post()
-  async create(@Body() auctionCowData: Partial<AuctionCow>): Promise<AuctionCow> {
+  async create(
+    @Body() auctionCowData: Partial<AuctionCow>,
+  ): Promise<AuctionCow> {
     return await this.auctionCowsService.create(auctionCowData);
   }
 
@@ -45,7 +56,7 @@ export class AuctionCowsController {
   @Put(':id/win')
   async setWinningBid(
     @Param('id') acowSeq: number,
-    @Body() body: { acowWinnerSeq: number; acowFinalBid: number }
+    @Body() body: { acowWinnerSeq: number; acowFinalBid: number },
   ): Promise<AuctionCow> {
     const { acowWinnerSeq, acowFinalBid } = body;
     const updatedAuctionCow = await this.auctionCowsService.setWinningBid(
@@ -54,10 +65,10 @@ export class AuctionCowsController {
       acowFinalBid,
     );
 
-    console.log("controller Page : ")
-    console.log(acowSeq)
-    console.log(acowWinnerSeq)
-    console.log(acowFinalBid)
+    console.log('controller Page : ');
+    console.log(acowSeq);
+    console.log(acowWinnerSeq);
+    console.log(acowFinalBid);
 
     if (!updatedAuctionCow) {
       throw new NotFoundException('경매 정보를 찾을 수 없습니다.');
@@ -66,15 +77,22 @@ export class AuctionCowsController {
     return updatedAuctionCow;
   }
 
-
   // 경매 소 삭제 (DELETE /auction-cows/:id)
   @Delete(':id')
-async delete(@Param('id') id: number): Promise<void> {
-  const result = await this.auctionCowsService.delete(id);
+  async delete(@Param('id') id: number): Promise<void> {
+    const result = await this.auctionCowsService.delete(id);
 
-  if (result.affected === 0) {
-    throw new NotFoundException(`ID ${id}에 해당하는 경매 소를 찾을 수 없습니다.`);
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `ID ${id}에 해당하는 경매 소를 찾을 수 없습니다.`,
+      );
+    }
   }
-}
-
+  // '낙찰'된 경매 데이터 조회
+  @Get('completed')
+  async getCompletedAuctions(): Promise<AuctionCow[]> {
+    const data = await this.auctionCowsService.getCompletedAuctions();
+    console.log(data);
+    return data;
+  }
 }

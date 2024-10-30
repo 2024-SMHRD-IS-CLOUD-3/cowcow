@@ -86,4 +86,12 @@ export class AuctionCowsService {
 
     return await this.auctionCowRepository.save(auctionCow);
   }
+
+   // '낙찰'된 경매 데이터 조회
+   async getCompletedAuctions(): Promise<AuctionCow[]> {
+    return this.auctionCowRepository.find({
+      where: { acowStatus: '낙찰' },
+      relations: [ 'auction', 'cow', 'cow.user', 'winningUser'],
+    });
+  }
 }
