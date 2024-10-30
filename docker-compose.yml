@@ -30,13 +30,26 @@ services:
       context: ./flask
       dockerfile: Dockerfile
     ports:
-      - "8081:8081"  # Flask 서버 포트 매핑
+      - "8081:8081"
     volumes:
-      - ./flask:/app  # flask 폴더를 컨테이너 내부 /app에 매핑
+      - ./flask:/app
     networks:
       - mynetwork
     depends_on:
-      - backend  # Flask가 백엔드와의 의존성
+      - backend
+
+  flask2:
+    build:
+      context: ./flask2
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"  # FastAPI 서버 포트 매핑
+    volumes:
+      - ./flask2:/app  # flask2 폴더를 컨테이너 내부 /app에 매핑
+    networks:
+      - mynetwork
+    depends_on:
+      - backend
 
 volumes:
   db_data:
