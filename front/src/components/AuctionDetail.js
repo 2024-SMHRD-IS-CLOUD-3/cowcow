@@ -285,7 +285,7 @@ const AuctionDetail = ({ user, setUser }) => {
         <div className="auction-content">
           <div className="video-container">
             <iframe
-              src="http://localhost:5000/video_feed"
+              src="http://223.130.160.153:5000/video_feed"
               title="RTSP Video Stream"
             ></iframe>
           </div>
