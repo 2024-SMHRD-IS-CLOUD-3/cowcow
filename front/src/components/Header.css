@@ -1,25 +1,6 @@
 /* Header.css */
 
-/* 전역 CSS 변수 정의 */
-:root {
-  --background-primary: #ffffff;
-  --background-secondary: #f0f0f0;
-  --text-primary: #000000;
-  --text-secondary: #333333;
-  --accent-color: #0056b3;
-  --hover-color: #007acc;
-}
-
-/* 다크모드 CSS 변수 */
-[data-theme="dark"] {
-  --background-primary: #1a1a1a;
-  --background-secondary: #333333;
-  --text-primary: #f0f0f0;
-  --text-secondary: #bbbbbb;
-  --accent-color: #1e90ff;
-  --hover-color: #63b3ff;
-}
-
+/* 기본 헤더 스타일 */
 .header {
   position: fixed;
   top: 0;
@@ -28,27 +9,86 @@
   z-index: 100;
   height: 70px;
   background-color: var(--background-primary);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .logo-link {
   font-size: 24px;
   font-weight: bold;
   text-decoration: none;
-  color: var(--text-primary);
+  color: var(--text-primary); /* 텍스트 색상 변수 적용 */
+  transition: color 0.3s;
 }
 
 .nav-links a {
   margin-left: 20px;
   text-decoration: none;
-  color: var(--text-primary);
+  color: var(--text-primary); /* 텍스트 색상 변수 적용 */
   font-size: 18px;
   transition: color 0.3s;
 }
 
 .nav-links a:hover {
-  color: var(--hover-color);
+  color: var(--hover-color); /* 호버 색상 변수 적용 */
+}
+
+/* 모달 오버레이 및 콘텐츠 스타일 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.modal-content {
+  background-color: var(--background-primary);
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.close-button,
+.broadcast-button {
+  background-color: var(--accent-color);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.close-button:hover,
+.broadcast-button:hover {
+  background-color: var(--hover-color);
+}
+
+.add-button,
+.remove-button {
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  padding: 5px 10px;
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-button:hover,
+.remove-button:hover {
+  background-color: var(--hover-color);
 }

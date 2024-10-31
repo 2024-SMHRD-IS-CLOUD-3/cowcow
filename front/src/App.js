@@ -25,7 +25,6 @@ function App() {
     }
   }, []);
 
-  // 테마 설정 useEffect
   useEffect(() => {
     const theme = isDarkMode ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', theme);  // <html>에 data-theme 속성 적용
@@ -38,7 +37,7 @@ function App() {
 
   return (
       <Router>
-         <Header user={user} setUser={setUser} /> {/* Header 컴포넌트 */}
+         <Header user={user} setUser={setUser} toggleTheme={toggleTheme} isDarkMode={isDarkMode} /> {/* toggleTheme 추가 */}
         <Routes>
           <Route path="/" element={<Main user={user} setUser={setUser} toggleTheme={toggleTheme} isDarkMode={isDarkMode} />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
