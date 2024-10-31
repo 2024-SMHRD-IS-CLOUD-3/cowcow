@@ -1,34 +1,54 @@
 /* Header.css */
+
+/* 전역 CSS 변수 정의 */
+:root {
+  --background-primary: #ffffff;
+  --background-secondary: #f0f0f0;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --accent-color: #0056b3;
+  --hover-color: #007acc;
+}
+
+/* 다크모드 CSS 변수 */
+[data-theme="dark"] {
+  --background-primary: #1a1a1a;
+  --background-secondary: #333333;
+  --text-primary: #f0f0f0;
+  --text-secondary: #bbbbbb;
+  --accent-color: #1e90ff;
+  --hover-color: #63b3ff;
+}
+
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-    height: 70px;
-    background-color: var(--background-primary);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-  }
-  
-  .logo-link {
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: none;
-    color: var(--text-primary);
-  }
-  
-  .nav-links a {
-    margin-left: 20px;
-    text-decoration: none;
-    color: var(--text-primary);
-    font-size: 18px;
-    transition: color 0.3s;
-  }
-  
-  .nav-links a:hover {
-    color: var(--hover-color);
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  height: 70px;
+  background-color: var(--background-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.logo-link {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.nav-links a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--hover-color);
+}

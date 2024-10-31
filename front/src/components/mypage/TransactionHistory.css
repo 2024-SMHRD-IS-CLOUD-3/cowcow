@@ -55,6 +55,8 @@ body {
 .filter-dropdown {
     padding: 10px;
     border-radius: 4px;
+    background-color: #eaf0fe; /* 배경색 고정 */
+    color: #000000 !important; /* 글씨 색상 검정으로 강하게 고정 */
     border: none;
     cursor: pointer;
 }
