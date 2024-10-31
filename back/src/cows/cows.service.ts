@@ -44,4 +44,9 @@ export class CowsService {
   async delete(id: number) {
     return this.cowsRepository.delete(id);
   }
+
+  // 특정 농가 소 조회 메서드
+  async findByBarnId(barnId: number): Promise<Cow[]> {
+    return this.cowsRepository.find({ where: { usrBarnSeq: barnId } });
+  }
 }
