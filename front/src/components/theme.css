@@ -78,7 +78,6 @@ body {
   background-color: var(--background-secondary);
   color: var(--text-primary);
   font-size: 24px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   cursor: pointer;
   transition: all 0.3s;
   z-index: 100;

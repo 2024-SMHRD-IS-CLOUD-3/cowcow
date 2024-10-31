@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -38,7 +39,7 @@ export class AuctionsService {
       type: cow.cowJagigubun,
     };
   }
-
+  
   // 2. 경매 생성
   async createAuction(auctionData: {
     title: string; 

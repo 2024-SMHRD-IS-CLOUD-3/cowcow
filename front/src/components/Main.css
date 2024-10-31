@@ -87,6 +87,7 @@ html, body {
     align-items: center;
     text-align: center;
     margin: 0 auto;
+    padding: 40px;
     background-color: var(--background-primary); /* 배경색 설정 */
 }
 
@@ -100,16 +101,15 @@ html, body {
 .auction-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    justify-items: center; /* 중앙 정렬 */
-    align-items: start; /* 위쪽 정렬 */
     padding: 0 40px;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 /* 경매 카드 스타일 */
 .auction-card {
-    width: 100%;
+    margin: 0 auto;
     max-width: 350px;
     border-radius: 12px;
     overflow: hidden;
@@ -196,7 +196,6 @@ html, body {
 /* 5열로 제한 */
 @media (min-width: 1200px) {
     .auction-list {
-        grid-template-columns: repeat(5, 1fr);
         grid-template-columns: repeat(5, 1fr);
     }
 }

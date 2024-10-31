@@ -17,14 +17,6 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
   const [randomThumbnail, setRandomThumbnail] = useState([]);
   const navigate = useNavigate();
 
-  const toggleTheme = () => {
-    const newTheme = isDarkMode ? "light" : "dark";
-    setIsDarkMode(!isDarkMode);
-    localStorage.setItem("theme", newTheme);
-    document.body.className = newTheme + "-mode";
-  };
-
-
   // Array of all thumbnails
   const thumbnails = [
     thumbnail1,

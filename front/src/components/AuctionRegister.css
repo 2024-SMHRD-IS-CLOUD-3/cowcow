@@ -136,6 +136,7 @@ select:focus {
 
 /* 모달 오픈 버튼 */
 .open-modal-button {
+  margin-top: 100px;
   background-color: #3b82f6;
   color: white;
   border: none;
