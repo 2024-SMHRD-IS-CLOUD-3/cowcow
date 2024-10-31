@@ -41,12 +41,11 @@ body {
 .header img {
     width: 100px;
     height: 100px;
-    display: block;          /* 인라인 요소로 인한 여백 제거 */
-    margin: 0;               /* 외부 마진 제거 */
-    padding: 0;              /* 내부 패딩 제거 */
-    border: none;            /* 테두리 제거 */
-    object-fit: cover;       /* 이미지를 잘라내서 비율 유지하며 채우기 */
-
+    display: block; /* 인라인 요소로 인한 여백 제거 */
+    margin: 0; /* 외부 마진 제거 */
+    padding: 0; /* 내부 패딩 제거 */
+    border: none; /* 테두리 제거 */
+    object-fit: cover; /* 이미지를 잘라내서 비율 유지하며 채우기 */
 }
 
 .nav-links a {
@@ -142,6 +141,7 @@ iframe {
 .state-won {
     color: red;
 }
+
 .bid-section-inline {
     display: flex;
     align-items: center; /* 수직 중앙 정렬 */
@@ -167,6 +167,18 @@ iframe {
     white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
 }
 
+/* 비활성화된 버튼 스타일 추가 */
+.btn.primary.disabled {
+    background-color: #b0b0b0; /* 어두운 회색 */
+    color: #ffffff;
+    cursor: not-allowed; /* 클릭 불가한 상태로 표시 */
+    pointer-events: none; /* 호버 및 클릭 이벤트 비활성화 */
+}
+
+.btn.primary.disabled:hover {
+    background-color: #b0b0b0; /* 비활성화 상태에서는 호버 효과 없음 */
+}
+
 .btn.primary:hover {
     background-color: #63b3ff;
 }
@@ -182,7 +194,6 @@ iframe {
     border-radius: 8px;
     letter-spacing: 1px;
 }
-
 
 /* 슬라이더 컨테이너 */
 .slider-container {
