@@ -68,6 +68,8 @@ body {
     padding: 10px;
     border: 1px solid #555;
     border-radius: 5px;
+    color: black;
+    background-color: #eaf0fe;
 }
 
 .registration-form input[type="file"] {

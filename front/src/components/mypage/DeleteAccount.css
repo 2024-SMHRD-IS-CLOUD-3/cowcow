@@ -72,13 +72,14 @@ body {
 .delete-btn {
     padding: 15px 30px;
     font-size: 18px;
-    color: #fff;
+    color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s;
+    background-color: red;
 }
 
 .delete-btn:hover {
-    background-color: #ff7777;
+    background-color: #aa2525;
 }
