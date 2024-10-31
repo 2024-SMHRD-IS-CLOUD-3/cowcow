@@ -10,13 +10,10 @@ import thumbnail5 from "../images/thumbnail5.png";
 import thumbnail6 from "../images/thumbnail6.png";
 import thumbnail7 from "../images/thumbnail7.png";
 
-const MainPage = ({ user, setUser }) => {
+const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
   const [auctionData, setAuctionData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showTopButton, setShowTopButton] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem("theme") === "dark"
-  );
   const [randomThumbnail, setRandomThumbnail] = useState([]);
   const navigate = useNavigate();
 
@@ -43,42 +40,16 @@ const MainPage = ({ user, setUser }) => {
     setRandomThumbnail(getRandomThumbnails());
   }, [auctionData]);
 
-  const toggleTheme = () => {
-    const newTheme = isDarkMode ? "light" : "dark";
-    setIsDarkMode(!isDarkMode);
-    localStorage.setItem("theme", newTheme);
-    document.body.className = newTheme + "-mode";
-  };
-
-  useEffect(() => {
-    document.body.className = isDarkMode ? "dark-mode" : "light-mode";
-  }, [isDarkMode]);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleLogout = () => {
-    // if (window.Kakao.Auth.getAccessToken()) {
-    // if (window.Kakao.Auth.getAccessToken()) {
-    //   console.log("카카오 로그아웃 중...");
-    //   window.Kakao.Auth.logout(() => {
-    //     console.log("카카오 로그아웃 완료");
-    //     setUser(null);
-    //     localStorage.removeItem("user");
-    //     navigate("/");
-    //   });
-    // } else {
-    //   setUser(null);
-    //   localStorage.removeItem("user");
-    //   navigate("/");
-    // }
-
     setUser(null);
     localStorage.removeItem("user");
     navigate("/");
-  // };
   };
+
   const filteredAuctions = auctionData.filter((auction) =>
     auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -86,7 +57,7 @@ const MainPage = ({ user, setUser }) => {
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
-        const response = await fetch("http://223.130.160.153:3001/auctions");
+        const response = await fetch("http://localhost:3001/auctions");
         if (!response.ok) {
           console.log("MainPage 에러");
           throw new Error("Failed to fetch auctions.");
@@ -144,7 +115,7 @@ const MainPage = ({ user, setUser }) => {
   };
 
   return (
-    <div className="main-container">
+    <div>
       <header className={`main-header ${isDarkMode ? "dark" : "light"}`}>
         <h1>
           <img src={logo} alt="logo" />
@@ -195,7 +166,6 @@ const MainPage = ({ user, setUser }) => {
                 </div>
               </div>
               <div>
-                {/* TODO : 모든 소 낙찰 -> 경매상태 : 종료 */}
                 <h3 className={`auction-info ${isDarkMode ? "dark" : "light"}`}>{auction.aucBroadcastTitle}</h3>
                 <p className={`auction-info ${isDarkMode ? "dark" : "light"}`}>경매 상태: {auction.aucStatus}</p>
               </div>
