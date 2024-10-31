@@ -17,6 +17,7 @@ body {
     overflow-x: hidden;
     transition: background-color 0.3s, color 0.3s;
 }
+
 /* 헤더 스타일 */
 .main-header {
     display: flex;
@@ -68,10 +69,10 @@ body {
 
 /* 인사말 텍스트 스타일 */
 .greeting {
-    overflow: hidden; /* 넘치는 텍스트 숨기기 */
-    white-space: nowrap; /* 줄바꿈 방지 */
-    text-overflow: clip; /* 말줄임표 없이 잘리도록 처리 */
-    max-width: 200px; /* 적절한 너비 지정 */
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 /* 다크모드 텍스트 색상 */
@@ -108,13 +109,13 @@ body {
 /* 라이트 모드일 때 검색창 스타일 */
 .light-mode .search-bar input {
     background-color: #fff;
-    color: #fff;
+    color: #000;
 }
 
 /* 다크 모드일 때 검색창 스타일 */
 .dark-mode .search-bar input {
     background-color: #333;
-    color: #000;
+    color: #fff;
 }
 
 .search-bar input:focus {
@@ -138,24 +139,17 @@ body {
     z-index: 100;
 }
 
-/* 라이트 모드 버튼 배경 */
 .theme-toggle-button.light {
     background-color: white;
     color: black;
 }
 
-/* 다크 모드 버튼 배경 */
 .theme-toggle-button.dark {
     background-color: #333;
     color: white;
 }
 
 .theme-toggle-button:hover {
-    transform: scale(1.1);
-}
-
-.theme-toggle:hover {
-    background-color: #007acc;
     transform: scale(1.1);
 }
 
@@ -174,17 +168,17 @@ body {
 /* 경매 카드 그리드 */
 .auction-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 400px);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     padding: 0 40px;
-    overflow: hidden; /* 넘치는 카드 숨기기 */
-    white-space: nowrap; /* 줄바꿈 방지 */
+    max-width: 100%;
+    overflow: hidden;
 }
 
 /* 경매 카드 스타일 */
 .auction-card {
-    width: 350px;
-    margin-left: 50px;
+    max-width: 350px;
+    margin: 0 auto;
     background-color: #1a1a1a;
     border-radius: 12px;
     overflow: hidden;
@@ -234,10 +228,8 @@ body {
 
 /* 경매 정보 */
 .auction-info {
-    margin-left: 60px;
-    margin-top: 10px;
+    margin: 10px;
     text-align: left;
-    
 }
 
 .auction-info h3 {
@@ -249,6 +241,7 @@ body {
 .auction-info p {
     color: #aaa;
 }
+
 /* 다크모드일 때 헤더 스타일 */
 .auction-info.dark {
     color: #f0f0f0;
@@ -295,22 +288,22 @@ body {
     }
 }
 
-@media (max-width: 8px) {
+/* 미디어 쿼리 - 작은 화면에서 스크롤 가능 */
+@media (max-width: 768px) {
     .auction-list {
-        display: flex; /* 그리드를 플렉스로 전환 */
-        flex-wrap: nowrap; /* 줄바꿈 방지 */
-        overflow-x: auto; /* 가로 스크롤 활성화 */
-        gap: 10px; /* 카드 사이 간격 조정 */
+        display: flex;
+        overflow-x: auto;
+        padding: 0 10px;
     }
     .auction-card {
-        flex: 0 0 auto; /* 카드 크기를 고정 */
-        width: 200px; /* 카드 너비 고정 */
+        flex: 0 0 auto;
+        width: 280px;
     }
 }
 
 /* 5열로 제한 */
 @media (min-width: 1200px) {
     .auction-list {
-        grid-template-columns: repeat(5, 1fr); /* 최대 5열 */
+        grid-template-columns: repeat(5, 1fr);
     }
 }
