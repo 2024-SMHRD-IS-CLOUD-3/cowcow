@@ -29,7 +29,7 @@ const MainPage = ({ user, setUser }) => {
   };
 
   const handleLogout = () => {
-    if (window.Kakao.Auth.getAccessToken()) {
+    // if (window.Kakao.Auth.getAccessToken()) {
     // if (window.Kakao.Auth.getAccessToken()) {
     //   console.log("카카오 로그아웃 중...");
     //   window.Kakao.Auth.logout(() => {
@@ -47,8 +47,8 @@ const MainPage = ({ user, setUser }) => {
     setUser(null);
     localStorage.removeItem("user");
     navigate("/");
+  // };
   };
-  }
   const filteredAuctions = auctionData.filter((auction) =>
     auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );

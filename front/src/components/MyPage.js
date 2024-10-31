@@ -1,11 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Link import 추가
+import { Link, useNavigate } from 'react-router-dom';
 import './MyPage.css';
-import logo from "../images/cowcowlogo.png"
-
+import logo from "../images/cowcowlogo.png";
 
 const MyPage = ({ user, setUser }) => {
     const [showTopButton, setShowTopButton] = useState(false);
+    const [barns, setBarns] = useState([]);
+
+    useEffect(() => {
+        const fetchUserBarn = async () => {
+            try {
+                const response = await fetch(`http://223.130.160.153:3001/user-barns/user/${user.usrSeq}`);
+                if (!response.ok) {
+                    throw new Error("농가 정보를 가져오는 데 실패했습니다.");
+                }
+                const userBarn = await response.json();
+                console.log("Fetched barns:", userBarn);
+                setBarns(userBarn);
+            } catch (error) {
+                console.error("Error fetching user-barns data", error);
+            }
+        };
+        if (user?.usrSeq) fetchUserBarn();
+    }, [user]);
 
     const handleScroll = () => {
         setShowTopButton(window.scrollY > 100);
@@ -20,28 +37,13 @@ const MyPage = ({ user, setUser }) => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const handleLogout = () => {
-        // if (window.Kakao.Auth.getAccessToken()) {
-        //   console.log("카카오 로그아웃 중...");
-        //   window.Kakao.Auth.logout(() => {
-        //     console.log("카카오 로그아웃 완료");
-        //     setUser(null);
-        //     localStorage.removeItem("user");
-        //     navigate("/");
-        //   });
-        // } else {
-        //   setUser(null);
-        //   localStorage.removeItem("user");
-        //   navigate("/");
-        // }
+    const navigate = useNavigate();
 
+    const handleLogout = () => {
         setUser(null);
         localStorage.removeItem("user");
         navigate("/");
-      };
-      
-
-    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+    };
 
     return (
         <div className="mypage-layout">
@@ -50,7 +52,7 @@ const MyPage = ({ user, setUser }) => {
                 <Sidebar />
                 <section className="mypage-content">
                     <h1>개인정보 변경</h1>
-                    <ProfileInfo user={user} /> {/* user prop 추가 */}
+                    <ProfileInfo user={user} userBarns={barns} setBarns={setBarns} />
                 </section>
             </div>
             {showTopButton && (
@@ -66,13 +68,13 @@ const MyPage = ({ user, setUser }) => {
 const Header = ({ handleLogout }) => (
     <header className="header">
         <div className="logo">
-            <Link to="/" className="logo-link"><img src={logo}></img></Link> {/* a 태그를 Link로 변경 */}
+            <Link to="/" className="logo-link"><img src={logo} alt="로고" /></Link>
         </div>
         <nav className="nav-links">
-            <Link to="/">홈</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="/auctionRegister">경매등록</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="/myPage" className="active">마이페이지</Link> {/* a 태그를 Link로 변경 */}
-            <Link to="/" onClick={handleLogout}>로그아웃</Link> {/* 버튼을 Link로 변경 */}
+            <Link to="/">홈</Link>
+            <Link to="/auctionRegister">경매등록</Link>
+            <Link to="/myPage" className="active">마이페이지</Link>
+            <Link to="/" onClick={handleLogout}>로그아웃</Link>
         </nav>
     </header>
 );
@@ -80,68 +82,117 @@ const Header = ({ handleLogout }) => (
 const Sidebar = () => (
     <aside className="sidebar">
         <ul>
-            <li><Link to="/myPage" className="active">개인정보 변경</Link></li> {/* a 태그를 Link로 변경 */}
-            <li><Link to="/cowPage">소 등록</Link></li> {/* a 태그를 Link로 변경 */}
-            <li><Link to="/transactionHistory">거래 내역</Link></li> {/* a 태그를 Link로 변경 */}
-            <li><Link to="/deleteAccount">회원 탈퇴</Link></li> {/* a 태그를 Link로 변경 */}
+            <li><Link to="/myPage" className="active">개인정보 변경</Link></li>
+            <li><Link to="/cowPage">소 등록</Link></li>
+            <li><Link to="/transactionHistory">거래 내역</Link></li>
+            <li><Link to="/deleteAccount">회원 탈퇴</Link></li>
         </ul>
     </aside>
 );
 
-const ProfileInfo = ({ user, userBarn }) => { // user prop 추가
-    const [addresses, setAddresses] = useState(['소경매왕']); // 초기 주소 1개
+const ProfileInfo = ({ user, userBarns, setBarns }) => {
+    const [newBarnName, setNewBarnName] = useState(''); // 새로운 농가 이름을 저장할 상태
 
-    const handleAddAddress = () => {
-        if (addresses.length < 3) {
-            setAddresses([...addresses, '']);
+    // 새로운 농가 추가
+    const handleAddBarn = async () => {
+        console.log("handleAddBarn의 newBarnName: ", newBarnName);
+
+        if (newBarnName.trim() === '') {
+            alert('농가 이름을 입력하세요.');
+            return;
+        }
+
+        if (userBarns.length < 3) {
+            try {
+                const newBarn = { usrSeq: user.usrSeq, usrBarnName: newBarnName };
+                const response = await fetch('http://223.130.160.153:3001/user-barns', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newBarn),
+                });
+                if (!response.ok) {
+                    throw new Error('농가 추가에 실패했습니다.');
+                }
+                const createdBarn = await response.json();
+                setBarns([...userBarns, createdBarn]); // 새로 추가된 농가를 barns 상태에 업데이트
+                alert('농가가 성공적으로 추가되었습니다.');
+                setNewBarnName(''); // 입력 필드를 초기화합니다.
+            } catch (error) {
+                console.error("Error adding new barn", error);
+            }
         }
     };
 
-    const handleRemoveAddress = (index) => {
-        if (addresses.length > 1) {
-            const updatedAddresses = addresses.filter((_, i) => i !== index);
-            setAddresses(updatedAddresses);
+    // 농가 삭제
+    const handleRemoveBarn = async (id, index) => {
+        const confirmed = window.confirm('삭제하시겠습니까?');
+        if (!confirmed) return;
+
+        try {
+            const response = await fetch(`http://223.130.160.153:3001/user-barns/${id}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('농가 삭제에 실패했습니다.');
+            }
+            const updatedBarns = userBarns.filter((_, i) => i !== index);
+            setBarns(updatedBarns);
+            alert('농가가 성공적으로 삭제되었습니다.');
+        } catch (error) {
+            console.error("Error removing barn", error);
         }
     };
 
-    const handleAddressChange = (index, value) => {
-        const updatedAddresses = [...addresses];
-        updatedAddresses[index] = value;
-        setAddresses(updatedAddresses);
+    // 농가 이름 변경
+    const handleChangeBarn = (index, value) => {
+        const updatedBarns = [...userBarns];
+        updatedBarns[index].usrBarnName = value;
+        setBarns(updatedBarns);
     };
 
     return (
         <div className="profile-info">
-            <InputField label="이름" value={user ? user.usrNm : '이름 없음'} /> {/* null 체크 추가 */}
-            <InputField label="이메일" value={user ? user.usrEml : '이메일 없음'} /> {/* null 체크 추가 */}
-            <InputField label="전화번호" value={user ? user.usrPhn : '전화번호 없음'} /> {/* null 체크 추가 */}
-            <InputField label="농가이름" value={userBarn ? userBarn.userBarnName : '농가정보 없음'} />
-            <label className="address-label">농가주소</label>
+            <InputField label="이름" value={user ? user.usrNm : '이름 없음'} />
+            <InputField label="이메일" value={user ? user.usrEml : '이메일 없음'} />
+            <InputField label="전화번호" value={user ? user.usrPhn : '전화번호 없음'} />
 
-            {addresses.map((address, index) => (
+            <label className="address-label">농가이름</label>
+            {userBarns.map((barn, index) => (
                 <div key={index} className="address-group">
                     <input
                         type="text"
-                        value={address}
-                        onChange={(e) => handleAddressChange(index, e.target.value)}
-                        placeholder="주소를 입력하세요"
+                        value={barn.usrBarnName || ''}
+                        onChange={(e) => handleChangeBarn(index, e.target.value)}
+                        placeholder="농가 이름을 입력하세요"
                     />
                     <button
-                        className="btn add-address"
-                        onClick={handleAddAddress}
-                        disabled={addresses.length >= 3}
-                    >
-                        + 주소 추가
-                    </button>
-                    <button
                         className="btn remove-address"
-                        onClick={() => handleRemoveAddress(index)}
-                        disabled={addresses.length === 1}
+                        onClick={() => handleRemoveBarn(barn.usrBarnSeq, index)}
+                        disabled={userBarns.length === 0}
                     >
                         삭제
                     </button>
                 </div>
             ))}
+
+            {userBarns.length < 3 && (
+                <div className="address-group">
+                    <input
+                        type="text"
+                        value={newBarnName}
+                        onChange={(e) => setNewBarnName(e.target.value)}
+                        placeholder="새로운 농가 이름을 입력하세요"
+                    />
+                    <button
+                        className="btn add-address"
+                        onClick={handleAddBarn}
+                    >
+                        추가
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
