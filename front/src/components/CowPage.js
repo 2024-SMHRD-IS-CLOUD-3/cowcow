@@ -27,6 +27,7 @@ const CowPage = ({ user, setUser }) => {
   const [userBarns, setUserBarn] = useState([]);
   const [filterDate, setFilterDate] = useState("");
   const [filtercowGdr, setFiltercowGdr] = useState("");
+  const [filterBarn, setFilterBarn] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -36,9 +37,12 @@ const CowPage = ({ user, setUser }) => {
     const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
     if (confirmDelete) {
       try {
-        const response = await fetch(`http://223.130.160.153:3001/cows/${cowId}`, {
-          method: "DELETE",
-        });
+        const response = await fetch(
+          `http://223.130.160.153:3001/cows/${cowId}`,
+          {
+            method: "DELETE",
+          }
+        );
 
         if (response.ok) {
           alert("삭제되었습니다.");
@@ -71,7 +75,6 @@ const CowPage = ({ user, setUser }) => {
     localStorage.removeItem("user");
     navigate("/");
   };
-  
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -132,7 +135,10 @@ const CowPage = ({ user, setUser }) => {
   const filteredCows = cows.filter((cow) => {
     const matchesDate = filterDate ? cow.registrationDate === filterDate : true;
     const matchescowGdr = filtercowGdr ? cow.cowGdr === filtercowGdr : true;
-    return matchesDate && matchescowGdr;
+    const matchesBarn = filterBarn
+      ? cow.usrBarnSeq === parseInt(filterBarn)
+      : true;
+    return matchesDate && matchescowGdr && matchesBarn;
   });
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -407,6 +413,17 @@ const CowPage = ({ user, setUser }) => {
                 <option value="암">암컷</option>
                 <option value="프">프리미엄</option>
               </select>
+              <select
+                value={filterBarn}
+                onChange={(e) => setFilterBarn(e.target.value)}
+              >
+                <option value="">농가 선택</option>
+                {userBarns.map((barn) => (
+                  <option key={barn.usrBarnSeq} value={barn.usrBarnSeq}>
+                    {barn.usrBarnName}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <table className="registered-cows">
@@ -418,6 +435,7 @@ const CowPage = ({ user, setUser }) => {
                   <th>KPN</th>
                   <th>산차</th>
                   <th>지역</th>
+                  <th>농가</th>
                   <th>비고</th>
                   <th>계대</th>
                   <th>중량</th>
@@ -433,6 +451,11 @@ const CowPage = ({ user, setUser }) => {
                     <td>{cow.cowKpn}</td>
                     <td>{cow.cowPrt}</td>
                     <td>{cow.cowRegion}</td>
+                    <td>
+                      {userBarns.find(
+                        (barn) => barn.usrBarnSeq === cow.usrBarnSeq
+                      )?.usrBarnName || "정보 없음"}
+                    </td>
                     <td>{cow.notes}</td>
                     <td>{cow.cowFamily}</td>
                     <td>{cow.cowWeight}</td>
