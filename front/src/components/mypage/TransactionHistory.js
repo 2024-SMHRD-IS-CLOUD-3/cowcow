@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './TransactionHistory.css';
-import logo from "../images/cowcowlogo.png";
 
-const TransactionHistory = ({ user, setUser }) => {
+import Sidebar from './Sidebar';
+import './TransactionHistory.css';
+
+
+const TransactionHistory = ({ user, setUser, isDarkMode }) => { // isDarkMode 추가
     const [filter, setFilter] = useState('전체');
-    const [transactions, setTransactions] = useState([]); // 초기 상태를 빈 배열로 설정
-    const navigate = useNavigate();
+    const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
         const fetchTransactions = async () => {
@@ -15,23 +15,17 @@ const TransactionHistory = ({ user, setUser }) => {
                 if (!response.ok) throw new Error('거래 내역을 불러오는 데 실패했습니다.');
 
                 const data = await response.json();
-                setTransactions(data); // 거래 내역 설정
+                setTransactions(data);
             } catch (error) {
+                console.error("Error fetching transactions:", error);
             }
         };
 
         fetchTransactions();
-
     }, [user]);
 
     const handleFilterChange = (event) => {
         setFilter(event.target.value);
-    };
-
-    const handleLogout = () => {
-        setUser(null);
-        localStorage.removeItem("user");
-        navigate("/");
     };
 
     const filteredTransactions = transactions.filter((tx) =>
@@ -39,10 +33,9 @@ const TransactionHistory = ({ user, setUser }) => {
     );
 
     return (
-        <div className="transaction-layout">
-            <Header handleLogout={handleLogout} />
+        <div className={`transaction-layout ${isDarkMode ? 'dark-mode' : 'light-mode'}`}> {/* isDarkMode 적용 */}
             <div className="content-container">
-                <Sidebar />
+                <Sidebar /> {/* Sidebar 컴포넌트 사용 */}
                 <section className="transaction-content">
                     <h1>거래 내역</h1>
 
@@ -58,7 +51,6 @@ const TransactionHistory = ({ user, setUser }) => {
                         </select>
                     </div>
 
-                    {/* TransactionTable 컴포넌트 조건부 렌더링 */}
                     {filteredTransactions.length > 0 ? (
                         <TransactionTable transactions={filteredTransactions} />
                     ) : (
@@ -66,7 +58,6 @@ const TransactionHistory = ({ user, setUser }) => {
                     )}
                 </section>
             </div>
-            <Footer />
         </div>
     );
 };
@@ -94,39 +85,6 @@ const TransactionTable = ({ transactions }) => (
             ))}
         </tbody>
     </table>
-);
-
-const Header = ({ handleLogout }) => (
-    <header className="header">
-        <div className="logo">
-            <Link to="/" className="logo-link">
-                <img src={logo} alt="logo" />
-            </Link>
-        </div>
-        <nav className="nav-links">
-            <Link to="/">홈</Link>
-            <Link to="/auctionRegister">경매등록</Link>
-            <Link to="/myPage">마이페이지</Link>
-            <Link to="/" onClick={handleLogout}>로그아웃</Link>
-        </nav>
-    </header>
-);
-
-const Sidebar = () => (
-    <aside className="sidebar">
-        <ul>
-            <li><Link to="/myPage">개인정보 변경</Link></li>
-            <li><Link to="/cowPage">소 등록</Link></li>
-            <li><Link to="/transactionHistory" className="active">거래 내역</Link></li>
-            <li><Link to="/deleteAccount">회원 탈퇴</Link></li>
-        </ul>
-    </aside>
-);
-
-const Footer = () => (
-    <footer className="footer">
-        <p>© 2024 소 경매 웹사이트. 모든 권리 보유.</p>
-    </footer>
 );
 
 export default TransactionHistory;
