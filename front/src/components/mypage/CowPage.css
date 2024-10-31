@@ -9,60 +9,23 @@ body {
     width: 100%;
     height: 100%;
     font-family: 'Arial', sans-serif;
-    background-color: #111;
-    color: #fff;
+}
+
+.registration-form label, .registration-form input, .registered-cows th, .registered-cows td {
+    color: var(--text-primary);
+}
+
+.layout, .content-container, .registration-form, .image-preview, .table-container, .filter-section, .pagination {
+    background-color: var(--background-primary);
 }
 
 /* 레이아웃 */
 .layout {
     min-width: 1000px; /* 페이지가 좁을 경우 가로 스크롤 발생 */
     min-height: 100vh; /* 페이지 전체 높이 */
-    overflow: auto; /* 스크롤 활성화 */
+    overflow: visible; /* 스크롤 필요 시 auto로 변경 */
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    background-color: #111;
-}
-
-/* 헤더 스타일 */
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-    height: 70px;
-    background-color: #1a1a1a;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-
-.header .logo-link {
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #fff;
-}
-
-.nav-links a {
-    margin-left: 20px;
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
-    transition: color 0.3s;
-}
-
-.nav-links a:hover {
-    color: #1e90ff;
-}
-
-.nav-links a.active {
-    color: #63b3ff;
-    font-weight: bold;
 }
 
 /* 콘텐츠 컨테이너 */
@@ -71,49 +34,7 @@ body {
     margin-left: 250px; /* 사이드바 너비만큼 여백 */
     width: calc(100% - 250px); /* 사이드바를 제외한 너비 */
     min-height: calc(100vh - 70px); /* 화면 높이에서 헤더 제외 */
-    overflow: auto; /* 스크롤 활성화 */
-}
-
-
-.sidebar {
-    position: fixed;
-    top: 70px; /* 헤더 아래에 위치 */
-    left: 0;
-    height: calc(100vh - 70px); /* 헤더를 제외한 높이 */
-    width: 250px;
-    background-color: #1a1a1a;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin-bottom: 15px;
-}
-
-.sidebar ul li a {
-    text-decoration: none;
-    color: #bbb;
-    font-size: 18px;
-    transition: color 0.3s;
-    display: block;
-    padding: 10px;
-    border-radius: 4px;
-}
-
-.sidebar ul li a:hover {
-    background-color: #333;
-    color: #1e90ff;
-}
-
-.sidebar ul li a.active {
-    background-color: #1e90ff;
-    color: #fff;
-    font-weight: bold;
+    overflow: visible; /* 스크롤 필요 시 auto로 변경 */
 }
 
 /* 메인 콘텐츠 */
@@ -128,7 +49,6 @@ body {
 /* 등록 폼 스타일 */
 .registration-form {
     width: 500px;
-    background-color: #1a1a1a;
     padding: 50px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
@@ -148,8 +68,6 @@ body {
     padding: 10px;
     border: 1px solid #555;
     border-radius: 5px;
-    background-color: #333;
-    color: #fff;
 }
 
 .registration-form input[type="file"] {
@@ -231,14 +149,8 @@ body {
 }
 
 .registered-cows th {
-    background-color: #333;
-    color: #fff;
     font-weight: bold;
     font-size: 18px;
-}
-
-.registered-cows tr:nth-child(even) {
-    background-color: #1a1a1a;
 }
 
 /* 작은 화면 대응 */
@@ -288,16 +200,12 @@ body {
     padding: 10px;
     border: 1px solid #555;
     border-radius: 5px;
-    background-color: #333;
-    color: #fff;
 }
 
 .filter-section select {
     padding: 10px;
     border: 1px solid #555;
     border-radius: 5px;
-    background-color: #333;
-    color: #fff;
 }
 
 /* 삭제 버튼 스타일 */
@@ -314,6 +222,8 @@ body {
 .delete-button:hover {
     background-color: #ff1a1a;
 }
+
+/* 페이지네이션 */
 .pagination {
     margin-top: 20px;
     display: flex;

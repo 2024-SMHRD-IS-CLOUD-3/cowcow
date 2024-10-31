@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Post, Body, Get, Param, Delete, NotFoundException } from '@nestjs/common';
 import { CowsService } from './cows.service';
 import { Cow } from './cow.entity';
@@ -24,7 +25,7 @@ export class CowsController {
     return this.cowService.findAll();
   }
 
-    // 특정 사용자 소 조회 API
+  // 특정 사용자 소 조회 API
   @Get('/user/:userId')
   async getCowsByUserId(@Param('userId') userId: number): Promise<Cow[]> {
     return this.cowService.findByUserId(userId);
@@ -37,11 +38,9 @@ export class CowsController {
       throw new NotFoundException('해당 소를 찾을 수 없습니다.');
     }
   }
-
-    // 특정 농가의 소 조회 API
+  // 특정 농가의 소 조회 API
   @Get('/barn/:barnId')
   async getCowsByBarnId(@Param('barnId') barnId: number): Promise<Cow[]> {
     return this.cowService.findByBarnId(barnId);
   }
-
 }
