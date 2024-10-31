@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Main.css"; // CSS 파일 불러오기
 import logo from "../images/cowcowlogo.png";
-import thumbnail from "../images/thumbnail.png";
+import thumbnail1 from "../images/thumbnail1.png";
+import thumbnail2 from "../images/thumbnail2.png";
+import thumbnail3 from "../images/thumbnail3.png";
+import thumbnail4 from "../images/thumbnail4.png";
+import thumbnail5 from "../images/thumbnail5.png";
+import thumbnail6 from "../images/thumbnail6.png";
 
 const MainPage = ({ user, setUser }) => {
   const [auctionData, setAuctionData] = useState([]);
@@ -11,7 +16,30 @@ const MainPage = ({ user, setUser }) => {
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("theme") === "dark"
   );
+  const [randomThumbnail, setRandomThumbnail] = useState([]);
   const navigate = useNavigate();
+
+  // Array of all thumbnails
+  const thumbnails = [
+    thumbnail1,
+    thumbnail2,
+    thumbnail3,
+    thumbnail4,
+    thumbnail5,
+    thumbnail6,
+  ];
+
+  // Function to get random thumbnails
+  const getRandomThumbnails = () => {
+    return auctionData.map(() => {
+      const randomIndex = Math.floor(Math.random() * thumbnails.length);
+      return thumbnails[randomIndex];
+    });
+  };
+
+  useEffect(() => {
+    setRandomThumbnail(getRandomThumbnails());
+  }, [auctionData]);
 
   const toggleTheme = () => {
     const newTheme = isDarkMode ? "light" : "dark";
@@ -148,12 +176,12 @@ const MainPage = ({ user, setUser }) => {
 
       <div className="live-auctions">
         <div className="auction-list">
-          {filteredAuctions.map((auction) => (
+          {filteredAuctions.map((auction, index) => (
             <Link to={`/auctionDetail/${auction.aucSeq}`} key={auction.aucSeq}>
               <div className={`auction-card ${auction.aucStatus.toLowerCase()}`}>
                 <div className="thumbnail-container">
-                  <img
-                    src={thumbnail}
+                <img
+                    src={randomThumbnail[index]}
                     alt={`Thumbnail of ${auction.aucBroadcastTitle}`}
                   />
                   {auction.aucStatus === "진행중" && (
