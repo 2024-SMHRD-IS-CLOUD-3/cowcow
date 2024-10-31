@@ -8,6 +8,7 @@ import thumbnail3 from "../images/thumbnail3.png";
 import thumbnail4 from "../images/thumbnail4.png";
 import thumbnail5 from "../images/thumbnail5.png";
 import thumbnail6 from "../images/thumbnail6.png";
+import thumbnail7 from "../images/thumbnail7.png";
 
 const MainPage = ({ user, setUser }) => {
   const [auctionData, setAuctionData] = useState([]);
@@ -27,6 +28,7 @@ const MainPage = ({ user, setUser }) => {
     thumbnail4,
     thumbnail5,
     thumbnail6,
+    thumbnail7,
   ];
 
   // Function to get random thumbnails
