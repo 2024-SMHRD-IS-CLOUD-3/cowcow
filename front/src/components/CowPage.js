@@ -326,7 +326,7 @@ const CowPage = ({ user, setUser }) => {
               <option value="">선택</option>
               <option value="수">수컷</option>
               <option value="암">암컷</option>
-              <option value="프">거세우</option>
+              <option value="프">프리미엄</option>
             </select>
             <label htmlFor="cowJagigubun">자기구분</label>
             <select
@@ -405,7 +405,7 @@ const CowPage = ({ user, setUser }) => {
                 <option value="">성별 선택</option>
                 <option value="수">수컷</option>
                 <option value="암">암컷</option>
-                <option value="프">거세우</option>
+                <option value="프">프리미엄</option>
               </select>
             </div>
 
