@@ -116,36 +116,6 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
 
   return (
     <div>
-      <header className={`main-header ${isDarkMode ? "dark" : "light"}`}>
-        <h1>
-          <img src={logo} alt="logo" />
-        </h1>
-        <div className="search-bar">
-          <input
-            type="text"
-            placeholder="경매 검색..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <nav className="nav-links">
-          <Link to="/">홈</Link>
-          {!user ? (
-            <>
-              <Link to="/login">경매등록</Link>
-              <Link to="/login">로그인</Link>
-            </>
-          ) : (
-            <>
-              <Link to="/auctionRegister">경매등록</Link>
-              <Link to="/myPage">마이페이지</Link>
-              <Link to="/" onClick={handleLogout}>
-                로그아웃
-              </Link>
-            </>
-          )}
-        </nav>
-      </header>
 
       <div className="live-auctions">
         <div className="auction-list">

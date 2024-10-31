@@ -135,7 +135,7 @@ select:focus {
 }
 
 /* 모달 오픈 버튼 */
-.open-modal-button {
+/* .open-modal-button {
   margin-top: 100px;
   background-color: #3b82f6;
   color: white;
@@ -145,8 +145,8 @@ select:focus {
   border-radius: 8px;
   margin-bottom: 10px;
   transition: background-color 0.3s;
-}
+} */
 
-.open-modal-button:hover {
+/* .open-modal-button:hover {
   background-color: #2563eb;
-}
+} */

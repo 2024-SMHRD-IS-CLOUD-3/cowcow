@@ -255,30 +255,6 @@ const AuctionDetail = ({ user, setUser }) => {
 
   return (
     <div className="auction-detail-container">
-      <header className="header">
-        <div className="logo">
-          <Link to="/" className="logo-link">
-            <h1 style={{ display: "inline" }}>
-              <img src={logo} alt="logo" />
-            </h1>
-          </Link>
-        </div>
-        <nav className="nav-links">
-          <Link to="/">홈</Link>
-          <Link to="/auctionRegister">경매등록</Link>
-          {!user ? (
-            <Link to="/login">로그인</Link>
-          ) : (
-            <>
-              <Link to="/myPage">마이페이지</Link>
-              <Link to="/" onClick={handleLogout}>
-                로그아웃
-              </Link>
-            </>
-          )}
-        </nav>
-      </header>
-
       <section className="auction-detail">
         <div className="auction-content">
           <div className="video-container">
