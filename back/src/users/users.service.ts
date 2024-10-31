@@ -59,4 +59,10 @@ export class UsersService {
 
     return user;
   }
+
+  // 사용자 정보 업데이트
+  async updateUser(id: number, updateData: Partial<User>): Promise<User> {
+    await this.usersRepository.update(id, updateData);
+    return this.usersRepository.findOneBy({ usrSeq: id });
+  }
 }

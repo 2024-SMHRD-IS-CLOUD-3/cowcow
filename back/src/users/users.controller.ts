@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Delete, Param, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, Param, Res, HttpStatus, Patch } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 
@@ -35,5 +35,11 @@ export class UsersController {
       console.error('카카오 로그인 처리 실패:', error);
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: '카카오 로그인 처리 실패' });
     }
+  }
+
+    // 사용자 정보 업데이트
+  @Patch(':id') // PATCH /users/:id
+  async updateUser(@Param('id') id: number, @Body() updateData: Partial<User>): Promise<User> {
+    return this.usersService.updateUser(id, updateData);
   }
 }
