@@ -19,7 +19,7 @@ html, body {
 
 
 /* 헤더 스타일 */
-.main-header {
+/* .main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -30,13 +30,13 @@ html, body {
     height: 70px;
     backdrop-filter: blur(10px);
     transition: background-color 0.3s, color 0.3s;
-}
+} */
 
-.main-header h1 img {
+/* .main-header h1 img {
     width: 100px;
     height: 100px;
     object-fit: cover;
-}
+} */
 
 /* 헤더 텍스트와 네비게이션 링크 스타일 */
 .nav-links {
@@ -99,6 +99,7 @@ html, body {
 
 /* 경매 카드 그리드 */
 .auction-list {
+    margin-top: 70px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
