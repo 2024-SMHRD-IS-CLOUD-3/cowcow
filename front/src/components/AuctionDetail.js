@@ -53,9 +53,7 @@ const AuctionDetail = ({ user, setUser }) => {
   useEffect(() => {
     const fetchAuctionDetail = async () => {
       try {
-        const response = await fetch(
-          `http://223.130.160.153:3001/auctions/${id}`
-        );
+        const response = await fetch(`http://223.130.160.153:3001/auctions/${id}`);
         if (!response.ok) {
           throw new Error("경매 정보를 가져오는 데 실패했습니다.");
         }
@@ -285,7 +283,7 @@ const AuctionDetail = ({ user, setUser }) => {
         <div className="auction-content">
           <div className="video-container">
             <iframe
-              src="http://localhost:5000/video_feed"
+              src="http://223.130.160.153:5000/video_feed"
               title="RTSP Video Stream"
             ></iframe>
           </div>
@@ -310,34 +308,74 @@ const AuctionDetail = ({ user, setUser }) => {
                 <>
                   <input
                     type="number"
-                    placeholder="입찰 금액 입력"
+                    placeholder={
+                      acows[currentSlide]?.acowStatus === "낙찰"
+                        ? "낙찰 완료된 상품입니다"
+                        : "입찰 금액 입력"
+                    }
                     className="bid-input"
+                    disabled={acows[currentSlide]?.acowStatus === "낙찰"} // 낙찰일 경우 입력 금지
                   />
                   <Link to="/login">
-                    <button className="btn primary">입찰하기</button>
+                    <button
+                      className={`btn primary ${
+                        acows[currentSlide]?.acowStatus === "낙찰"
+                          ? "disabled"
+                          : ""
+                      }`}
+                      disabled={acows[currentSlide]?.acowStatus === "낙찰"}
+                    >
+                      {acows[currentSlide]?.acowStatus === "낙찰"
+                        ? "입찰 불가"
+                        : "입찰하기"}
+                    </button>
                   </Link>
                 </>
               ) : (
                 <>
                   {auction.usrSeq === user.usrSeq ? (
                     <button
-                      className="btn primary"
+                      className={`btn primary ${
+                        acows[currentSlide]?.acowStatus === "낙찰"
+                          ? "disabled"
+                          : ""
+                      }`}
                       onClick={handleWinningBid}
-                      disabled={!highestBid}
+                      disabled={
+                        !highestBid ||
+                        acows[currentSlide]?.acowStatus === "낙찰"
+                      } // 낙찰일 경우 버튼 비활성화
                     >
-                      낙찰하기
+                      {acows[currentSlide]?.acowStatus === "낙찰"
+                        ? "낙찰 완료"
+                        : "낙찰하기"}
                     </button>
                   ) : (
                     <>
                       <input
                         type="number"
-                        placeholder="입찰 금액 입력"
+                        placeholder={
+                          acows[currentSlide]?.acowStatus === "낙찰"
+                            ? "낙찰 완료된 상품입니다"
+                            : "입찰 금액 입력"
+                        }
                         className="bid-input"
                         value={bidAmount}
                         onChange={(e) => setBidAmount(e.target.value)}
+                        disabled={acows[currentSlide]?.acowStatus === "낙찰"} // 낙찰일 경우 입력 금지
                       />
-                      <button className="btn primary" onClick={handleBidSubmit}>
-                        입찰하기
+                      <button
+                        className={`btn primary ${
+                          acows[currentSlide]?.acowStatus === "낙찰"
+                            ? "disabled"
+                            : ""
+                        }`}
+                        onClick={handleBidSubmit}
+                        disabled={acows[currentSlide]?.acowStatus === "낙찰"} // 낙찰일 경우 버튼 비활성화
+                      >
+                        {acows[currentSlide]?.acowStatus === "낙찰"
+                          ? "입찰 불가"
+                          : "입찰하기"}
                       </button>
                     </>
                   )}

@@ -17,6 +17,7 @@ html, body {
     background-color: var(--background-primary);
 }
 
+
 /* 헤더 스타일 */
 .main-header {
     display: flex;
@@ -98,6 +99,7 @@ html, body {
 /* 경매 카드 그리드 */
 .auction-list {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     justify-items: center; /* 중앙 정렬 */
@@ -194,6 +196,7 @@ html, body {
 /* 5열로 제한 */
 @media (min-width: 1200px) {
     .auction-list {
+        grid-template-columns: repeat(5, 1fr);
         grid-template-columns: repeat(5, 1fr);
     }
 }

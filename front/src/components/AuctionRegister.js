@@ -7,6 +7,9 @@ const AuctionRegister = ({ user, setUser }) => {
   const [broadCastTitle, setbroadCastTitle] = useState('');
   const [items, setItems] = useState([{ id: 1, entity: '', minValue: '' }]);
   const [userCows, setUserCows] = useState([]); // 유저의 소 목록
+  const [userBarns, setUserBarns] = useState([]); // 유저의 농가 목록
+  const [selectedBarn, setSelectedBarn] = useState(''); // 선택한 농가
+  const [barnCows, setBarnCows] = useState([]); // 선택한 농가의 소 목록
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const navigate = useNavigate();
 
@@ -28,6 +31,25 @@ const AuctionRegister = ({ user, setUser }) => {
 
   useEffect(() => {
     if (!user) return;
+    const fetchUserBarns = async () => {
+      try {
+        const response = await fetch(`http://223.130.160.153:3001/user-barns/user/${user.usrSeq}`);
+        if (response.ok) {
+          const data = await response.json();
+          setUserBarns(data);
+        } else {
+          throw new Error('농가 목록을 불러오는 데 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('Error fetching barns:', error);
+      }
+    };
+    fetchUserBarns();
+  }, [user]);
+  
+
+  useEffect(() => {
+    if (!user) return;
     const fetchUserCows = async () => {
       try {
         const response = await fetch(`http://223.130.160.153:3001/cows/user/${user.usrSeq}`);
@@ -43,6 +65,28 @@ const AuctionRegister = ({ user, setUser }) => {
     };
     fetchUserCows();
   }, [user]);
+
+  const handleBarnChange = async (e) => {
+    const barnId = e.target.value;
+    setSelectedBarn(barnId);
+  
+    if (barnId) {
+      try {
+        const response = await fetch(`http://223.130.160.153:3001/cows/barn/${barnId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setBarnCows(data); // 선택된 농가의 소 목록 저장
+        } else {
+          throw new Error('농가의 소 목록을 불러오는 데 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('Error fetching cows:', error);
+      }
+    } else {
+      setBarnCows([]); // 농가가 선택되지 않으면 소 목록을 초기화
+    }
+  };
+  
 
   const handleAddItem = () => setItems([...items, { id: items.length + 1, entity: '', minValue: '' }]);
   const handleRemoveItem = (id) => {
@@ -157,37 +201,50 @@ const AuctionRegister = ({ user, setUser }) => {
                 onChange={handlebroadCastTitleChange}
                 placeholder="방송 이름을 입력하세요"
               />
+
+              <label>농가 선택</label>
+              <select
+                value={selectedBarn}
+                onChange={handleBarnChange}
+              >
+                <option value="">농가 선택</option>
+                {userBarns.map((barn) => (
+                  <option key={barn.usrBarnSeq} value={barn.usrBarnSeq}>
+                    {barn.usrBarnName}
+                  </option>
+                ))}
+              </select>
+            
+              {items.map((item) => (
+                <div key={item.id} className="form-group row">
+                  <div className="input-container">
+                    <label>개체 번호</label>
+                    <select
+                      value={item.entity}
+                      onChange={(e) => handleInputChange(item.id, 'entity', e.target.value)}
+                    >
+                      <option value="">개체 선택</option>
+                      {barnCows.map((cow) => (
+                        <option key={cow.cowSeq} value={cow.cowSeq}>
+                          {cow.cowNo} ({cow.cowGdr})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="input-container">
+                    <label>최저가</label>
+                    <input
+                      type="number"
+                      value={item.minValue}
+                      onChange={(e) => handleInputChange(item.id, 'minValue', e.target.value)}
+                      min="0"
+                      placeholder="최소가를 입력하세요"
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
-
-            {items.map((item) => (
-              <div key={item.id} className="form-group row">
-                <div className="input-container">
-                  <label>개체 번호</label>
-                  <select
-                    value={item.entity}
-                    onChange={(e) => handleInputChange(item.id, 'entity', e.target.value)}
-                  >
-                    <option value="">개체 선택</option>
-                    {userCows.map((cow) => (
-                      <option key={cow.cowSeq} value={cow.cowSeq}>
-                        {cow.cowNo} ({cow.cowGdr})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="input-container">
-                  <label>최저가</label>
-                  <input
-                    type="number"
-                    value={item.minValue}
-                    onChange={(e) => handleInputChange(item.id, 'minValue', e.target.value)}
-                    min="0"
-                    placeholder="최소가를 입력하세요"
-                  />
-                </div>
-              </div>
-            ))}
 
             <div className="button-group">
               <button className="add-button" onClick={handleAddItem}>

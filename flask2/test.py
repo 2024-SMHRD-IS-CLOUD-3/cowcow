@@ -37,7 +37,7 @@ stop_event = Event()  # 이벤트 객체로 초기화
 read_thread = None  # 스레드 객체 추가
 
 # 모델 경로 설정 (현재 디렉터리의 best.pt 파일 경로로 지정)
-model_path = os.path.join(os.path.dirname(__file__), "best.pt")
+model_path = os.path.join(os.path.dirname(__file__), "best2.pt")
 
 # YOLO 및 DeepSORT 설정
 model = YOLO(model_path, verbose=False)
@@ -137,6 +137,11 @@ def read_frames():
 def process_frame():
     if not frame_queue.empty():
         frame = frame_queue.get()
+
+        #  # 다운스케일링 해상도 설정
+        # target_width, target_height = 640, 360
+        # frame = cv2.resize(frame, (target_width, target_height))
+
         results = model(frame)
         detections = []
 
@@ -296,7 +301,7 @@ async def video_feed():
 
 # uvicorn을 통해 FastAPI 앱 실행
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=5000)
 
 
 # In[ ]:

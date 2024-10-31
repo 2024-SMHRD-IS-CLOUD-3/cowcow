@@ -11,10 +11,14 @@ import {
 } from '@nestjs/common';
 import { AuctionCowsService } from './auction-cows.service';
 import { AuctionCow } from './auction-cow.entity';
+import { AuctionsService } from 'src/auctions/auctions.service';
 
 @Controller('auction-cows')
 export class AuctionCowsController {
-  constructor(private readonly auctionCowsService: AuctionCowsService) {}
+  constructor(
+    private readonly auctionCowsService: AuctionCowsService,
+    private readonly auctionsService: AuctionsService, // AuctionsService 추가
+  ) {}
 
   // 경매 소 생성 (POST /auction-cows)
   @Post()
@@ -66,13 +70,15 @@ export class AuctionCowsController {
       acowFinalBid,
     );
 
-    console.log('controller Page : ');
-    console.log(acowSeq);
-    console.log(acowWinnerSeq);
-    console.log(acowFinalBid);
-
     if (!updatedAuctionCow) {
       throw new NotFoundException('경매 정보를 찾을 수 없습니다.');
+    }
+
+    // 모든 소가 낙찰되었는지 확인
+    const aucSeq = updatedAuctionCow.aucSeq;
+    const allCowsSold = await this.auctionCowsService.areAllCowsSold(aucSeq);
+    if (allCowsSold) {
+      await this.auctionsService.updateAuctionStatus(aucSeq, '종료');
     }
 
     return updatedAuctionCow;

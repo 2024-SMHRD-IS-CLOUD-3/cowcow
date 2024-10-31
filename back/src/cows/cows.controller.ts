@@ -38,4 +38,10 @@ export class CowsController {
     }
   }
 
+    // 특정 농가의 소 조회 API
+  @Get('/barn/:barnId')
+  async getCowsByBarnId(@Param('barnId') barnId: number): Promise<Cow[]> {
+    return this.cowService.findByBarnId(barnId);
+  }
+
 }
