@@ -52,7 +52,7 @@ const MyPage = ({ user, setUser }) => {
                 <Sidebar />
                 <section className="mypage-content">
                     <h1>개인정보 변경</h1>
-                    <ProfileInfo user={user} userBarns={barns} setBarns={setBarns} />
+                    <ProfileInfo user={user} userBarns={barns} setBarns={setBarns} setUser={setUser} />
                 </section>
             </div>
             {showTopButton && (
@@ -90,7 +90,7 @@ const Sidebar = () => (
     </aside>
 );
 
-const ProfileInfo = ({ user, userBarns, setBarns }) => {
+const ProfileInfo = ({ user, userBarns, setBarns, setUser }) => {
     const [newBarnName, setNewBarnName] = useState(''); // 새로운 농가 이름을 저장할 상태
 
     // 새로운 농가 추가
@@ -152,11 +152,31 @@ const ProfileInfo = ({ user, userBarns, setBarns }) => {
         setBarns(updatedBarns);
     };
 
+    console.log(user.usrSeq)
+
     return (
         <div className="profile-info">
-            <InputField label="이름" value={user ? user.usrNm : '이름 없음'} />
-            <InputField label="이메일" value={user ? user.usrEml : '이메일 없음'} />
-            <InputField label="전화번호" value={user ? user.usrPhn : '전화번호 없음'} />
+            <InputField 
+                label="이름" 
+                value={user ? user.usrNm : '이름 없음'} 
+                onChange={(newValue) => setUser({ ...user, usrNm: newValue })} 
+                fieldName="usrNm"
+                userId={user.usrSeq}
+            />
+            <InputField 
+                label="이메일" 
+                value={user ? user.usrEml : '이메일 없음'} 
+                onChange={(newValue) => setUser({ ...user, usrEml: newValue })} 
+                fieldName="usrEml"
+                userId={user.usrSeq}
+            />
+            <InputField 
+                label="전화번호" 
+                value={user ? user.usrPhn : '전화번호 없음'} 
+                onChange={(newValue) => setUser({ ...user, usrPhn: newValue })} 
+                fieldName="usrPhn"
+                userId={user.usrSeq}
+            />
 
             <label className="address-label">농가이름</label>
             {userBarns.map((barn, index) => (
@@ -197,15 +217,63 @@ const ProfileInfo = ({ user, userBarns, setBarns }) => {
     );
 };
 
-const InputField = ({ label, value }) => (
-    <div className="form-group">
-        <label>{label}</label>
-        <div className="input-wrapper">
-            <input type="text" value={value} readOnly />
-            <button className="btn change-btn">변경</button>
+const InputField = ({ label, value, onChange, fieldName, userId }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [fieldValue, setFieldValue] = useState(value);
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+    
+    // console.log(usrSeq);
+
+    const handleSaveClick = async () => {
+        try {
+            const response = await fetch(`http://223.130.160.153:3001/users/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ [fieldName]: fieldValue }),
+            });
+
+            if (!response.ok) {
+                throw new Error('정보 업데이트에 실패했습니다.');
+            }
+
+            // 상태 업데이트 후 편집 모드 종료
+            onChange(fieldValue);
+            setIsEditing(false);
+            alert(`${label}이(가) 성공적으로 업데이트되었습니다.`);
+        } catch (error) {
+            console.error("Error updating user information", error);
+        }
+    };
+
+    return (
+        <div className="form-group">
+            <label>{label}</label>
+            <div className="input-wrapper">
+                <input
+                    type="text"
+                    value={fieldValue}
+                    readOnly={!isEditing}
+                    onChange={(e) => setFieldValue(e.target.value)}
+                />
+                {!isEditing ? (
+                    <button className="btn change-btn" onClick={handleEditClick}>
+                        변경
+                    </button>
+                ) : (
+                    <button className="btn save-btn" onClick={handleSaveClick}>
+                        저장
+                    </button>
+                )}
+            </div>
         </div>
-    </div>
-);
+    );
+
+};
 
 const Footer = () => (
     <footer className="footer">
