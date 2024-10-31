@@ -120,5 +120,11 @@ export class AuctionCowsService {
     );
   }
 
+  // 특정 경매의 모든 소가 낙찰되었는지 확인
+  async areAllCowsSold(aucSeq: number): Promise<boolean> {
+    const auctionCows = await this.auctionCowRepository.find({ where: { aucSeq } });
+    return auctionCows.every((cow) => cow.acowStatus === '낙찰');
+  }
+
 
 }

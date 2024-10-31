@@ -79,6 +79,40 @@ const MainPage = ({ user, setUser }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    auctionData.forEach((auction) => {
+      console.log("auction.aucStatus: ", auction.auctionCows.every((cow) => cow.acowStatus === '낙찰'));
+      console.log("auction.aucSeq: ", auction.aucSeq);
+      if (auction.aucStatus === '진행중' && auction.auctionCows.every((cow) => cow.acowStatus === '낙찰')) {
+        updateAuctionStatus(auction.aucSeq);
+      }
+    });
+  }, [auctionData]);
+  
+  const updateAuctionStatus = async (auctionId) => {
+    try {
+      const response = await fetch(`http://223.130.160.153:3001/auctions/${auctionId}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ aucStatus: '종료' }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('경매 상태 업데이트에 실패했습니다.');
+      }
+  
+      setAuctionData((prevData) =>
+        prevData.map((auction) =>
+          auction.aucSeq === auctionId ? { ...auction, aucStatus: '종료' } : auction
+        )
+      );
+    } catch (error) {
+      console.error('Error updating auction status:', error);
+    }
+  };
+
   return (
     <div className="main-container">
       <header className={`main-header ${isDarkMode ? "dark" : "light"}`}>
@@ -131,6 +165,7 @@ const MainPage = ({ user, setUser }) => {
                 </div>
               </div>
               <div>
+                {/* TODO : 모든 소 낙찰 -> 경매상태 : 종료 */}
                 <h3 className={`auction-info ${isDarkMode ? "dark" : "light"}`}>{auction.aucBroadcastTitle}</h3>
                 <p className={`auction-info ${isDarkMode ? "dark" : "light"}`}>경매 상태: {auction.aucStatus}</p>
               </div>

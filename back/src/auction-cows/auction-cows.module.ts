@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuctionCow } from './auction-cow.entity';
 import { AuctionCowsService } from './auction-cows.service';
 import { AuctionCowsController } from './auction-cows.controller';
-import { AuctionCow } from './auction-cow.entity';
-import { User } from '../users/user.entity';
-import { UserBarn } from '../user-barns/user-barn.entity';
+import { Auction } from '../auctions/auction.entity'; // Auction 엔티티 import
+import { AuctionsService } from '../auctions/auctions.service'; // AuctionsService import
+import { Cow } from '../cows/cow.entity'; // Cow 엔티티 import
+import { User } from '../users/user.entity'; // User 엔티티 import (필요할 경우)
+import { AuctionBid } from '../auction-bids/auction-bid.entity'; // AuctionBid 엔티티 import (필요할 경우)
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AuctionCow, User, UserBarn])],
+  imports: [TypeOrmModule.forFeature([AuctionCow, Auction, Cow, User, AuctionBid])], // 필요한 모든 엔티티 추가
   controllers: [AuctionCowsController],
-  providers: [AuctionCowsService],
+  providers: [AuctionCowsService, AuctionsService], // AuctionsService 추가
 })
 export class AuctionCowsModule {}

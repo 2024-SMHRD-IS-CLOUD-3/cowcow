@@ -91,4 +91,16 @@ export class AuctionsService {
       throw new NotFoundException('해당 경매를 찾을 수 없습니다.');
     }
   }
+
+  // 경매 상태 업데이트
+  async updateAuctionStatus(id: number, status: string): Promise<Auction> {
+    // 상태 업데이트와 종료 시간 설정
+    const updateData: Partial<Auction> = { aucStatus: status };
+    if (status === '종료') {
+      updateData.aucDelDt = new Date();
+    }
+    
+    await this.auctionsRepository.update(id, updateData);
+    return this.auctionsRepository.findOneBy({ aucSeq: id });
+  }
 }
