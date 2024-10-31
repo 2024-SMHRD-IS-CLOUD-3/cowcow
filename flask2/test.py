@@ -28,7 +28,7 @@ nest_asyncio.apply()
 app = FastAPI()
 
 # 초기 변수 설정
-rtsp_url = None
+rtsp_url = "rtsp://admin:inno1456@inno0052.tplinkdns.com:2115/cam/realmonitor?channel=1&subtype=0"
 max_cows = 6
 id_select = None
 cap = None
@@ -66,6 +66,11 @@ class ConfigInput(BaseModel):
 class IdSelectInput(BaseModel):
     id_select: int
 
+@app.on_event("startup")
+async def startup_event():
+    """FastAPI 시작 시 기본 설정으로 스트림 시작"""
+    await set_config(ConfigInput(rtsp_url=rtsp_url, max_cows=max_cows))
+
 # RTSP URL 및 max_cows 설정 엔드포인트
 @app.post("/config")
 async def set_config(config: ConfigInput):
@@ -98,6 +103,10 @@ async def stop_stream():
     stop_event.set()  # 스레드 종료 신호 설정
     id_select = None  # 종료 시 id_select 초기화
     return {"message": "Streaming stopped"}
+
+@app.get("/")
+async def root():
+    return RedirectResponse(url="/video_feed")
 
 # id_select 설정 엔드포인트
 @app.post("/set_id")
@@ -185,8 +194,13 @@ def process_frame():
                 missing_ids.add(old_id)
                 id_mapping.pop(deep_sort_id, None)
 
+
         tracked_ids.clear()
         tracked_ids.update(new_tracked_ids)
+        
+        # 다운스케일링 해상도 설정
+        target_width, target_height = 640, 360
+        frame = cv2.resize(frame, (target_width, target_height))
 
         _, buffer = cv2.imencode('.jpg', frame)
         frame_data = base64.b64encode(buffer).decode('utf-8')
@@ -208,76 +222,76 @@ async def video_feed():
             if frame_data:
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + base64.b64decode(frame_data) + b'\r\n')
-            time.sleep(1 / 25)  # FPS 제한
+            time.sleep(1 / 30)  # FPS 제한
     return StreamingResponse(frame_generator(), media_type="multipart/x-mixed-replace; boundary=frame")
 
-# HTML 페이지 엔드포인트
-@app.get("/", response_class=HTMLResponse)
-async def root():
-    return """
-    <html>
-        <head>
-            <title>Video Feed</title>
-            <script>
-                async function setConfig() {
-                    const rtspUrl = document.getElementById("rtsp_url").value;
-                    const maxCows = parseInt(document.getElementById("max_cows").value);
+# # HTML 페이지 엔드포인트
+# @app.get("/", response_class=HTMLResponse)
+# async def root():
+#     return """
+#     <html>
+#         <head>
+#             <title>Video Feed</title>
+#             <script>
+#                 async function setConfig() {
+#                     const rtspUrl = document.getElementById("rtsp_url").value;
+#                     const maxCows = parseInt(document.getElementById("max_cows").value);
 
-                    const response = await fetch("/config", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ rtsp_url: rtspUrl, max_cows: maxCows })
-                    });
+#                     const response = await fetch("/config", {
+#                         method: "POST",
+#                         headers: { "Content-Type": "application/json" },
+#                         body: JSON.stringify({ rtsp_url: rtspUrl, max_cows: maxCows })
+#                     });
 
-                    if (response.ok) {
-                        window.location.href = "/video_feed";
-                    } else {
-                        alert("설정을 적용하는 데 실패했습니다.");
-                    }
-                }
+#                     if (response.ok) {
+#                         window.location.href = "/video_feed";
+#                     } else {
+#                         alert("설정을 적용하는 데 실패했습니다.");
+#                     }
+#                 }
 
-                async function setIdSelect() {
-                    const idSelect = parseInt(document.getElementById("id_select").value);
+#                 async function setIdSelect() {
+#                     const idSelect = parseInt(document.getElementById("id_select").value);
 
-                    await fetch("/set_id", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ id_select: idSelect })
-                    });
-                }
+#                     await fetch("/set_id", {
+#                         method: "POST",
+#                         headers: { "Content-Type": "application/json" },
+#                         body: JSON.stringify({ id_select: idSelect })
+#                     });
+#                 }
 
-                async function stopStream() {
-                    const response = await fetch("/stop", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" }
-                    });
-                    if (response.ok) {
-                        alert("Streaming stopped");
-                        window.location.href = "/";  // 메인 페이지로 이동
-                    } else {
-                        alert("스트리밍 중지에 실패했습니다.");
-                    }
-                }
-            </script>
-        </head>
-        <body style="text-align: center;">
-            <h1>Live Video Feed</h1>
-            <img src="/video_feed" style="width:80%; border: 1px solid #000;" />
+#                 async function stopStream() {
+#                     const response = await fetch("/stop", {
+#                         method: "POST",
+#                         headers: { "Content-Type": "application/json" }
+#                     });
+#                     if (response.ok) {
+#                         alert("Streaming stopped");
+#                         window.location.href = "/";  // 메인 페이지로 이동
+#                     } else {
+#                         alert("스트리밍 중지에 실패했습니다.");
+#                     }
+#                 }
+#             </script>
+#         </head>
+#         <body style="text-align: center;">
+#             <h1>Live Video Feed</h1>
+#             <img src="/video_feed" style="width:80%; border: 1px solid #000;" />
 
-            <h2>Configuration</h2>
-            <label>RTSP URL: </label><input type="text" id="rtsp_url" placeholder="Enter RTSP URL" /><br>
-            <label>Max Cows: </label><input type="number" id="max_cows" placeholder="Enter max cows" /><br>
-            <button onclick="setConfig()">Set Config</button>
+#             <h2>Configuration</h2>
+#             <label>RTSP URL: </label><input type="text" id="rtsp_url" placeholder="Enter RTSP URL" /><br>
+#             <label>Max Cows: </label><input type="number" id="max_cows" placeholder="Enter max cows" /><br>
+#             <button onclick="setConfig()">Set Config</button>
 
-            <h2>ID Select</h2>
-            <label>ID Select: </label><input type="number" id="id_select" placeholder="Enter ID to select" /><br>
-            <button onclick="setIdSelect()">Set ID Select</button>
+#             <h2>ID Select</h2>
+#             <label>ID Select: </label><input type="number" id="id_select" placeholder="Enter ID to select" /><br>
+#             <button onclick="setIdSelect()">Set ID Select</button>
 
-            <h2>Stop Streaming</h2>
-            <button onclick="stopStream()">Stop Stream</button>
-        </body>
-    </html>
-    """
+#             <h2>Stop Streaming</h2>
+#             <button onclick="stopStream()">Stop Stream</button>
+#         </body>
+#     </html>
+#     """
 
 
 # uvicorn을 통해 FastAPI 앱 실행

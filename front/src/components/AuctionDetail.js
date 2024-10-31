@@ -27,7 +27,6 @@ const AuctionDetail = ({ user, setUser }) => {
     setCurrentSlide(newIndex);
   };
 
-
   const nextSlide = () => showSlide(currentSlide + 1);
   const prevSlide = () => showSlide(currentSlide - 1);
 
@@ -54,7 +53,9 @@ const AuctionDetail = ({ user, setUser }) => {
   useEffect(() => {
     const fetchAuctionDetail = async () => {
       try {
-        const response = await fetch(`http://223.130.160.153:3001/auctions/${id}`);
+        const response = await fetch(
+          `http://223.130.160.153:3001/auctions/${id}`
+        );
         if (!response.ok) {
           throw new Error("경매 정보를 가져오는 데 실패했습니다.");
         }
@@ -161,10 +162,10 @@ const AuctionDetail = ({ user, setUser }) => {
       alert("낙찰할 입찰가가 없습니다.");
       return;
     }
-    console.log("AuctionDetail Page : ")
+    console.log("AuctionDetail Page : ");
     console.log(acows[currentSlide].acowSeq);
-    console.log(highestBid.bidAcc)
-    console.log(highestBid.bidAmt)
+    console.log(highestBid.bidAcc);
+    console.log(highestBid.bidAmt);
 
     try {
       const response = await fetch(
@@ -227,7 +228,11 @@ const AuctionDetail = ({ user, setUser }) => {
           <tr>
             <th>현재 최고 입찰가(입찰자)</th>
             <td>
-              {highestBid ? `${highestBid.bidAmt}만원(${highestBid.user?.usrNm || '알 수 없음'})` : "정보 없음"}
+              {highestBid
+                ? `${highestBid.bidAmt}만원(${
+                    highestBid.user?.usrNm || "알 수 없음"
+                  })`
+                : "정보 없음"}
             </td>
           </tr>
           <tr>
@@ -279,9 +284,10 @@ const AuctionDetail = ({ user, setUser }) => {
       <section className="auction-detail">
         <div className="auction-content">
           <div className="video-container">
-            <video ref={videoRef} controls autoPlay muted>
-              브라우저가 동영상을 지원하지 않습니다.
-            </video>
+            <iframe
+              src="http://localhost:5000/video_feed"
+              title="RTSP Video Stream"
+            ></iframe>
           </div>
 
           <div className="auction-details">
