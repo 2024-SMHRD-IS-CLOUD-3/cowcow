@@ -32,7 +32,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     if (storedUser) {
       setUser(storedUser);
     } else {
-      navigate("/login");
+      navigate("/");
     }
   }, [setUser, navigate]);
 
