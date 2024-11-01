@@ -82,7 +82,7 @@ export class AuctionCowsService {
     auctionCow.acowStatus = '낙찰';
     auctionCow.acowFinalBid = acowFinalBid;
     auctionCow.acowWinnerSeq = acowWinnerSeq;
-    auctionCow.acowDelDt = new Date();
+    auctionCow.acowDelDt = new Date(new Date().toLocaleDateString("en-US", {timeZone: "Asia/Seoul"}));
 
     return await this.auctionCowRepository.save(auctionCow);
   }

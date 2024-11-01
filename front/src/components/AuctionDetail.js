@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./AuctionDetail.css";
 
-const AuctionDetail = ({ user, setUser }) => {
+const AuctionDetail = ({ user, setUser, isDarkMode }) => {  // isDarkMode prop 추가
   const { id } = useParams();
   const [auction, setAuction] = useState(null);
   const [acows, setAcows] = useState([]);
@@ -22,32 +22,12 @@ const AuctionDetail = ({ user, setUser }) => {
   ];
 
   const showSlide = (index) => {
-    const newIndex = (index + acows.length) % acows.length; // 슬라이드 인덱스 보정
+    const newIndex = (index + acows.length) % acows.length;
     setCurrentSlide(newIndex);
   };
 
   const nextSlide = () => showSlide(currentSlide + 1);
   const prevSlide = () => showSlide(currentSlide - 1);
-
-  const handleLogout = () => {
-    // if (window.Kakao.Auth.getAccessToken()) {
-    //   console.log("카카오 로그아웃 중...");
-    //   window.Kakao.Auth.logout(() => {
-    //     console.log("카카오 로그아웃 완료");
-    //     setUser(null);
-    //     localStorage.removeItem("user");
-    //     navigate("/");
-    //   });
-    // } else {
-    //   setUser(null);
-    //   localStorage.removeItem("user");
-    //   navigate("/");
-    // }
-
-    setUser(null);
-    localStorage.removeItem("user");
-    navigate("/");
-  };
 
   useEffect(() => {
     const fetchAuctionDetail = async () => {
@@ -68,7 +48,7 @@ const AuctionDetail = ({ user, setUser }) => {
   }, [id]);
 
   const fetchHighestBid = async (acowSeq) => {
-    setIsLoadingBid(true); // 로딩 시작
+    setIsLoadingBid(true);
     try {
       const response = await fetch(
         `http://223.130.160.153:3001/auction-bids/highest/${acowSeq}`
@@ -80,21 +60,20 @@ const AuctionDetail = ({ user, setUser }) => {
       setHighestBid(bidData);
     } catch (error) {
       console.error("Error fetching highest bid:", error);
-      setHighestBid(null); // 오류 시 입찰가 초기화
+      setHighestBid(null);
     } finally {
-      setIsLoadingBid(false); // 로딩 끝
+      setIsLoadingBid(false);
     }
   };
 
   useEffect(() => {
     if (acows[currentSlide]) {
-      fetchHighestBid(acows[currentSlide].acowSeq); // 슬라이드 변경 시 입찰가 갱신
+      fetchHighestBid(acows[currentSlide].acowSeq);
     }
   }, [currentSlide, acows]);
 
   useEffect(() => {
     let stream;
-
     const startVideoStream = async () => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -147,7 +126,7 @@ const AuctionDetail = ({ user, setUser }) => {
       }
 
       alert("입찰에 성공했습니다!");
-      setBidAmount(""); // 입력한 금액 초기화
+      setBidAmount("");
     } catch (error) {
       console.error("Error during bid submission:", error);
       alert("입찰에 실패했습니다. 다시 시도해 주세요.");
@@ -193,11 +172,19 @@ const AuctionDetail = ({ user, setUser }) => {
 
   if (!auction) return <p>경매 정보를 불러오는 중...</p>;
 
-  // Auction Detail 슬라이드 데이터
   const slides =
     acows?.map((acow) => (
       <table className="details-table" key={acow.acowSeq}>
         <tbody>
+          <div className="expected-price-container">
+
+        <div className="expected-price">
+          예상가: {acows[currentSlide]?.acowPredictPrice || 0}만원
+        </div>
+        <div className="expected-price">
+          예상가: {acows[currentSlide]?.acowPredictPrice || 0}만원
+        </div>
+          </div>
           <tr>
             <th>방송 제목</th>
             <td>{auction?.aucBroadcastTitle || "정보 없음"}</td>
@@ -226,9 +213,7 @@ const AuctionDetail = ({ user, setUser }) => {
             <th>현재 최고 입찰가(입찰자)</th>
             <td>
               {highestBid
-                ? `${highestBid.bidAmt}만원(${
-                    highestBid.user?.usrNm || "알 수 없음"
-                  })`
+                ? `${highestBid.bidAmt}만원(${highestBid.user?.usrNm || "알 수 없음"})`
                 : "정보 없음"}
             </td>
           </tr>
@@ -270,12 +255,6 @@ const AuctionDetail = ({ user, setUser }) => {
                   {slides[currentSlide]}
                 </div>
               </div>
-              {/* <button className="prev" onClick={prevSlide}>
-                &#10094;
-              </button>
-              <button className="next" onClick={nextSlide}>
-                &#10095;
-              </button> */}
             </div>
 
             <div className="bid-section-inline">
@@ -289,7 +268,7 @@ const AuctionDetail = ({ user, setUser }) => {
                         : "입찰 금액 입력"
                     }
                     className="bid-input"
-                    disabled={acows[currentSlide]?.acowStatus === "낙찰"} // 낙찰일 경우 입력 금지
+                    disabled={acows[currentSlide]?.acowStatus === "낙찰"}
                   />
                   <Link to="/login">
                     <button
@@ -317,9 +296,8 @@ const AuctionDetail = ({ user, setUser }) => {
                       }`}
                       onClick={handleWinningBid}
                       disabled={
-                        !highestBid ||
-                        acows[currentSlide]?.acowStatus === "낙찰"
-                      } // 낙찰일 경우 버튼 비활성화
+                        !highestBid || acows[currentSlide]?.acowStatus === "낙찰"
+                      }
                     >
                       {acows[currentSlide]?.acowStatus === "낙찰"
                         ? "낙찰 완료"
@@ -337,7 +315,7 @@ const AuctionDetail = ({ user, setUser }) => {
                         className="bid-input"
                         value={bidAmount}
                         onChange={(e) => setBidAmount(e.target.value)}
-                        disabled={acows[currentSlide]?.acowStatus === "낙찰"} // 낙찰일 경우 입력 금지
+                        disabled={acows[currentSlide]?.acowStatus === "낙찰"}
                       />
                       <button
                         className={`btn primary ${
@@ -346,7 +324,7 @@ const AuctionDetail = ({ user, setUser }) => {
                             : ""
                         }`}
                         onClick={handleBidSubmit}
-                        disabled={acows[currentSlide]?.acowStatus === "낙찰"} // 낙찰일 경우 버튼 비활성화
+                        disabled={acows[currentSlide]?.acowStatus === "낙찰"}
                       >
                         {acows[currentSlide]?.acowStatus === "낙찰"
                           ? "입찰 불가"
@@ -360,9 +338,6 @@ const AuctionDetail = ({ user, setUser }) => {
           </div>
         </div>
 
-        <div className="expected-price">
-          예상가: {acows[currentSlide]?.acowPredictPrice || 0}만원
-        </div>
 
         <div className="slider-container">
           <div

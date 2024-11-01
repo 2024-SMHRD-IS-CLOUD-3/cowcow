@@ -5,30 +5,34 @@
     box-sizing: border-box;
 }
 
+/* body를 전체 화면에 맞추기 */
 body {
-  background-color: var(--background-primary);
-  color: var(--text-primary);
-  transition: background-color 0.3s, color 0.3s;
-}
+    background-color: var(--background-primary); /* 라이트/다크 모드에 따라 변경 */
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+    width: 100vw; /* 화면 전체 너비 */
+    overflow-x: hidden; /* 가로 스크롤 숨김 */
+    justify-content: center; /* 컨텐츠가 가운데에 오도록 설정 */
+  }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: #1a1a1a;
-    position: fixed; /* 고정된 헤더 */
+    background-color: var(--background-secondary); /* 다크모드 변수 */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 100;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    height: 70px; /* 헤더 높이 */
+    height: 70px;
 }
 
 .header h1 {
     font-size: 28px;
-    color: #63b3ff;
+    color: var(--hover-color); /* 다크모드 변수 */
     letter-spacing: 1px;
 }
 
@@ -40,23 +44,23 @@ body {
 .header img {
     width: 100px;
     height: 100px;
-    display: block; /* 인라인 요소로 인한 여백 제거 */
-    margin: 0; /* 외부 마진 제거 */
-    padding: 0; /* 내부 패딩 제거 */
-    border: none; /* 테두리 제거 */
-    object-fit: cover; /* 이미지를 잘라내서 비율 유지하며 채우기 */
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    object-fit: cover;
 }
 
 .nav-links a {
     margin-left: 20px;
     text-decoration: none;
-    color: #fff;
+    color: var(--text-primary); /* 다크모드 변수 */
     font-size: 18px;
     transition: color 0.3s;
 }
 
 .nav-links a:hover {
-    color: #1e90ff;
+    color: var(--hover-color); /* 다크모드 변수 */
 }
 
 .logout-link {
@@ -68,10 +72,12 @@ body {
     color: #ff4444;
 }
 
+/* 메인 컨텐츠의 고정된 너비 유지 */
 .auction-detail-container {
-    max-width: 1200px; /* Ensure it doesn't stretch too wide */
-    margin: 0 auto;
     padding: 20px;
+    background-color: var(--background-primary); /* 배경 통일 */
+    color: var(--text-primary);
+    box-sizing: border-box;
 }
 
 .auction-detail {
@@ -88,10 +94,11 @@ body {
 }
 
 .video-container {
-    width: 700px;
+    margin-top: 30px;
+    width: 640px;
+    height: 350px;
     border-radius: 10px;
-    overflow: hidden;
-    background-color: #000;
+    background-color: var(--background-secondary); /* 다크모드 변수 */
 }
 
 iframe {
@@ -111,21 +118,22 @@ iframe {
     margin-top: 15px;
     width: 100%;
     border-collapse: collapse;
-    overflow: hidden; /* 넘치는 텍스트 숨기기 */
-    white-space: nowrap; /* 줄바꿈 방지 */
-    text-overflow: clip; /* 말줄임표 없이 잘리도록 처리 */
+    white-space: nowrap;
+    text-overflow: clip;
+    background-color: var(--background-primary); /* 다크모드 변수 */
 }
 
 .details-table th,
 .details-table td {
-    border: 1px solid #fff;
+    border: 1px solid var(--text-secondary); /* 다크모드 변수 */
     padding: 10px;
     text-align: left;
+    color: var(--text-secondary); /* 다크모드 변수 */
 }
 
 .details-table th {
-    background-color: #1e90ff;
-    color: #fff;
+    background-color: var(--accent-color); /* 다크모드 변수 */
+    color: var(--text-primary); /* 다크모드 변수 */
     font-weight: bold;
 }
 
@@ -134,7 +142,7 @@ iframe {
 }
 
 .state-progressing {
-    color: #1e90ff;
+    color: var(--accent-color); /* 다크모드 변수 */
 }
 
 .state-won {
@@ -143,49 +151,48 @@ iframe {
 
 .bid-section-inline {
     display: flex;
-    align-items: center; /* 수직 중앙 정렬 */
-    gap: 10px; /* 간격 조정 */
+    align-items: center;
+    gap: 10px;
     margin-top: 5px;
 }
 
 .bid-input {
     padding: 10px;
     font-size: 18px;
-    width: 100%; /* 입력 필드가 부모 요소를 채움 */
-    box-sizing: border-box; /* 패딩을 포함한 너비 계산 */
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--background-secondary); /* 다크모드 변수 */
+    color: var(--text-primary); /* 다크모드 변수 */
+    border: 1px solid var(--text-secondary); /* 다크모드 변수 */
 }
 
 .btn.primary {
-    background-color: #1e90ff;
-    color: #fff;
+    background-color: var(--accent-color); /* 다크모드 변수 */
+    color: var(--text-primary); /* 다크모드 변수 */
     border: none;
-    padding: 15px; /* 동일한 패딩 설정 */
-    height: 100%; /* 버튼 높이를 입력 필드와 동일하게 설정 */
+    padding: 15px;
+    height: 100%;
     cursor: pointer;
     transition: background-color 0.3s;
-    white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+    white-space: nowrap;
 }
 
-/* 비활성화된 버튼 스타일 추가 */
 .btn.primary.disabled {
-    background-color: #b0b0b0; /* 어두운 회색 */
-    color: #ffffff;
-    cursor: not-allowed; /* 클릭 불가한 상태로 표시 */
-    pointer-events: none; /* 호버 및 클릭 이벤트 비활성화 */
-}
-
-.btn.primary.disabled:hover {
-    background-color: #b0b0b0; /* 비활성화 상태에서는 호버 효과 없음 */
+    background-color: #555;
+    color: #bbb;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 .btn.primary:hover {
-    background-color: #63b3ff;
+    background-color: var(--hover-color); /* 다크모드 변수 */
 }
 
 .expected-price {
-    width: 100%; /* Matches the auction-detail-container width */
+    align-items: center;
+    width: 100%;
     padding: 15px 0;
-    margin: 30px auto 20px auto; /* Centered and spaced from the slider */
+    margin: 30px auto 20px auto;
     background-color: yellow;
     color: red;
     font-size: 28px;
@@ -194,12 +201,20 @@ iframe {
     letter-spacing: 1px;
 }
 
-/* 슬라이더 컨테이너 */
+/* 부모 컨테이너에 가로 정렬을 위한 flexbox 적용 */
+.expected-price-container {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    gap: 20px; /* 요소 사이 간격 */
+    margin-top: 20px; /* 상단 여백 */
+}
+
+
 .slider-container {
     position: relative;
-    width: 100%; /* 슬라이더의 가로폭을 70%로 유지 */
-    height: 500px; /* 슬라이더의 세로폭을 500px로 증가 */
-    margin: 30px auto; /* 슬라이더를 가운데 정렬 */
+    width: 100%;
+    height: 500px;
+    margin: 30px auto;
     overflow: hidden;
     border-radius: 10px;
 }
@@ -210,8 +225,8 @@ iframe {
 }
 
 .slide {
-    min-width: 100%; /* 각 슬라이드가 슬라이더 전체 너비를 차지 */
-    height: 100%; /* 슬라이드 높이를 부모의 높이로 맞춤 */
+    min-width: 100%;
+    height: 100%;
 }
 
 .slide img {
@@ -225,14 +240,16 @@ iframe {
     top: 50%;
     transform: translateY(-50%);
     background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    color: var(--text-primary); /* 다크모드 변수 */
     border: none;
     padding: 10px;
     font-size: 18px;
     border-radius: 50%;
     cursor: pointer;
+    z-index: 10; /* 다른 요소 위에 표시되도록 z-index 설정 */
 }
 
+/* 각 버튼의 위치를 좌우로 고정 */
 .prev {
     left: 10px;
 }
@@ -248,5 +265,6 @@ iframe {
 .footer {
     text-align: center;
     padding: 20px;
-    background-color: #000;
+    background-color: var(--background-secondary); /* 다크모드 변수 */
+    color: var(--text-secondary); /* 다크모드 변수 */
 }
