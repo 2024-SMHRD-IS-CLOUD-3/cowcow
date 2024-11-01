@@ -2,15 +2,18 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./AuctionDetail.css";
 
-const AuctionDetail = ({ user, setUser, isDarkMode }) => {  // isDarkMode prop 추가
+const AuctionDetail = ({ user, setUser, isDarkMode }) => {
+  // isDarkMode prop 추가
   const { id } = useParams();
   const [auction, setAuction] = useState(null);
   const [acows, setAcows] = useState([]);
+  const [endTime, setEndTime] = useState();
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [bidAmount, setBidAmount] = useState(""); // 입찰 금액 상태 추가
   const [highestBid, setHighestBid] = useState(null); // 현재 최고 입찰가 상태 추가
   const [isLoadingBid, setIsLoadingBid] = useState(false); // 로딩 상태 추가
+  const [timeRemaining, setTimeRemaining] = useState(null);
   const videoRef = useRef(null); // 비디오 요소 참조
   const navigate = useNavigate();
 
@@ -32,26 +35,55 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {  // isDarkMode prop �
   useEffect(() => {
     const fetchAuctionDetail = async () => {
       try {
-        const response = await fetch(`http://223.130.160.153:3001/auctions/${id}`);
+        const response = await fetch(`http://localhost:3001/auctions/${id}`);
         if (!response.ok) {
           throw new Error("경매 정보를 가져오는 데 실패했습니다.");
         }
         const auctionData = await response.json();
         setAuction(auctionData);
         setAcows(auctionData.auctionCows);
+        setEndTime(new Date(auctionData.aucEndDt));
       } catch (error) {
         console.error("Error fetching auction detail:", error);
       }
     };
+    const interval = setInterval(fetchAuctionDetail, 1000);
 
-    fetchAuctionDetail();
+    return () => clearInterval(interval);
   }, [id]);
+
+  useEffect(() => {
+    if (!endTime) return;
+    console.log(endTime);
+
+    const updateTimer = () => {
+      const now = new Date();
+      const distance = endTime - now;
+
+      if (distance <= 0) {
+        setTimeRemaining("경매 종료");
+        clearInterval(timerInterval);
+        return;
+      }
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      setTimeRemaining(`${days}일 ${hours}시간 ${minutes}분 ${seconds}초`);
+    };
+
+    const timerInterval = setInterval(updateTimer, 1000);
+
+    return () => clearInterval(timerInterval);
+  }, [endTime]);
 
   const fetchHighestBid = async (acowSeq) => {
     setIsLoadingBid(true);
     try {
       const response = await fetch(
-        `http://223.130.160.153:3001/auction-bids/highest/${acowSeq}`
+        `http://localhost:3001/auction-bids/highest/${acowSeq}`
       );
       if (!response.ok) {
         throw new Error("최고 입찰가를 가져오는 데 실패했습니다.");
@@ -107,7 +139,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {  // isDarkMode prop �
     }
 
     try {
-      const response = await fetch(`http://223.130.160.153:3001/auction-bids`, {
+      const response = await fetch(`http://localhost:3001/auction-bids`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -145,7 +177,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {  // isDarkMode prop �
 
     try {
       const response = await fetch(
-        `http://223.130.160.153:3001/auction-cows/${acows[currentSlide].acowSeq}/win`,
+        `http://localhost:3001/auction-cows/${acows[currentSlide].acowSeq}/win`,
         {
           method: "PUT",
           headers: {
@@ -176,15 +208,6 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {  // isDarkMode prop �
     acows?.map((acow) => (
       <table className="details-table" key={acow.acowSeq}>
         <tbody>
-          <div className="expected-price-container">
-
-        <div className="expected-price">
-          예상가: {acows[currentSlide]?.acowPredictPrice || 0}만원
-        </div>
-        <div className="expected-price">
-          예상가: {acows[currentSlide]?.acowPredictPrice || 0}만원
-        </div>
-          </div>
           <tr>
             <th>방송 제목</th>
             <td>{auction?.aucBroadcastTitle || "정보 없음"}</td>
@@ -213,7 +236,9 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {  // isDarkMode prop �
             <th>현재 최고 입찰가(입찰자)</th>
             <td>
               {highestBid
-                ? `${highestBid.bidAmt}만원(${highestBid.user?.usrNm || "알 수 없음"})`
+                ? `${highestBid.bidAmt}만원(${
+                    highestBid.user?.usrNm || "알 수 없음"
+                  })`
                 : "정보 없음"}
             </td>
           </tr>
@@ -240,10 +265,22 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {  // isDarkMode prop �
   return (
     <div className="auction-detail-container">
       <section className="auction-detail">
+        <div className="expected-price-container">
+          <div className="expected-price">
+            예상가: {acows[currentSlide]?.acowPredictPrice || 0}만원
+          </div>
+          <div className="expected-price">
+            {timeRemaining ? (
+              <p>종료까지 {timeRemaining}</p>
+            ) : (
+              <p>시간 로딩 중...</p>
+            )}
+          </div>
+        </div>
         <div className="auction-content">
           <div className="video-container">
             <iframe
-              src="http://223.130.160.153:5000/video_feed"
+              src="http://localhost:5000/video_feed"
               title="RTSP Video Stream"
             ></iframe>
           </div>
@@ -296,7 +333,8 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {  // isDarkMode prop �
                       }`}
                       onClick={handleWinningBid}
                       disabled={
-                        !highestBid || acows[currentSlide]?.acowStatus === "낙찰"
+                        !highestBid ||
+                        acows[currentSlide]?.acowStatus === "낙찰"
                       }
                     >
                       {acows[currentSlide]?.acowStatus === "낙찰"
@@ -337,7 +375,6 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {  // isDarkMode prop �
             </div>
           </div>
         </div>
-
 
         <div className="slider-container">
           <div
