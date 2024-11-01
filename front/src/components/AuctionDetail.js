@@ -168,10 +168,15 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
     if (!bidAmount) {
       alert("입찰 금액을 입력해 주세요.");
       return;
-    } else if (bidAmount < auction.aucBottomPrice) {
+    } else if (bidAmount <= acows[currentSlide].acowBottomPrice) {
       alert("입찰 금액은 최저가보다 높아야 합니다.");
       return;
+    } else if (highestBid && bidAmount < highestBid.bidAmt) {
+      alert("입찰 금액은 현재 최고입찰가보다 높아야 합니다.");
+      return;
     }
+
+
 
     try {
       const response = await fetch(`http://223.130.160.153:3001/auction-bids`, {
