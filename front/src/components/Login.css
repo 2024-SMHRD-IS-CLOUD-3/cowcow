@@ -1,8 +1,8 @@
-/* login.css */
+/* Login.css */
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #0d1117, #1a1a1a);
-    color: #f0f0f0;
+    background: var(--background-primary);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -13,20 +13,26 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: var(--background-primary); /* 다크/라이트 모드에 따라 자동 배경 변경 */
 }
+
 
 .login-box {
     width: 400px;
     padding: 40px;
-    background-color: #1a1a1a;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+    background-color: var(--background-secondary); /* 다크/라이트 모드에 맞춰 배경색 변경 */
+    box-shadow: none;
     border-radius: 8px;
+}
+
+[data-theme="light"] .login-box {
+    background-color: #ffffff; /* 라이트 모드에서 흰색 고정 */
 }
 
 .login-box h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #63b3ff;
+    color: var(--accent-color);
 }
 
 .input-group {
@@ -38,14 +44,36 @@ body {
     margin-bottom: 5px;
 }
 
+.input-group label {
+    color: var(--text-primary); /* 기본 텍스트 색상 */
+}
+
+[data-theme="light"] .input-group label {
+    color: #000000; /* 라이트 모드에서 레이블 텍스트 색상 검은색 */
+}
+
 .input-group input {
     width: 100%;
     padding: 12px;
     border: 1px solid #444;
     border-radius: 5px;
-    background-color: #0d1117;
-    color: #f0f0f0;
-    box-sizing: border-box; /* 패딩과 경계를 포함해 동일한 너비로 설정 */
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
+    box-sizing: border-box;
+}
+
+[data-theme="light"] .input-group input {
+    background-color: #eaf0fe; /* 라이트 모드 입력창 배경색 */
+    color: #000000; /* 텍스트를 검은색으로 설정 */
+}
+
+[data-theme="light"] .input-group input::placeholder {
+    color: #000000; /* 라이트 모드에서 placeholder 텍스트 색상도 검은색으로 */
+}
+
+/* 라이트 모드에서 전체 배경을 흰색으로 설정 */
+[data-theme="light"] body {
+    background-color: #ffffff;
 }
 
 .input-group input::placeholder {
