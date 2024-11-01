@@ -28,15 +28,6 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   };
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) {
-      setUser(storedUser);
-    } else {
-      navigate("/login");
-    }
-  }, [setUser, navigate]);
-
-  useEffect(() => {
     if (!user) return;
     const fetchUserBarns = async () => {
       try {
