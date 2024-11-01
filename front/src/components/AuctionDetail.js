@@ -3,6 +3,26 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import "./AuctionDetail.css";
 
 const AuctionDetail = ({ user, setUser, isDarkMode }) => {
+  const updateTimer = () => {
+    const now = new Date();
+    const distance = endTime - now;
+
+    if (distance <= 0) {
+      setTimeRemaining("경매 종료");
+      clearInterval(timerInterval);
+
+      // handleAuctionEnd();
+      return;
+    }
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    setTimeRemaining(`${days}일 ${hours}시간 ${minutes}분 ${seconds}초`);
+  };
+  
   // isDarkMode prop 추가
   const { id } = useParams();
   const [auction, setAuction] = useState(null);
@@ -14,6 +34,8 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
   const [highestBid, setHighestBid] = useState(null); // 현재 최고 입찰가 상태 추가
   const [isLoadingBid, setIsLoadingBid] = useState(false); // 로딩 상태 추가
   const [timeRemaining, setTimeRemaining] = useState(null);
+  const timerInterval = setInterval(updateTimer, 1000);
+  // const interval = setInterval(fetchAuctionDetail, 1000);
   const videoRef = useRef(null); // 비디오 요소 참조
   const navigate = useNavigate();
 
@@ -32,79 +54,45 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
   const nextSlide = () => showSlide(currentSlide + 1);
   const prevSlide = () => showSlide(currentSlide - 1);
 
-  useEffect(() => {
-    const fetchAuctionDetail = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3001/auctions/${id}`
-        );
-        if (!response.ok) {
-          throw new Error("경매 정보를 가져오는 데 실패했습니다.");
-        }
-        const auctionData = await response.json();
-        setAuction(auctionData);
-        setAcows(auctionData.auctionCows);
-        setEndTime(new Date(auctionData.aucEndDt));
-      } catch (error) {
-        console.error("Error fetching auction detail:", error);
+  const fetchAuctionDetail = async () => {
+    try {
+      const response = await fetch(
+        `http://223.130.160.153:3001/auctions/${id}`
+      );
+      if (!response.ok) {
+        throw new Error("경매 정보를 가져오는 데 실패했습니다.");
       }
-    };
-    const interval = setInterval(fetchAuctionDetail, 1000);
+      const auctionData = await response.json();
+      setAuction(auctionData);
+      setAcows(auctionData.auctionCows);
+      setEndTime(new Date(auctionData.aucEndDt));
+    } catch (error) {
+      console.error("Error fetching auction detail:", error);
+    }
+  };
 
-    return () => clearInterval(interval);
+
+
+  useEffect(() => {
+    fetchAuctionDetail();
   }, [id]);
+
 
   useEffect(() => {
     if (!endTime) return;
 
-    const updateTimer = () => {
-      const now = new Date();
-      const distance = endTime - now;
-
-      if (distance <= 0) {
-        setTimeRemaining("경매 종료");
-        clearInterval(timerInterval);
-
-        handleAuctionEnd();
-        return;
-      }
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      setTimeRemaining(`${days}일 ${hours}시간 ${minutes}분 ${seconds}초`);
-    };
-
     const timerInterval = setInterval(updateTimer, 1000);
 
+    // 타이머 정리 함수
     return () => clearInterval(timerInterval);
   }, [endTime]);
 
-  // 경매 상태를 '방송종료'로 변경하는 함수
-  const handleAuctionEnd = async () => {
-    try {
-      const response = await fetch(`http://localhost:3001/auctions/${id}/status`, {
-        method: "PATCH",
-        headers: { 
-          "Content-Type": "application/json" 
-        },
-        body: JSON.stringify({ aucStatus: "방송종료" }),
-      });
-      if (!response.ok) throw new Error("경매 종료 상태 변경 실패");
-
-      alert("경매가 종료되었습니다.");
-    } catch (error) {
-      console.error("Error updating auction status:", error);
-    }
-  };
 
   const fetchHighestBid = async (acowSeq) => {
     setIsLoadingBid(true);
     try {
       const response = await fetch(
-        `http://localhost:3001/auction-bids/highest/${acowSeq}`
+        `http://223.130.160.153:3001/auction-bids/highest/${acowSeq}`
       );
       if (!response.ok) {
         throw new Error("최고 입찰가를 가져오는 데 실패했습니다.");
@@ -120,10 +108,36 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
   };
 
   useEffect(() => {
-    if (acows[currentSlide]) {
+    if (!acows[currentSlide]) return;
+
+    // 최고 입찰가 1초마다 업데이트
+    const highestBidInterval = setInterval(() => {
       fetchHighestBid(acows[currentSlide].acowSeq);
-    }
+    }, 1000);
+
+    return () => clearInterval(highestBidInterval);
   }, [currentSlide, acows]);
+
+
+  // // 경매 상태를 '방송종료'로 변경하는 함수
+  // const handleAuctionEnd = async () => {
+  //   try {
+  //     const response = await fetch(`http://223.130.160.153:3001/auctions/${id}/status`, {
+  //       method: "PATCH",
+  //       headers: { 
+  //         "Content-Type": "application/json" 
+  //       },
+  //       body: JSON.stringify({ aucStatus: "방송종료" }),
+  //     });
+  //     if (!response.ok) throw new Error("경매 종료 상태 변경 실패");
+
+  //     alert("경매가 종료되었습니다.");
+  //   } catch (error) {
+  //     console.error("Error updating auction status:", error);
+  //   }
+  // };
+
+
 
   useEffect(() => {
     let stream;
@@ -160,7 +174,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/auction-bids`, {
+      const response = await fetch(`http://223.130.160.153:3001/auction-bids`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -198,7 +212,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/auction-cows/${acows[currentSlide].acowSeq}/win`,
+        `http://223.130.160.153:3001/auction-cows/${acows[currentSlide].acowSeq}/win`,
         {
           method: "PUT",
           headers: {
@@ -301,7 +315,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
         <div className="auction-content">
           <div className="video-container">
             <iframe
-              src="http://localhost:5000/video_feed"
+              src="http://223.130.160.153:5000/video_feed"
               title="RTSP Video Stream"
             ></iframe>
           </div>
