@@ -41,6 +41,21 @@
   transition: color 0.3s;
 }
 
+/* 검색창 스타일 */
+.search-bar input {
+  padding: 10px;
+  border-radius: 8px;
+  width: 400px;
+  border: 1px solid #444;
+  outline: none;
+  transition: border-color 0.3s;
+  margin-left: 230px;
+}
+
+.search-bar input:focus {
+  border-color: black;
+}
+
 .nav-links a {
   margin-left: 20px;
   text-decoration: none;
