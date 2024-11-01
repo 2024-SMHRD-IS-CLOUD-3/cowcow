@@ -113,7 +113,7 @@ export class AuctionsService {
       const now = new Date();
       updateData.aucDelDt = new Date(now.getTime());
     }
-
+    
     await this.auctionsRepository.update(id, updateData);
     return this.auctionsRepository.findOneBy({ aucSeq: id });
   }

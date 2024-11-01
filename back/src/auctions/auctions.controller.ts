@@ -60,7 +60,6 @@ export class AuctionsController {
     if (!updatedAuction) {
       throw new NotFoundException(`ID ${id}에 해당하는 경매를 찾을 수 없습니다.`);
     }
-
     return updatedAuction;
   }
 
