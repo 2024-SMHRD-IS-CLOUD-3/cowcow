@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./AuctionDetail.css";
-import logo from "../images/cowcowlogo.png";
 
 const AuctionDetail = ({ user, setUser }) => {
   const { id } = useParams();

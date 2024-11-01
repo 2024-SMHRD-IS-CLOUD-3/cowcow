@@ -46,7 +46,7 @@ function App() {
           <Route path="/myPage" element={<MyPage user={user} setUser={setUser} toggleTheme={toggleTheme} isDarkMode={isDarkMode} />} />
           <Route path="/deleteAccount" element={<DeleteAccount user={user} setUser={setUser} isDarkMode={isDarkMode} />} />
           <Route path="/transactionHistory" element={<TransactionHistory user={user} setUser={setUser} isDarkMode={isDarkMode} />} />
-          <Route path="/auctionDetail/:id" element={<AuctionDetail user={user} setUser={setUser} isDarkMode={isDarkMode} />} />
+          <Route path="/auctionDetail/:id" element={<AuctionDetail user={user} setUser={setUser} isDarkMode={isDarkMode}  />} />
           <Route path="/cowPage" element={<CowPage user={user} setUser={setUser} isDarkMode={isDarkMode} />} />
         </Routes>
       </Router>
