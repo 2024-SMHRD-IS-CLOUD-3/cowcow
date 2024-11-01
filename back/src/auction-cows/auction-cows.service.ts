@@ -79,10 +79,11 @@ export class AuctionCowsService {
       throw new NotFoundException('낙찰자를 찾을 수 없습니다.');
     }
 
+    const now = new Date();
     auctionCow.acowStatus = '낙찰';
     auctionCow.acowFinalBid = acowFinalBid;
     auctionCow.acowWinnerSeq = acowWinnerSeq;
-    auctionCow.acowDelDt = new Date(new Date().toLocaleDateString("en-US", {timeZone: "Asia/Seoul"}));
+    auctionCow.acowDelDt = new Date(now.getDate());
 
     return await this.auctionCowRepository.save(auctionCow);
   }
