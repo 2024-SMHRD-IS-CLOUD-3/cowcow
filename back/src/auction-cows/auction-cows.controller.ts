@@ -7,7 +7,7 @@ import {
   Body,
   Put,
   NotFoundException,
-  Query
+  Query,
 } from '@nestjs/common';
 import { AuctionCowsService } from './auction-cows.service';
 import { AuctionCow } from './auction-cow.entity';

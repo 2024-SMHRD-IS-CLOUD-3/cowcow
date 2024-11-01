@@ -35,7 +35,9 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
   useEffect(() => {
     const fetchAuctionDetail = async () => {
       try {
-        const response = await fetch(`http://223.130.160.153:3001/auctions/${id}`);
+        const response = await fetch(
+          `http://223.130.160.153:3001/auctions/${id}`
+        );
         if (!response.ok) {
           throw new Error("경매 정보를 가져오는 데 실패했습니다.");
         }
@@ -54,7 +56,6 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
 
   useEffect(() => {
     if (!endTime) return;
-    console.log(endTime);
 
     const updateTimer = () => {
       const now = new Date();
@@ -63,6 +64,8 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
       if (distance <= 0) {
         setTimeRemaining("경매 종료");
         clearInterval(timerInterval);
+
+        handleAuctionEnd();
         return;
       }
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -78,6 +81,22 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
 
     return () => clearInterval(timerInterval);
   }, [endTime]);
+
+  // 경매 상태를 '방송종료'로 변경하는 함수
+  const handleAuctionEnd = async () => {
+    try {
+      const response = await fetch(`http://223.130.160.153:3001/auctions/${id}/end`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "방송종료" }),
+      });
+      if (!response.ok) throw new Error("경매 종료 상태 변경 실패");
+
+      alert("경매가 종료되었습니다.");
+    } catch (error) {
+      console.error("Error updating auction status:", error);
+    }
+  };
 
   const fetchHighestBid = async (acowSeq) => {
     setIsLoadingBid(true);
