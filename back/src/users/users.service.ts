@@ -52,7 +52,7 @@ export class UsersService {
         usrTyp: '카카오로그인',
         usrEml: email,
         usrNm: nickname,
-        usrCrtDt: new Date(),
+        usrCrtDt: new Date(new Date().toLocaleDateString("en-US", {timeZone: "Asia/Seoul"})),
       });
       await this.usersRepository.save(user);
     }

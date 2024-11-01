@@ -47,10 +47,16 @@ export class AuctionsService {
     usrBarnSeq: number; 
     cows: { cowSeq: number; minValue: number; predictPrice: number }[] 
   }): Promise<Auction> {
+    const aucCrtDt = new Date(new Date().toLocaleDateString("en-US", {timeZone: "Asia/Seoul"}));
+
+    const aucEndDt = new Date(aucCrtDt);
+    aucEndDt.setDate(aucEndDt.getDate() + 15);
+
     const newAuction = this.auctionsRepository.create({
       aucBroadcastTitle: auctionData.title,
       usrSeq: auctionData.usrSeq,
-      aucCrtDt: new Date(),
+      aucCrtDt: aucCrtDt,
+      aucEndDt: aucEndDt,
       aucStatus: '진행중',
     });
     const savedAuction = await this.auctionsRepository.save(newAuction);
@@ -62,7 +68,7 @@ export class AuctionsService {
           aucSeq: savedAuction.aucSeq,
           acowBottomPrice: cow.minValue,
           acowPredictPrice: cow.predictPrice, // 이미 예측된 가격 사용
-          acowCrtDt: new Date(),
+          acowCrtDt: new Date(new Date().toLocaleDateString("en-US", {timeZone: "Asia/Seoul"})),
         })
       );
 
@@ -98,7 +104,7 @@ export class AuctionsService {
     // 상태 업데이트와 종료 시간 설정
     const updateData: Partial<Auction> = { aucStatus: status };
     if (status === '종료') {
-      updateData.aucDelDt = new Date();
+      updateData.aucDelDt = new Date(new Date().toLocaleDateString("en-US", {timeZone: "Asia/Seoul"}));
     }
     
     await this.auctionsRepository.update(id, updateData);
