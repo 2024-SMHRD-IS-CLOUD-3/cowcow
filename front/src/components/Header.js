@@ -12,6 +12,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const [selectedBarn, setSelectedBarn] = useState(""); // 선택한 농가
   const [barnCows, setBarnCows] = useState([]); // 선택한 농가의 소 목록
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -197,6 +198,17 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
             <img src={logo} alt="logo" />
           </h1>
         </Link>
+        
+        {/* 검색 입력단 추가 */}
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="경매 검색..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
         <nav className="nav-links">
           <Link to="/">홈</Link>
           {user ? (
@@ -216,6 +228,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
             </>
           )}
         </nav>
+
         <button onClick={toggleTheme} className="theme-toggle-button">
           {isDarkMode ? '🌞' : '🌙'}
         </button>

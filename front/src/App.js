@@ -37,7 +37,7 @@ function App() {
 
   return (
       <Router>
-         <Header user={user} setUser={setUser} toggleTheme={toggleTheme} isDarkMode={isDarkMode} /> {/* toggleTheme 추가 */}
+         <Header user={user} setUser={setUser} toggleTheme={toggleTheme} isDarkMode={isDarkMode} /> toggleTheme 추가
         <Routes>
           <Route path="/" element={<Main user={user} setUser={setUser} toggleTheme={toggleTheme} isDarkMode={isDarkMode} />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
