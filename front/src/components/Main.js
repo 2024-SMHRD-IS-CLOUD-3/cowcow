@@ -11,9 +11,9 @@ import thumbnail7 from "../images/thumbnail7.png";
 
 const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
   const [auctionData, setAuctionData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [showTopButton, setShowTopButton] = useState(false);
   const [randomThumbnail, setRandomThumbnail] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   // Array of all thumbnails

@@ -63,20 +63,7 @@ html, body {
     max-width: 200px;
 }
 
-/* 검색창 스타일 */
-.search-bar input {
-    padding: 10px;
-    border-radius: 8px;
-    width: 400px;
-    border: 1px solid #444;
-    outline: none;
-    transition: border-color 0.3s;
-    margin-left: 230px;
-}
 
-.search-bar input:focus {
-    border-color: black;
-}
 
 /* 경매 목록 섹션 */
 .live-auctions {

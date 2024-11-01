@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Header.css";
 import logo from "../images/cowcowlogo.png"; // 로고 경로 조정 필요
 
@@ -12,7 +12,9 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const [selectedBarn, setSelectedBarn] = useState(""); // 선택한 농가
   const [barnCows, setBarnCows] = useState([]); // 선택한 농가의 소 목록
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const location = useLocation(); // 현재 경로 확인
 
   const handleLogout = () => {
     setUser(null);
@@ -197,6 +199,19 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
             <img src={logo} alt="logo" />
           </h1>
         </Link>
+        
+        {/* 메인 페이지 경로('/')에서만 검색 입력바 표시 */}
+        {location.pathname === "/" && (
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="경매 검색..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        )}
+
         <nav className="nav-links">
           <Link to="/">홈</Link>
           {user ? (
@@ -216,6 +231,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
             </>
           )}
         </nav>
+
         <button onClick={toggleTheme} className="theme-toggle-button">
           {isDarkMode ? '🌞' : '🌙'}
         </button>
