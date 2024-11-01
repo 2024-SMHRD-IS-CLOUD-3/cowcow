@@ -43,15 +43,15 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    navigate("/");
-  };
-
   const filteredAuctions = auctionData.filter((auction) =>
     auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())
+  ).filter((auction) =>
+    (auction.aucStatus === "진행중" || auction.aucStatus === "종료")
   );
+
+  // const liveAuctions = filteredAuctions.filter((auction) => 
+  //   (auction.aucStatus === "진행중" || auction.aucStatus === "종료")
+  // )
 
   useEffect(() => {
     const fetchAuctions = async () => {
@@ -71,25 +71,25 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowTopButton(window.scrollY > 300);
-    };
+    let today = new Date();   
+    let timestamp = today.toISOString();
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
     auctionData.forEach((auction) => {
       console.log("auction.aucStatus: ", auction.auctionCows.every((cow) => cow.acowStatus === '낙찰'));
       console.log("auction.aucSeq: ", auction.aucSeq);
+      console.log("엔드타임: ", auction.aucEndDt);
+      console.log("현재시간: ", timestamp);
       if (auction.aucStatus === '진행중' && auction.auctionCows.every((cow) => cow.acowStatus === '낙찰')) {
-        updateAuctionStatus(auction.aucSeq);
+        handleAuctionEnd(auction.aucSeq);
+      } else if(auction.aucStatus !== "방송종료") {
+        if (auction.aucEndDt <= timestamp) {
+          handleAuctionStop(auction.aucSeq);
+        }
       }
     });
   }, [auctionData]);
   
-  const updateAuctionStatus = async (auctionId) => {
+  const handleAuctionEnd = async (auctionId) => {
     try {
       const response = await fetch(`http://223.130.160.153:3001/auctions/${auctionId}/status`, {
         method: 'PATCH',
@@ -112,6 +112,32 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
       console.error('Error updating auction status:', error);
     }
   };
+
+    // 경매 상태를 '방송종료'로 변경하는 함수
+    const handleAuctionStop = async (auctionId) => {
+      try {
+        const response = await fetch(`http://223.130.160.153:3001/auctions/${auctionId}/status`, {
+          method: "PATCH",
+          headers: { 
+            "Content-Type": "application/json" 
+          },
+          body: JSON.stringify({ aucStatus: "방송종료" }),
+        });
+        if (!response.ok) throw new Error("경매 종료 상태 변경 실패");
+      } catch (error) {
+        console.error("Error updating auction status:", error);
+      }
+    };
+  
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowTopButton(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div>
