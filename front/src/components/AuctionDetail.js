@@ -436,9 +436,6 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
         </div>
       </section>
 
-      <footer className="footer">
-        <p>© 2024 소 경매 웹사이트. 모든 권리 보유.</p>
-      </footer>
     </div>
   );
 };
