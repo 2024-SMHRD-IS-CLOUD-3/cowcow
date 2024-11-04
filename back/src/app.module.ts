@@ -18,7 +18,7 @@ import { CowsModule } from './cows/cows.module';
 import { AuctionBidsModule } from './auction-bids/auction-bids.module';
 import { UserBarnsModule } from './user-barns/user-barns.module';
 import { AuctionCowsModule } from './auction-cows/auction-cows.module';
-import { AlarmsModule } from './alarms/alarm.module';
+import { AlarmsModule } from './alarms/alarms.module';
 
 @Module({
   imports: [
