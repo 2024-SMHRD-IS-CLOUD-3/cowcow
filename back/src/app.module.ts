@@ -18,6 +18,7 @@ import { CowsModule } from './cows/cows.module';
 import { AuctionBidsModule } from './auction-bids/auction-bids.module';
 import { UserBarnsModule } from './user-barns/user-barns.module';
 import { AuctionCowsModule } from './auction-cows/auction-cows.module';
+import { AlarmsModule } from './alarms/alarm.module';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { AuctionCowsModule } from './auction-cows/auction-cows.module';
     CowsModule,
     AuctionBidsModule,
     UserBarnsModule,
-    AuctionCowsModule
+    AuctionCowsModule,
+    AlarmsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
