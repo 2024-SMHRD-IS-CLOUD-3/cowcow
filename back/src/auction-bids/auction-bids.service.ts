@@ -5,6 +5,7 @@ import { AuctionBid } from './auction-bid.entity';
 import { Auction } from 'src/auctions/auction.entity';
 import { AlarmsService } from 'src/alarms/alarms.service';
 import { AlarmsGateway } from 'src/alarms/alarms.gateway';
+import { AuctionCowsService } from 'src/auction-cows/auction-cows.service';
 
 @Injectable()
 export class AuctionBidsService {
@@ -17,6 +18,7 @@ export class AuctionBidsService {
 
     private readonly alarmsService: AlarmsService,
     private readonly alarmsGateway: AlarmsGateway,
+    private readonly auctionCowsService: AuctionCowsService
   ) {}
 
   async createBid(bidData: Partial<AuctionBid>): Promise<AuctionBid> {
@@ -28,12 +30,14 @@ export class AuctionBidsService {
       relations: ['user'],
     });
 
+    const acow = await this.auctionCowsService.findOne(bidData.acowSeq);
+
     if (!auction) {
       throw new NotFoundException(`ID ${bidData.aucSeq}에 해당하는 경매를 찾을 수 없습니다.`);
     }
 
     const sellerId = auction.user.usrSeq;
-    const message = '입찰 갱신되었습니다.';
+    const message = `${auction.aucBroadcastTitle}경매의 ${acow.cow.cowNo}가 입찰 갱신되었습니다.`;
 
     // 알림 생성 - 데이터베이스에 저장
     const alarm = await this.alarmsService.createAlarm(sellerId, message);
