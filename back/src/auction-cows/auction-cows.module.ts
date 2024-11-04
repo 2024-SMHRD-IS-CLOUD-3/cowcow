@@ -8,9 +8,10 @@ import { AuctionsService } from '../auctions/auctions.service'; // AuctionsServi
 import { Cow } from '../cows/cow.entity'; // Cow 엔티티 import
 import { User } from '../users/user.entity'; // User 엔티티 import (필요할 경우)
 import { AuctionBid } from '../auction-bids/auction-bid.entity'; // AuctionBid 엔티티 import (필요할 경우)
+import { AlarmsModule } from 'src/alarms/alarms.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AuctionCow, Auction, Cow, User, AuctionBid])], // 필요한 모든 엔티티 추가
+  imports: [TypeOrmModule.forFeature([AuctionCow, Auction, Cow, User, AuctionBid]), AlarmsModule], // 필요한 모든 엔티티 추가
   controllers: [AuctionCowsController],
   providers: [AuctionCowsService, AuctionsService], // AuctionsService 추가
   exports: [AuctionCowsService, TypeOrmModule], // AuctionCowsService와 TypeOrmModule을 exports에 추가
