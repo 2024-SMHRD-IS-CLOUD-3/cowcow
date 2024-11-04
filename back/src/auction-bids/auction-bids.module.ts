@@ -3,10 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuctionBidsService } from './auction-bids.service';
 import { AuctionBidsController } from './auction-bids.controller';
 import { AuctionBid } from './auction-bid.entity';
+import { Auction } from '../auctions/auction.entity';
+import { AlarmsService } from '../alarms/alarms.service';
+import { Alarm } from '../alarms/alarm.entity';
+import { User } from '../users/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AuctionBid])],
+  imports: [TypeOrmModule.forFeature([AuctionBid, Auction, Alarm, User])],
   controllers: [AuctionBidsController],
-  providers: [AuctionBidsService],
+  providers: [AuctionBidsService, AlarmsService],
 })
 export class AuctionBidsModule {}

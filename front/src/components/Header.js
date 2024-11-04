@@ -15,6 +15,8 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const location = useLocation(); // 현재 경로 확인
+  const [showAlarmDropdown, setShowAlarmDropdown] = useState(false); // 알림 드롭다운 상태
+  const [alarms, setAlarms] = useState([]); // 알림 목록 데이터
 
   const handleLogout = () => {
     if (window.Kakao && window.Kakao.Auth) {
@@ -28,12 +30,36 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     navigate("/");
   };
 
+  const toggleAlarmDropdown = () => {
+    setShowAlarmDropdown(!showAlarmDropdown); // 드롭다운 토글
+  };
+
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => {
     setShowModal(false);
     setItems([{ id: 1, entity: "", minValue: "" }]);
     setbroadCastTitle("");
   };
+
+   // 알림 데이터를 가져오는 함수
+   useEffect(() => {
+    const fetchAlarms = async () => {
+      if (!user) return;
+      try {
+        const response = await fetch(`http://localhost:3001/alarms/${user.usrSeq}`);
+        if (response.ok) {
+          const data = await response.json();
+          setAlarms(data);
+        } else {
+          console.error("Failed to fetch alarms");
+        }
+      } catch (error) {
+        console.error("Error fetching alarms:", error);
+      }
+    };
+
+    fetchAlarms();
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -219,9 +245,26 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
         )}
 
         <nav className="nav-links">
+        
           <Link to="/">홈</Link>
           {user ? (
             <>
+            <a onClick={toggleAlarmDropdown}>알람</a>
+            {showAlarmDropdown && (
+              <div className="alarm-dropdown">
+                <h4>알림</h4>
+                {alarms.length === 0 ? (
+                  <p className="no-alarms">새 알림이 없습니다.</p>
+                ) : (
+                alarms.map((alarm) => (
+                  <div key={alarm.alarmSeq} className="alarm-item">
+                    <p>{alarm.alarmMsg}</p>
+                    <small>{new Date(alarm.alarmCrtDt).toLocaleString()}</small>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
               <a className="open-modal-button" onClick={handleOpenModal}>
                 경매등록
               </a>
