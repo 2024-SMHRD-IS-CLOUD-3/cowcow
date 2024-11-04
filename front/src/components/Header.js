@@ -17,8 +17,14 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const location = useLocation(); // 현재 경로 확인
 
   const handleLogout = () => {
+    if (window.Kakao && window.Kakao.Auth) {
+      window.Kakao.Auth.logout(() => {
+        console.log("카카오 로그아웃 완료");
+      });
+    }
+    
     setUser(null);
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
     navigate("/");
   };
 

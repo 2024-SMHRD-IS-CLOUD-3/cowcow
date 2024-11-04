@@ -15,11 +15,11 @@ import Header from './components/Header';
 function App() {
   const [user, setUser] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(() => 
-    localStorage.getItem("theme") === "dark"
+    sessionStorage.getItem("theme") === "dark"
   );
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = sessionStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -28,7 +28,7 @@ function App() {
   useEffect(() => {
     const theme = isDarkMode ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', theme);  // <html>에 data-theme 속성 적용
-    localStorage.setItem("theme", theme);
+    sessionStorage.setItem("theme", theme);
   }, [isDarkMode]);
 
   const toggleTheme = () => {
