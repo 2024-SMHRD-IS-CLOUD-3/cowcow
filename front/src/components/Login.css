@@ -137,6 +137,7 @@ body {
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
+    margin-top: 10px;
   }
   
   .kakao-login-button:hover {
