@@ -66,6 +66,8 @@
 
 .nav-links a:hover {
   color: var(--hover-color); /* 호버 색상 변수 적용 */
+  cursor: pointer;
+
 }
 
 /* 모달 오버레이 및 콘텐츠 스타일 */
@@ -128,8 +130,7 @@
 .alarm-dropdown {
   position: absolute;
   top: 60px;
-  right: 9.8%;
-  width: 250px;
+  width: 400px;
   max-height: 300px;
   background: var(--background-secondary);
   border: 1px solid #ddd;
