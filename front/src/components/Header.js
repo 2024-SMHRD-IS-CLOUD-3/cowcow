@@ -64,7 +64,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   useEffect(() => {
     if (!user) return;
 
-    const socket = io('http://localhost:3001/alarms');
+    const socket = io('http://localhost:3001/alrim');
 
     // 방에 가입하여 해당 사용자에 대한 알림을 받을 준비
     socket.emit('joinRoom', { usrSeq: user.usrSeq });
