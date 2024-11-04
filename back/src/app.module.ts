@@ -10,6 +10,7 @@ import { Cow } from './cows/cow.entity';
 import { Auction } from './auctions/auction.entity';
 import { AuctionBid } from './auction-bids/auction-bid.entity';
 import { AuctionCow } from './auction-cows/auction-cow.entity';
+import { Alarm } from './alarms/alarm.entity';
 
 // 모듈 임포트
 import { UsersModule } from './users/users.module';
@@ -30,7 +31,7 @@ import { AlarmsModule } from './alarms/alarms.module';
       password: 'smart123!',
       database: 'ohi0',
       entities: [
-        User, UserBarn, Cow, Auction, AuctionBid, AuctionCow
+        User, UserBarn, Cow, Auction, AuctionBid, AuctionCow, Alarm
       ],
       synchronize: false,
     }),
