@@ -8,30 +8,25 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const [showModal, setShowModal] = useState(false);
   const [broadCastTitle, setbroadCastTitle] = useState("");
   const [items, setItems] = useState([{ id: 1, entity: "", minValue: "" }]);
-  const [userCows, setUserCows] = useState([]); // 유저의 소 목록
-  const [userBarns, setUserBarns] = useState([]); // 유저의 농가 목록
-  const [selectedBarn, setSelectedBarn] = useState(""); // 선택한 농가
-  const [barnCows, setBarnCows] = useState([]); // 선택한 농가의 소 목록
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+  const [userCows, setUserCows] = useState([]);
+  const [userBarns, setUserBarns] = useState([]);
+  const [selectedBarn, setSelectedBarn] = useState("");
+  const [barnCows, setBarnCows] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const location = useLocation(); // 현재 경로 확인
-  const [showAlarmDropdown, setShowAlarmDropdown] = useState(false); // 알림 드롭다운 상태
-  const [alarms, setAlarms] = useState([]); // 알림 목록 데이터
+  const location = useLocation();
+  const [showAlarmDropdown, setShowAlarmDropdown] = useState(false);
+  const [alarms, setAlarms] = useState([]);
 
   const handleLogout = () => {
     if (window.Kakao && window.Kakao.Auth) {
-      window.Kakao.Auth.logout(() => {
-        console.log("카카오 로그아웃 완료");
-      });
+      window.Kakao.Auth.logout(() => console.log("카카오 로그아웃 완료"));
     }
-    
     setUser(null);
     sessionStorage.removeItem("user");
     navigate("/");
   };
-
-
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => {
@@ -40,8 +35,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     setbroadCastTitle("");
   };
 
-   // 알림 데이터를 가져오는 함수
-   useEffect(() => {
+  useEffect(() => {
     const fetchAlarms = async () => {
       if (!user) return;
       try {
@@ -60,22 +54,18 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     fetchAlarms();
   }, [user]);
 
-  // 소켓 연결 설정
   useEffect(() => {
     if (!user) return;
 
     const socket = io('http://localhost:3001/alrim');
 
-    // 방에 가입하여 해당 사용자에 대한 알림을 받을 준비
     socket.emit('joinRoom', { usrSeq: user.usrSeq });
 
-    // 새로운 알림 수신
     socket.on('newAlarm', (alarm) => {
-      setAlarms((prevAlarms) => [alarm, ...prevAlarms]); // 새 알림을 목록에 추가
-      alert(`새로운 알림: ${alarm.alarmMsg}`); // 알림 메시지 표시
+      setAlarms((prevAlarms) => [alarm, ...prevAlarms]);
+      alert(`새로운 알림: ${alarm.alarmMsg}`);
     });
 
-    // 컴포넌트 언마운트 시 소켓 연결 해제
     return () => {
       socket.off('newAlarm');
       socket.disconnect();
@@ -83,7 +73,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   }, [user]);
 
   const toggleAlarmDropdown = () => {
-    setShowAlarmDropdown(!showAlarmDropdown); // 드롭다운 토글
+    setShowAlarmDropdown(!showAlarmDropdown);
   };
 
   useEffect(() => {
@@ -137,7 +127,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
         );
         if (response.ok) {
           const data = await response.json();
-          setBarnCows(data); // 선택된 농가의 소 목록 저장
+          setBarnCows(data);
         } else {
           throw new Error("농가의 소 목록을 불러오는 데 실패했습니다.");
         }
@@ -145,7 +135,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
         console.error("Error fetching cows:", error);
       }
     } else {
-      setBarnCows([]); // 농가가 선택되지 않으면 소 목록을 초기화
+      setBarnCows([]);
     }
   };
 
@@ -185,7 +175,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
       return;
     }
 
-    setIsLoading(true); // 로딩 시작
+    setIsLoading(true);
 
     try {
       const predictions = await Promise.all(
@@ -216,7 +206,6 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
         })
       );
 
-      // 방송 데이터 저장
       const response = await fetch("http://localhost:3001/auctions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -245,9 +234,10 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
       console.error("Error starting broadcast:", error);
       alert("서버에 문제가 발생했습니다. 나중에 다시 시도해주세요.");
     } finally {
-      setIsLoading(false); // 로딩 종료
+      setIsLoading(false);
     }
   };
+
   return (
     <>
       <header className="header">
@@ -257,7 +247,6 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
           </h1>
         </Link>
         
-        {/* 메인 페이지 경로('/')에서만 검색 입력바 표시 */}
         {location.pathname === "/" && (
           <div className="search-bar">
             <input
@@ -270,26 +259,25 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
         )}
 
         <nav className="nav-links">
-        
           <Link to="/">홈</Link>
           {user ? (
             <>
-            <a onClick={toggleAlarmDropdown}>알람</a>
-            {showAlarmDropdown && (
-              <div className="alarm-dropdown">
-                <h4>알림</h4>
-                {alarms.length === 0 ? (
-                  <p className="no-alarms">새 알림이 없습니다.</p>
-                ) : (
-                alarms.map((alarm) => (
-                  <div key={alarm.alarmSeq} className="alarm-item">
-                    <p>{alarm.alarmMsg}</p>
-                    <small>{new Date(alarm.alarmCrtDt).toLocaleString()}</small>
-                  </div>
-                ))
+              <a onClick={() => setShowAlarmDropdown(!showAlarmDropdown)}>알람</a>
+              {showAlarmDropdown && (
+                <div className="alarm-dropdown">
+                  <h4>알림</h4>
+                  {alarms.length === 0 ? (
+                    <p className="no-alarms">새 알림이 없습니다.</p>
+                  ) : (
+                    alarms.map((alarm) => (
+                      <div key={alarm.alarmSeq} className="alarm-item">
+                        <p>{alarm.alarmMsg}</p>
+                        <small>{new Date(alarm.alarmCrtDt).toLocaleString()}</small>
+                      </div>
+                    ))
+                  )}
+                </div>
               )}
-            </div>
-          )}
               <a className="open-modal-button" onClick={handleOpenModal}>
                 경매등록
               </a>
