@@ -7,10 +7,11 @@ import { Auction } from '../auctions/auction.entity';
 import { AlarmsService } from '../alarms/alarms.service';
 import { Alarm } from '../alarms/alarm.entity';
 import { User } from '../users/user.entity';
+import { AlarmsGateway } from 'src/alarms/alarms.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([AuctionBid, Auction, Alarm, User])],
   controllers: [AuctionBidsController],
-  providers: [AuctionBidsService, AlarmsService],
+  providers: [AuctionBidsService, AlarmsService, AlarmsGateway ],
 })
 export class AuctionBidsModule {}
