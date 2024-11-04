@@ -39,10 +39,6 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
     setRandomThumbnail(getRandomThumbnails());
   }, [auctionData]);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const filteredAuctions = auctionData.filter((auction) =>
     auction.aucBroadcastTitle.toLowerCase().includes(searchTerm.toLowerCase())
   ).filter((auction) =>
@@ -71,7 +67,7 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
   }, []);
 
   useEffect(() => {
-    let today = new Date();   
+    let today = new Date();
     let timestamp = today.toISOString();
 
     auctionData.forEach((auction) => {
@@ -81,14 +77,14 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
       console.log("현재시간: ", timestamp);
       if (auction.aucStatus === '진행중' && auction.auctionCows.every((cow) => cow.acowStatus === '낙찰')) {
         handleAuctionEnd(auction.aucSeq);
-      } else if(auction.aucStatus !== "방송종료") {
+      } else if (auction.aucStatus !== "방송종료") {
         if (auction.aucEndDt <= timestamp) {
           handleAuctionStop(auction.aucSeq);
         }
       }
     });
   }, [auctionData]);
-  
+
   const handleAuctionEnd = async (auctionId) => {
     try {
       const response = await fetch(`http://223.130.160.153:3001/auctions/${auctionId}/status`, {
@@ -98,11 +94,11 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
         },
         body: JSON.stringify({ aucStatus: '종료' }),
       });
-  
+
       if (!response.ok) {
         throw new Error('경매 상태 업데이트에 실패했습니다.');
       }
-  
+
       setAuctionData((prevData) =>
         prevData.map((auction) =>
           auction.aucSeq === auctionId ? { ...auction, aucStatus: '종료' } : auction
@@ -113,22 +109,22 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
     }
   };
 
-    // 경매 상태를 '방송종료'로 변경하는 함수
-    const handleAuctionStop = async (auctionId) => {
-      try {
-        const response = await fetch(`http://223.130.160.153:3001/auctions/${auctionId}/status`, {
-          method: "PATCH",
-          headers: { 
-            "Content-Type": "application/json" 
-          },
-          body: JSON.stringify({ aucStatus: "방송종료" }),
-        });
-        if (!response.ok) throw new Error("경매 종료 상태 변경 실패");
-      } catch (error) {
-        console.error("Error updating auction status:", error);
-      }
-    };
-  
+  // 경매 상태를 '방송종료'로 변경하는 함수
+  const handleAuctionStop = async (auctionId) => {
+    try {
+      const response = await fetch(`http://223.130.160.153:3001/auctions/${auctionId}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ aucStatus: "방송종료" }),
+      });
+      if (!response.ok) throw new Error("경매 종료 상태 변경 실패");
+    } catch (error) {
+      console.error("Error updating auction status:", error);
+    }
+  };
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -148,7 +144,7 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
             <Link to={`/auctionDetail/${auction.aucSeq}`} key={auction.aucSeq}>
               <div className={`auction-card ${auction.aucStatus.toLowerCase()}`}>
                 <div className="thumbnail-container">
-                <img
+                  <img
                     src={randomThumbnail[index]}
                     alt={`Thumbnail of ${auction.aucBroadcastTitle}`}
                   />
@@ -168,20 +164,6 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
           ))}
         </div>
       </div>
-
-      {showTopButton && (
-        <button className="top-button" onClick={scrollToTop}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-          </svg>
-        </button>
-      )}
 
       <button
         className={`theme-toggle-button ${isDarkMode ? "dark" : "light"}`}

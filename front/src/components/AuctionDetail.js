@@ -3,40 +3,19 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import "./AuctionDetail.css";
 
 const AuctionDetail = ({ user, setUser, isDarkMode }) => {
-  const updateTimer = () => {
-    const now = new Date();
-    const distance = endTime - now;
-
-    if (distance <= 0) {
-      setTimeRemaining("경매 종료");
-      clearInterval(timerInterval);
-
-      // handleAuctionEnd();
-      return;
-    }
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    setTimeRemaining(`${days}일 ${hours}시간 ${minutes}분 ${seconds}초`);
-  };
-  
-  // isDarkMode prop 추가
   const { id } = useParams();
   const [auction, setAuction] = useState(null);
   const [acows, setAcows] = useState([]);
   const [endTime, setEndTime] = useState();
-
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [bidAmount, setBidAmount] = useState(""); // 입찰 금액 상태 추가
-  const [highestBid, setHighestBid] = useState(null); // 현재 최고 입찰가 상태 추가
-  const [isLoadingBid, setIsLoadingBid] = useState(false); // 로딩 상태 추가
-  const [timeRemaining, setTimeRemaining] = useState(null);
-  const timerInterval = setInterval(updateTimer, 1000);
-  // const interval = setInterval(fetchAuctionDetail, 1000);
-  const videoRef = useRef(null); // 비디오 요소 참조
+  const [bidAmount, setBidAmount] = useState("");
+  const [highestBid, setHighestBid] = useState(null);
+  const [isLoadingBid, setIsLoadingBid] = useState(false);
+  const [days, setDays] = useState("00");
+  const [hours, setHours] = useState("00");
+  const [minutes, setMinutes] = useState("00");
+  const [seconds, setSeconds] = useState("00");
+  const videoRef = useRef(null);
   const navigate = useNavigate();
 
   const imgSlides = [
@@ -56,9 +35,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
 
   const fetchAuctionDetail = async () => {
     try {
-      const response = await fetch(
-        `http://223.130.160.153:3001/auctions/${id}`
-      );
+      const response = await fetch(`http://223.130.160.153:3001/auctions/${id}`);
       if (!response.ok) {
         throw new Error("경매 정보를 가져오는 데 실패했습니다.");
       }
@@ -71,22 +48,34 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
     }
   };
 
+  const updateTimer = () => {
+    const now = new Date();
+    const distance = endTime - now;
 
+    if (distance <= 0) {
+      setDays("00");
+      setHours("00");
+      setMinutes("00");
+      setSeconds("00");
+      return;
+    }
+
+    setDays(String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0'));
+    setHours(String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0'));
+    setMinutes(String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0'));
+    setSeconds(String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0'));
+  };
 
   useEffect(() => {
     fetchAuctionDetail();
   }, [id]);
 
-
   useEffect(() => {
     if (!endTime) return;
 
     const timerInterval = setInterval(updateTimer, 1000);
-
-    // 타이머 정리 함수
     return () => clearInterval(timerInterval);
   }, [endTime]);
-
 
   const fetchHighestBid = async (acowSeq) => {
     setIsLoadingBid(true);
@@ -110,34 +99,12 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
   useEffect(() => {
     if (!acows[currentSlide]) return;
 
-    // 최고 입찰가 1초마다 업데이트
     const highestBidInterval = setInterval(() => {
       fetchHighestBid(acows[currentSlide].acowSeq);
     }, 1000);
 
     return () => clearInterval(highestBidInterval);
   }, [currentSlide, acows]);
-
-
-  // // 경매 상태를 '방송종료'로 변경하는 함수
-  // const handleAuctionEnd = async () => {
-  //   try {
-  //     const response = await fetch(`http://223.130.160.153:3001/auctions/${id}/status`, {
-  //       method: "PATCH",
-  //       headers: { 
-  //         "Content-Type": "application/json" 
-  //       },
-  //       body: JSON.stringify({ aucStatus: "방송종료" }),
-  //     });
-  //     if (!response.ok) throw new Error("경매 종료 상태 변경 실패");
-
-  //     alert("경매가 종료되었습니다.");
-  //   } catch (error) {
-  //     console.error("Error updating auction status:", error);
-  //   }
-  // };
-
-
 
   useEffect(() => {
     let stream;
@@ -175,8 +142,6 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
       alert("입찰 금액은 현재 최고입찰가보다 높아야 합니다.");
       return;
     }
-
-
 
     try {
       const response = await fetch(`http://223.130.160.153:3001/auction-bids`, {
@@ -276,9 +241,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
             <th>현재 최고 입찰가(입찰자)</th>
             <td>
               {highestBid
-                ? `${highestBid.bidAmt}만원(${
-                    highestBid.user?.usrNm || "알 수 없음"
-                  })`
+                ? `${highestBid.bidAmt}만원(${highestBid.user?.usrNm || "알 수 없음"})`
                 : "정보 없음"}
             </td>
           </tr>
@@ -306,15 +269,23 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
     <div className="auction-detail-container">
       <section className="auction-detail">
         <div className="expected-price-container">
-          <div className="expected-price">
-            예상가: {acows[currentSlide]?.acowPredictPrice || 0}만원
-          </div>
-          <div className="expected-price">
-            {timeRemaining ? (
-              <p>종료까지 {timeRemaining}</p>
-            ) : (
-              <p>시간 로딩 중...</p>
-            )}
+          <div className="timer-container">
+            <div>
+              <div className="ending-text">마감까지 </div>
+            </div>
+            <div className="timer-unit">
+              <div className="number">{days}일</div>
+            </div>
+            <div className="timer-unit">
+              <div className="number">{hours}시</div>
+            </div>
+            <div className="timer-unit">
+              <div className="number">{minutes}분</div>
+            </div>
+            <div className="timer-unit">
+              <div className="number">{seconds}초</div>
+            </div>
+            <div className="ending-text">남았습니다!</div>
           </div>
         </div>
         <div className="auction-content">
@@ -416,6 +387,10 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
           </div>
         </div>
 
+        <div className="expected-price">
+            예상가: {acows[currentSlide]?.acowPredictPrice || 0}만원
+        </div>
+          
         <div className="slider-container">
           <div
             className="slider"
@@ -435,7 +410,6 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
           </button>
         </div>
       </section>
-
     </div>
   );
 };
