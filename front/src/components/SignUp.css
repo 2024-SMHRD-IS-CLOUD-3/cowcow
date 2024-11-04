@@ -61,6 +61,7 @@ body {
     background-color: var(--background-secondary);
     color: var(--text-primary);
     box-sizing: border-box;
+    background-color: #0d1117;
 }
 
 [data-theme="light"] .input-group input {
