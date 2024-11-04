@@ -120,7 +120,7 @@ const CowPage = ({ user, setUser, isDarkMode }) => { // isDarkMode prop 추가
     const totalPages = Math.ceil(filteredCows.length / itemsPerPage);
 
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem("user"));
+        const storedUser = JSON.parse(sessionStorage.getItem("user"));
         if (storedUser) {
             setUser(storedUser);
         } else {
