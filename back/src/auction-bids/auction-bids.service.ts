@@ -36,11 +36,13 @@ export class AuctionBidsService {
     const sellerId = auction.user.usrSeq;
     const message = '입찰 갱신되었습니다.';
 
+    console.log("auction-bids.service.ts");
+
     // 알림 생성 - 데이터베이스에 저장
-    await this.alarmsService.createAlarm(sellerId, message);
+    const alarm = await this.alarmsService.createAlarm(sellerId, message);
 
     // 알림 전송 - WebSocket으로 실시간 알림 전달
-    await this.alarmsGateway.sendAlarm(sellerId, message);
+    await this.alarmsGateway.sendAlarm(sellerId, message, alarm);
 
     return savedBid;
   }

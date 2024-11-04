@@ -16,8 +16,8 @@ export class AlarmsGateway {
   constructor(private readonly alarmsService: AlarmsService) {}
 
   // 클라이언트에 실시간 알림을 보냄
-  async sendAlarm(usrSeq: number, alarmMsg: string) {
-    const alarm = await this.alarmsService.createAlarm(usrSeq, alarmMsg);
+  async sendAlarm(usrSeq: number, alarmMsg: string, alarm: Alarm) {
+    // const alarm = await this.alarmsService.createAlarm(usrSeq, alarmMsg);
     this.server.to(`user_${usrSeq}`).emit('newAlarm', alarm);
   }
 

@@ -15,7 +15,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // 모든 인터페이스에서 접근 가능하도록 설정
-  await app.listen(3001, '0.0.0.0');  
-  console.log('NestJS server is running on http://0.0.0.0:3001');
+  await app.listen(3001, 'localhost');  
+  console.log('NestJS server is running on http://localhost:3001');
 }
 bootstrap();
