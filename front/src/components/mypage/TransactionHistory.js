@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import './TransactionHistory.css';
 
 
-const TransactionHistory = ({ user, setUser, isDarkMode }) => { // isDarkMode 추가
+const TransactionHistory = ({ user, isDarkMode }) => { // isDarkMode 추가
     const [filter, setFilter] = useState('전체');
     const [transactions, setTransactions] = useState([]);
 

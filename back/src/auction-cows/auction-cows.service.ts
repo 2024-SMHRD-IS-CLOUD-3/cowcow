@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult } from 'typeorm';  // DeleteResult 추가
 import { AuctionCow } from './auction-cow.entity';
 import { User } from '../users/user.entity';
+import { AlarmsGateway } from 'src/alarms/alarms.gateway';
+import { AlarmsService } from 'src/alarms/alarms.service';
 
 @Injectable()
 export class AuctionCowsService {
@@ -12,6 +14,9 @@ export class AuctionCowsService {
 
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+
+    private readonly alarmsService: AlarmsService,
+    private readonly alarmsGateway: AlarmsGateway,
   ) {}
 
   // 경매 소 생성
@@ -64,6 +69,7 @@ export class AuctionCowsService {
   ): Promise<AuctionCow> {
     const auctionCow = await this.auctionCowRepository.findOne({
       where: { acowSeq },
+      relations: ['cow'],
     });
 
     if (!auctionCow) {
@@ -83,7 +89,16 @@ export class AuctionCowsService {
     auctionCow.acowStatus = '낙찰';
     auctionCow.acowFinalBid = acowFinalBid;
     auctionCow.acowWinnerSeq = acowWinnerSeq;
-    auctionCow.acowDelDt = new Date(now.getDate());
+    auctionCow.acowDelDt = new Date(now.getTime());
+
+    const sellerId = acowWinnerSeq;
+    const message = `회원님이 입찰한 ${auctionCow.cow.cowNo}상품이 낙찰되었습니다.`;
+
+    // // 알림 생성 - 데이터베이스에 저장
+    const alarm = await this.alarmsService.createAlarm(sellerId, message);
+
+    // 알림 전송 - WebSocket으로 실시간 알림 전달
+    await this.alarmsGateway.sendAlarm(alarm);
 
     return await this.auctionCowRepository.save(auctionCow);
   }

@@ -7,10 +7,15 @@ import { Auction } from '../auctions/auction.entity';
 import { AlarmsService } from '../alarms/alarms.service';
 import { Alarm } from '../alarms/alarm.entity';
 import { User } from '../users/user.entity';
+import { AlarmsGateway } from 'src/alarms/alarms.gateway';
+import { AuctionCowsModule } from 'src/auction-cows/auction-cows.module'; // AuctionCowsModule 임포트
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AuctionBid, Auction, Alarm, User])],
+  imports: [
+    TypeOrmModule.forFeature([AuctionBid, Auction, Alarm, User]),
+    AuctionCowsModule, // AuctionCowsModule 추가
+  ],
   controllers: [AuctionBidsController],
-  providers: [AuctionBidsService, AlarmsService],
+  providers: [AuctionBidsService, AlarmsService, AlarmsGateway],
 })
 export class AuctionBidsModule {}

@@ -35,7 +35,9 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
 
   const fetchAuctionDetail = async () => {
     try {
-      const response = await fetch(`http://223.130.160.153:3001/auctions/${id}`);
+      const response = await fetch(
+        `http://localhost:3001/auctions/${id}`
+      );
       if (!response.ok) {
         throw new Error("경매 정보를 가져오는 데 실패했습니다.");
       }
@@ -81,7 +83,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
     setIsLoadingBid(true);
     try {
       const response = await fetch(
-        `http://223.130.160.153:3001/auction-bids/highest/${acowSeq}`
+        `http://localhost:3001/auction-bids/highest/${acowSeq}`
       );
       if (!response.ok) {
         throw new Error("최고 입찰가를 가져오는 데 실패했습니다.");
@@ -105,6 +107,25 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
 
     return () => clearInterval(highestBidInterval);
   }, [currentSlide, acows]);
+
+  // // 경매 상태를 '방송종료'로 변경하는 함수
+  // const handleAuctionEnd = async () => {
+  //   try {
+  //     const response = await fetch(`http://localhost:3001/auctions/${id}/status`, {
+  //       method: "PATCH",
+  //       headers: { 
+  //         "Content-Type": "application/json" 
+  //       },
+  //       body: JSON.stringify({ aucStatus: "방송종료" }),
+  //     });
+  //     if (!response.ok) throw new Error("경매 종료 상태 변경 실패");
+
+  //     alert("경매가 종료되었습니다.");
+  //   } catch (error) {
+  //     console.error("Error updating auction status:", error);
+  //   }
+  // };
+
 
   useEffect(() => {
     let stream;
@@ -144,7 +165,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
     }
 
     try {
-      const response = await fetch(`http://223.130.160.153:3001/auction-bids`, {
+      const response = await fetch(`http://localhost:3001/auction-bids`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -182,7 +203,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
 
     try {
       const response = await fetch(
-        `http://223.130.160.153:3001/auction-cows/${acows[currentSlide].acowSeq}/win`,
+        `http://localhost:3001/auction-cows/${acows[currentSlide].acowSeq}/win`,
         {
           method: "PUT",
           headers: {
@@ -291,7 +312,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
         <div className="auction-content">
           <div className="video-container">
             <iframe
-              src="http://223.130.160.153:5000/video_feed"
+              src="http://localhost:5000/video_feed"
               title="RTSP Video Stream"
             ></iframe>
           </div>
