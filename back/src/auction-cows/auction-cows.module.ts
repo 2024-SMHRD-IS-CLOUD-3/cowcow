@@ -13,5 +13,6 @@ import { AuctionBid } from '../auction-bids/auction-bid.entity'; // AuctionBid �
   imports: [TypeOrmModule.forFeature([AuctionCow, Auction, Cow, User, AuctionBid])], // 필요한 모든 엔티티 추가
   controllers: [AuctionCowsController],
   providers: [AuctionCowsService, AuctionsService], // AuctionsService 추가
+  exports: [AuctionCowsService, TypeOrmModule], // AuctionCowsService와 TypeOrmModule을 exports에 추가
 })
 export class AuctionCowsModule {}
