@@ -64,14 +64,15 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   useEffect(() => {
     if (!user) return;
 
-    const socket = io('http://localhost:3000/alarms');
+    const socket = io('http://localhost:3001/alarms');
 
     // 방에 가입하여 해당 사용자에 대한 알림을 받을 준비
-    socket.emit('joinRoom', { userId: user.usrSeq });
+    socket.emit('joinRoom', { usrSeq: user.usrSeq });
 
     // 새로운 알림 수신
     socket.on('newAlarm', (alarm) => {
       setAlarms((prevAlarms) => [alarm, ...prevAlarms]); // 새 알림을 목록에 추가
+      alert(`새로운 알림: ${alarm.alarmMsg}`); // 알림 메시지 표시
     });
 
     // 컴포넌트 언마운트 시 소켓 연결 해제
