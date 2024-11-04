@@ -6,7 +6,6 @@ import { Auction } from 'src/auctions/auction.entity';
 import { AlarmsService } from 'src/alarms/alarms.service';
 import { AlarmsGateway } from 'src/alarms/alarms.gateway';
 
-
 @Injectable()
 export class AuctionBidsService {
   constructor(
@@ -17,7 +16,7 @@ export class AuctionBidsService {
     private readonly auctionsRepository: Repository<Auction>,
 
     private readonly alarmsService: AlarmsService,
-    private readonly alarmsGateway: AlarmsGateway, // WebSocket 게이트웨이 주입
+    private readonly alarmsGateway: AlarmsGateway,
   ) {}
 
   async createBid(bidData: Partial<AuctionBid>): Promise<AuctionBid> {
@@ -36,13 +35,11 @@ export class AuctionBidsService {
     const sellerId = auction.user.usrSeq;
     const message = '입찰 갱신되었습니다.';
 
-    console.log("auction-bids.service.ts");
-
     // 알림 생성 - 데이터베이스에 저장
     const alarm = await this.alarmsService.createAlarm(sellerId, message);
 
     // 알림 전송 - WebSocket으로 실시간 알림 전달
-    await this.alarmsGateway.sendAlarm(sellerId, message, alarm);
+    await this.alarmsGateway.sendAlarm(alarm);
 
     return savedBid;
   }
@@ -51,8 +48,8 @@ export class AuctionBidsService {
   async getHighestBid(acowSeq: number): Promise<AuctionBid | null> {
     return this.auctionBidsRepository.findOne({
       where: { acowSeq },
-      relations: ['user'], // 입찰자 정보 포함
-      order: { bidAmt: 'DESC' }, // 최고 입찰가 기준 정렬
+      relations: ['user'],
+      order: { bidAmt: 'DESC' },
     });
   }
 }
