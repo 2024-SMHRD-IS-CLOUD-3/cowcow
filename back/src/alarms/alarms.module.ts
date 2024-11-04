@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AlarmsService } from './alarms.service';
 import { AlarmsController } from './alarms.controller';
-import { AlarmsGateway } from './alarms.gateway';
+import { AlarmsService } from './alarms.service';
 import { Alarm } from './alarm.entity';
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
+import { AlarmsGateway } from './alarms.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Alarm, User])],
-  providers: [AlarmsService, AlarmsGateway],
   controllers: [AlarmsController],
-  exports: [AlarmsService],
+  providers: [AlarmsService, AlarmsGateway],
+  exports: [AlarmsService, AlarmsGateway],
 })
 export class AlarmsModule {}

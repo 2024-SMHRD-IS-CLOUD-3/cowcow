@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Header.css";
+import io from 'socket.io-client';
 import logo from "../images/cowcowlogo.png"; // 로고 경로 조정 필요
 
 const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
@@ -30,9 +31,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     navigate("/");
   };
 
-  const toggleAlarmDropdown = () => {
-    setShowAlarmDropdown(!showAlarmDropdown); // 드롭다운 토글
-  };
+
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => {
@@ -60,6 +59,31 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
 
     fetchAlarms();
   }, [user]);
+
+  // 소켓 연결 설정
+  useEffect(() => {
+    if (!user) return;
+
+    const socket = io('http://localhost:3000/alarms');
+
+    // 방에 가입하여 해당 사용자에 대한 알림을 받을 준비
+    socket.emit('joinRoom', { userId: user.usrSeq });
+
+    // 새로운 알림 수신
+    socket.on('newAlarm', (alarm) => {
+      setAlarms((prevAlarms) => [alarm, ...prevAlarms]); // 새 알림을 목록에 추가
+    });
+
+    // 컴포넌트 언마운트 시 소켓 연결 해제
+    return () => {
+      socket.off('newAlarm');
+      socket.disconnect();
+    };
+  }, [user]);
+
+  const toggleAlarmDropdown = () => {
+    setShowAlarmDropdown(!showAlarmDropdown); // 드롭다운 토글
+  };
 
   useEffect(() => {
     if (!user) return;
