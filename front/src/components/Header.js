@@ -217,7 +217,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
       );
 
       // 방송 데이터 저장
-      const response = await fetch("http://223.130.160.153:3001/auctions", {
+      const response = await fetch("http://localhost:3001/auctions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
