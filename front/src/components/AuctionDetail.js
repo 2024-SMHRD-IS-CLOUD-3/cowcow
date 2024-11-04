@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./AuctionDetail.css";
 
-const AuctionDetail = ({ user, setUser, isDarkMode }) => {
+const AuctionDetail = ({ user }) => {
   const { id } = useParams();
   const [auction, setAuction] = useState(null);
   const [acows, setAcows] = useState([]);
@@ -159,7 +159,7 @@ const AuctionDetail = ({ user, setUser, isDarkMode }) => {
     } else if (bidAmount <= acows[currentSlide].acowBottomPrice) {
       alert("입찰 금액은 최저가보다 높아야 합니다.");
       return;
-    } else if (highestBid && bidAmount < highestBid.bidAmt) {
+    } else if (highestBid && bidAmount <= highestBid.bidAmt) {
       alert("입찰 금액은 현재 최고입찰가보다 높아야 합니다.");
       return;
     }

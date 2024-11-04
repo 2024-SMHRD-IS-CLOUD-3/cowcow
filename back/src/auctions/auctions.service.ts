@@ -51,7 +51,8 @@ export class AuctionsService {
     const aucCrtDt = new Date(now.getTime());
 
     const aucEndDt = new Date(aucCrtDt);
-    aucEndDt.setDate(aucEndDt.getDate() + 14);
+    aucEndDt.setDate(aucEndDt.getDate() + 4);
+    console.log("AucEndDt: ", aucEndDt);
 
     const newAuction = this.auctionsRepository.create({
       aucBroadcastTitle: auctionData.title,
