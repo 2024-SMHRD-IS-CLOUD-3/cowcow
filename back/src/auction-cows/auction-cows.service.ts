@@ -89,7 +89,7 @@ export class AuctionCowsService {
     auctionCow.acowStatus = '낙찰';
     auctionCow.acowFinalBid = acowFinalBid;
     auctionCow.acowWinnerSeq = acowWinnerSeq;
-    auctionCow.acowDelDt = new Date(now.getDate());
+    auctionCow.acowDelDt = new Date(now.getTime());
 
     const sellerId = acowWinnerSeq;
     const message = `회원님이 입찰한 ${auctionCow.cow.cowNo}상품이 낙찰되었습니다.`;
