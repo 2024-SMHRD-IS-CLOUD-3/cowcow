@@ -225,9 +225,21 @@ const AuctionDetail = ({ user }) => {
     }
   };
 
-  const handleBroadcastEnd = () => {
+  const handleBroadcastEnd = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/auctions/${auction.aucSeq}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ aucStatus: "방송종료" }),
+      });
+      if (!response.ok) throw new Error("경매 종료 상태 변경 실패");
+    } catch (error) {
+      console.error("Error updating auction status:", error);
+    }
     alert("방송이 종료되었습니다.");
-    // 추가적인 방송 종료 처리 로직을 여기에 작성합니다.
+    navigate("/");
   };
 
   if (!auction) return <p>경매 정보를 불러오는 중...</p>;
@@ -375,10 +387,7 @@ const AuctionDetail = ({ user }) => {
                           : "낙찰하기"}
                       </button>
                       <button
-                        className={`btn primary2 ${acows[currentSlide]?.acowStatus === "낙찰"
-                            ? "disabled"
-                            : ""
-                          }`}
+                        className='btn primary2'
                         onClick={handleBroadcastEnd}
                       >
                         방송 종료
