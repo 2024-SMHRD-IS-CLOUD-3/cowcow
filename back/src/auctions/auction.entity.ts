@@ -26,9 +26,6 @@ export class Auction {
   @Column({ name: 'auc_end_dt', nullable: true})
   aucEndDt: Date;
 
-  @Column({ name: 'auc_video_url', nullable: true})
-  aucVideoUrl: string
-
   // 사용자와의 관계 설정 (경매 등록자)
   @ManyToOne(() => User, (user) => user.auctions)
   @JoinColumn({ name: 'usr_seq' })

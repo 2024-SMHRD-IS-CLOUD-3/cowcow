@@ -41,8 +41,12 @@ export class Cow {
   @Column({ name: 'cow_eomigubun', nullable: true})
   cowEomigubun: string;
 
-  @Column({ name : 'cow_img', nullable: true})
-  cowImg : string;
+  @Column({ name : 'cow_img1', nullable: true})
+  cowImgOne : string;
+
+  @Column({ name : 'cow_img2', nullable: true})
+  cowImgTwo : string;
+
 
   @Column('decimal', { name : 'cow_family',  precision: 10, scale: 1, nullable: true })
   cowFamily : string;
