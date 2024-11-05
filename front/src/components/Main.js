@@ -52,7 +52,7 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
-        const response = await fetch("http://223.130.160.153:3001/auctions");
+        const response = await fetch("http://localhost:3001/auctions");
         if (!response.ok) {
           console.log("MainPage 에러");
           throw new Error("Failed to fetch auctions.");
@@ -87,7 +87,7 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
 
   const handleAuctionEnd = async (auctionId) => {
     try {
-      const response = await fetch(`http://223.130.160.153:3001/auctions/${auctionId}/status`, {
+      const response = await fetch(`http://localhost:3001/auctions/${auctionId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
   // 경매 상태를 '방송종료'로 변경하는 함수
   const handleAuctionStop = async (auctionId) => {
     try {
-      const response = await fetch(`http://223.130.160.153:3001/auctions/${auctionId}/status`, {
+      const response = await fetch(`http://localhost:3001/auctions/${auctionId}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
