@@ -79,7 +79,6 @@ const AuctionDetail = ({ user }) => {
   }, [endTime]);
 
   const fetchHighestBid = async (acowSeq) => {
-    setIsLoadingBid(true);
     try {
       const response = await fetch(
         `http://localhost:3001/auction-bids/highest/${acowSeq}`
@@ -92,8 +91,6 @@ const AuctionDetail = ({ user }) => {
     } catch (error) {
       console.error("Error fetching highest bid:", error);
       setHighestBid(null);
-    } finally {
-      setIsLoadingBid(false);
     }
   };
 
@@ -276,7 +273,7 @@ const AuctionDetail = ({ user }) => {
             <th>현재 최고 입찰가(입찰자)</th>
             <td>
               {highestBid
-                ? `${highestBid.bidAmt}만원(${highestBid.user?.usrNm || "알 수 없음"})`
+                ? `${highestBid.bidAmt}만원(${highestBid.user.usrNm})`
                 : "정보 없음"}
             </td>
           </tr>
