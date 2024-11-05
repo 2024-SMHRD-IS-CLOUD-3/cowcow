@@ -88,6 +88,8 @@
   border-radius: 12px;
   width: 90%;
   max-width: 600px;
+  max-height: 80vh; /* 높이 제한을 설정 */
+  overflow-y: auto; /* 세로 스크롤을 활성화 */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   color: var(--text-primary);
   transition: background-color 0.3s, color 0.3s;
