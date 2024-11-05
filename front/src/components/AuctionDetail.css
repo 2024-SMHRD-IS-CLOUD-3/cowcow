@@ -195,7 +195,6 @@ iframe {
     cursor: pointer;
     transition: background-color 0.3s;
     border-radius: 5px;
-    margin-right: 10px; /* 버튼 간 간격 */
   }
   
   .btn.primary.disabled {

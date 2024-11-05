@@ -1,3 +1,7 @@
+a {
+    text-decoration: none !important;
+}
+
 /* 전체 레이아웃 스타일 */
 html, body {
     /* height: 100%; /* 화면 전체 높이를 채우도록 설정 */ 
@@ -146,7 +150,7 @@ html, body {
 
 /* 경매 정보 */
 .auction-info {
-    padding: 10px;
+    padding: 5px;
     text-align: left;
     color: var(--text-primary);
 }
