@@ -81,7 +81,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     const fetchUserBarns = async () => {
       try {
         const response = await fetch(
-          `http://223.130.160.153:3001/user-barns/user/${user.usrSeq}`
+          `http://localhost:3001/user-barns/user/${user.usrSeq}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -101,7 +101,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     const fetchUserCows = async () => {
       try {
         const response = await fetch(
-          `http://223.130.160.153:3001/cows/user/${user.usrSeq}`
+          `http://localhost:3001/cows/user/${user.usrSeq}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -123,7 +123,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     if (barnId) {
       try {
         const response = await fetch(
-          `http://223.130.160.153:3001/cows/barn/${barnId}`
+          `http://localhost:3001/cows/barn/${barnId}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -181,7 +181,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
       const predictions = await Promise.all(
         selectedCows.map(async (cow) => {
           const cowData = userCows.find((c) => c.cowSeq === Number(cow.entity));
-          const response = await fetch("http://223.130.160.153:8081/predict", {
+          const response = await fetch("http://localhost:8081/predict", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

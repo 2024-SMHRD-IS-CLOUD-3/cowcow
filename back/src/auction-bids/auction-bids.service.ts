@@ -67,7 +67,7 @@ export class AuctionBidsService {
     );
 
     // 알림 전송 - WebSocket으로 실시간 알림 전달
-    // await this.alarmsGateway.sendAlarm(alarm);
+    await this.alarmsGateway.sendAlarm(alarm);
 
     return savedBid;
   }
