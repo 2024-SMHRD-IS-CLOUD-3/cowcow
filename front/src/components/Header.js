@@ -45,7 +45,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     const fetchAlarms = async () => {
       if (!user) return;
       try {
-        const response = await fetch(`http://localhost:3001/alarms/${user.usrSeq}`);
+        const response = await fetch(`http://localhost:3001/alrim/${user.usrSeq}`);
         if (response.ok) {
           const data = await response.json();
           setAlarms(data);
