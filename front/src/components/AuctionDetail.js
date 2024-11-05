@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./AuctionDetail.css";
+import cow1 from '../images/cowImg1 (2).png'
+import cow2 from '../images/cowImg2 (2).png'
 
 const AuctionDetail = ({ user }) => {
   const { id } = useParams();
@@ -456,7 +458,8 @@ const AuctionDetail = ({ user }) => {
           >
             {slides.map((slide, index) => (
               <div key={index} className="slide">
-                <img src={slide.src} alt={slide.alt} />
+                <img src={cow1} alt={slide.alt} />
+                <img src={cow2} alt={slide.alt} />
               </div>
             ))}
           </div>
