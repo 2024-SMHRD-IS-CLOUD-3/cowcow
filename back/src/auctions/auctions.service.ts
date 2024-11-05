@@ -13,9 +13,6 @@ export class AuctionsService {
     @InjectRepository(Auction)
     private readonly auctionsRepository: Repository<Auction>,
 
-    @InjectRepository(User)
-    private readonly usersRepository: Repository<User>,
-
     @InjectRepository(AuctionCow)
     private readonly auctionCowsRepository: Repository<AuctionCow>,
 
@@ -51,7 +48,7 @@ export class AuctionsService {
     const aucCrtDt = new Date(now.getTime());
 
     const aucEndDt = new Date(aucCrtDt);
-    aucEndDt.setDate(aucEndDt.getDate() + 4);
+    aucEndDt.setDate(aucEndDt.getDate() + 5);
     console.log("AucEndDt: ", aucEndDt);
 
     const newAuction = this.auctionsRepository.create({
