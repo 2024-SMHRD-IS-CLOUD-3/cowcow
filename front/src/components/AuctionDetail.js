@@ -448,7 +448,7 @@ const AuctionDetail = ({ user }) => {
         </div>
 
         <div className="expected-price">
-          예상가: {acows[currentSlide]?.acowPredictPrice || 0}만원
+          예상가 : {acows[currentSlide]?.acowPredictPrice || 0}만원
         </div>
 
         <div className="slider-container">

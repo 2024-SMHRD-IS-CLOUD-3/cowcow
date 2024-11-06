@@ -5,8 +5,15 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: 'WarhavenB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/WarhavenB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+
 body {
-    font-family: 'Arial', sans-serif;
     overflow-x: hidden;
 }
 
@@ -82,6 +89,7 @@ body {
 
 .nav-links a, .transaction-content h1, .transaction-table th, .transaction-table td, .filter-dropdown {
     color: var(--text-primary);
+    font-family: 'WarhavenB', sans-serif;
 }
 
 .transaction-layout, .content-container, .transaction-content, .filter-container, .transaction-table {

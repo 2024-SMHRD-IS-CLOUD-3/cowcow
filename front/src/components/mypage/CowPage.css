@@ -5,6 +5,13 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: 'WarhavenB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/WarhavenB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
 body {
     width: 100%;
     height: 100%;
@@ -13,10 +20,12 @@ body {
 
 .registration-form label, .registration-form input, .registered-cows th, .registered-cows td {
     color: var(--text-primary);
+    font-family: 'WarhavenB', sans-serif;
 }
 
 .layout, .content-container, .registration-form, .image-preview, .table-container, .filter-section, .pagination {
     background-color: var(--background-primary);
+    font-family: 'WarhavenB', sans-serif;
 }
 
 /* 레이아웃 */
@@ -70,6 +79,7 @@ body {
     border-radius: 5px;
     color: black;
     background-color: #eaf0fe;
+    font-family: 'WarhavenB', sans-serif;
 }
 
 .registration-form input[type="file"] {
@@ -178,6 +188,7 @@ body {
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
+    font-family: 'WarhavenB', sans-serif;
 }
 
 .registration-form .submit-button:hover {
@@ -202,12 +213,14 @@ body {
     padding: 10px;
     border: 1px solid #555;
     border-radius: 5px;
+    font-family: 'WarhavenB', sans-serif;
 }
 
 .filter-section select {
     padding: 10px;
     border: 1px solid #555;
     border-radius: 5px;
+    font-family: 'WarhavenB', sans-serif;
 }
 
 /* 삭제 버튼 스타일 */
@@ -219,6 +232,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-family: 'WarhavenB', sans-serif;
 }
 
 .delete-button:hover {

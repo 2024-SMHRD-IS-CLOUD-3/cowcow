@@ -4,7 +4,14 @@
     padding: 0;
     box-sizing: border-box;
 }
-  
+ 
+@font-face {
+    font-family: 'WarhavenB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/WarhavenB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
 /* body 스타일 설정 */
 body {
     background-color: var(--background-primary); /* 라이트/다크 모드에 따라 변경 */
@@ -63,6 +70,7 @@ body {
     margin-top: 20px;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     white-space: nowrap;
+    font-family: 'WarhavenB', sans-serif;
 }
 
 /* 타이머 전광판 스타일 */
@@ -72,6 +80,7 @@ body {
     align-items: baseline; /* 같은 선상에 배치 */
     justify-content: center;
     text-align: center;
+    font-family: 'WarhavenB', sans-serif;
 }
 
 .timer-unit {
@@ -146,6 +155,7 @@ iframe {
     border-collapse: collapse;
     background-color: var(--background-primary);
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    font-family: 'WarhavenB', sans-serif;
 }
   
 .details-table th,
@@ -185,6 +195,7 @@ iframe {
     border: 1px solid var(--text-secondary);
     border-radius: 5px;
     box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: 'WarhavenB', sans-serif;
 }
   
 .btn.primary {
@@ -297,6 +308,7 @@ iframe {
     background-color: var(--background-secondary); /* 입력란과 일치하는 배경색 */
     line-height: 1; /* 텍스트 높이를 중앙에 맞추기 */
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */   
+    font-family: 'WarhavenB', sans-serif;
 }
 
 
