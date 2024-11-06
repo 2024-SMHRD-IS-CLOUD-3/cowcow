@@ -8,11 +8,11 @@ const AuctionDetail = ({ user }) => {
   const { id } = useParams();
   const [auction, setAuction] = useState(null);
   const [acows, setAcows] = useState([]);
+  const [acowData, setAcowData] = useState([]);
   const [endTime, setEndTime] = useState();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [bidAmount, setBidAmount] = useState("");
   const [highestBid, setHighestBid] = useState(null);
-  const [isLoadingBid, setIsLoadingBid] = useState(false);
   const [days, setDays] = useState("00");
   const [hours, setHours] = useState("00");
   const [minutes, setMinutes] = useState("00");
@@ -89,10 +89,16 @@ const AuctionDetail = ({ user }) => {
         throw new Error("최고 입찰가를 가져오는 데 실패했습니다.");
       }
       const bidData = await response.json();
-      setHighestBid(bidData);
+      console.log("bidData: ", bidData);
+  
+      // bidData에서 acow와 highestBid를 각각의 상태로 설정
+      setHighestBid(bidData.highestBid);
+      setAcowData(bidData.acow); // acow 데이터를 저장할 별도의 상태
+  
     } catch (error) {
       console.error("Error fetching highest bid:", error);
       setHighestBid(null);
+      setAcowData(null);
     }
   };
 
@@ -325,7 +331,7 @@ const AuctionDetail = ({ user }) => {
         <div className="auction-content">
           <div className="video-container">
             <iframe
-              src="http://localhost:5000/video_feed"
+              src="http://223.130.160.153:5000/video_feed"
               title="RTSP Video Stream"
             ></iframe>
           </div>

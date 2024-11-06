@@ -38,7 +38,7 @@ const CowPage = ({ user, setUser, isDarkMode }) => { // isDarkMode prop 추가
         const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`http://localhost:3001/cows/${cowId}`, {
+                const response = await fetch(`http://223.130.160.153:3001/cows/${cowId}`, {
                     method: "DELETE",
                 });
 
@@ -74,7 +74,7 @@ const CowPage = ({ user, setUser, isDarkMode }) => { // isDarkMode prop 추가
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:3001/cows", {
+            const response = await fetch("http://223.130.160.153:3001/cows", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -142,7 +142,7 @@ const CowPage = ({ user, setUser, isDarkMode }) => { // isDarkMode prop 추가
             const fetchCows = async () => {
                 try {
                     const response = await fetch(
-                        `http://localhost:3001/cows/user/${user.usrSeq}`
+                        `http://223.130.160.153:3001/cows/user/${user.usrSeq}`
                     );
                     if (response.ok) {
                         const data = await response.json();
@@ -163,7 +163,7 @@ const CowPage = ({ user, setUser, isDarkMode }) => { // isDarkMode prop 추가
             const fetchUserBarns = async () => {
                 try {
                     const response = await fetch(
-                        `http://localhost:3001/user-barns/user/${user.usrSeq}`
+                        `http://223.130.160.153:3001/user-barns/user/${user.usrSeq}`
                     );
                     if (response.ok) {
                         const data = await response.json();
