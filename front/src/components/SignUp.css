@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'WarhavenB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/WarhavenB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
 /* SignUp.css */
 body {
     font-family: 'Arial', sans-serif;
@@ -14,6 +21,7 @@ body {
     align-items: center;
     height: 100vh;
     background-color: var(--background-primary); /* 모드에 따라 자동 변경 */
+    font-family: 'WarhavenB', sans-serif;
 }
 
 /* .signup-box 설정 */
@@ -93,6 +101,7 @@ body {
     background-color: #63b3ff;
     color: white;
     transition: background-color 0.3s;
+    font-family: 'WarhavenB', sans-serif;
 }
 
 .verify-button {

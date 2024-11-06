@@ -5,8 +5,14 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: 'WarhavenB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/WarhavenB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
     overflow-x: hidden;
 }
 
@@ -20,10 +26,12 @@ body {
 
 .nav-links a, .warning h2, .warning p, .delete-btn {
     color: var(--text-primary);
+    font-family: 'WarhavenB', sans-serif;
 }
 
 .delete-account-layout, .content-container, .content-center, .warning {
     background-color: var(--background-primary);
+    font-family: 'WarhavenB', sans-serif;
 }
 
 /* 레이아웃 스타일 */

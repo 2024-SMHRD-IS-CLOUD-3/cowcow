@@ -15,10 +15,12 @@ html, body {
 
 .nav-links a, .greeting, .auction-info, .auction-card, .viewer-count, .live-badge, .top-button {
     color: var(--text-primary);
+    font-family: 'WarhavenB', sans-serif;
 }
 
 .main-container, .search-bar input, .live-auctions, .auction-list, .auction-card, .thumbnail-container, .top-button {
     background-color: var(--background-primary);
+    font-family: 'WarhavenB', sans-serif;
 }
 
 

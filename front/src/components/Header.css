@@ -1,4 +1,10 @@
-/* Header.css */
+/* WarhavenB 폰트 정의 */
+@font-face {
+  font-family: 'WarhavenB';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/WarhavenB.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
 
 /* 기본 헤더 스타일 */
 .header {
@@ -15,11 +21,13 @@
   justify-content: space-between;
   padding: 20px;
   transition: background-color 0.3s, color 0.3s;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .header .logo {
   font-size: 24px;
   font-weight: bold;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .header img {
@@ -38,6 +46,7 @@
   text-decoration: none;
   color: var(--text-primary);
   transition: color 0.3s;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 /* 검색창 스타일 */
@@ -49,6 +58,7 @@
   outline: none;
   transition: border-color 0.3s;
   margin-left: 230px;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .search-bar input:focus {
@@ -61,6 +71,7 @@
   color: var(--text-primary);
   font-size: 18px;
   transition: color 0.3s;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .nav-links a:hover {
@@ -93,18 +104,21 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   color: var(--text-primary);
   transition: background-color 0.3s, color 0.3s;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .modal-title {
   font-size: 1.5em;
   margin-bottom: 20px;
   color: var(--text-primary);
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 8px;
   font-weight: bold;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .form-group input,
@@ -113,8 +127,8 @@
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  margin-bottom: 15px;
   font-size: 1em;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .form-group.row {
@@ -148,7 +162,8 @@
   cursor: pointer;
   font-weight: bold;
   margin: 5px 0px;
-  border : none;
+  border: none;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .add-button,
@@ -188,22 +203,26 @@
   overflow-y: auto;
   padding: 10px;
   z-index: 1000;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .alarm-dropdown h4 {
   margin: 0 0 10px 0;
   padding-bottom: 5px;
   border-bottom: 1px solid #ddd;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .no-alarms {
   text-align: center;
   color: #666;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .alarm-item {
   padding: 10px;
   border-bottom: 1px solid #eee;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .alarm-item:last-child {
@@ -212,26 +231,11 @@
 
 .alarm-item p {
   margin: 0;
+  font-family: 'WarhavenB', sans-serif;
 }
 
 .alarm-item small {
   color: #999;
   font-size: 12px;
-}
-
-
-.video-container {
-  position: relative;
-  display: inline-block;
-}
-
-.close-button {
-  position: absolute;
-  top: 21.5%;
-  right: 23.5%;
-  background: red;
-  color: white;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
+  font-family: 'WarhavenB', sans-serif;
 }
