@@ -218,3 +218,20 @@
   color: #999;
   font-size: 12px;
 }
+
+
+.video-container {
+  position: relative;
+  display: inline-block;
+}
+
+.close-button {
+  position: absolute;
+  top: 21.5%;
+  right: 23.5%;
+  background: red;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
