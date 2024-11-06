@@ -41,7 +41,11 @@ model_path = os.path.join(os.path.dirname(__file__), "best2.pt")
 
 # YOLO 및 DeepSORT 설정
 model = YOLO(model_path, verbose=False)
-tracker = DeepSort(max_age=50, n_init=3)
+tracker = DeepSort(
+    max_age=50, 
+    n_init=3,
+    max_cosine_distance = 0.1
+    )
 
 # ID 매핑 테이블과 관련 변수 설정
 tracked_ids = set()
@@ -52,8 +56,8 @@ id_mapping = {}
 reverse_id_mapping = {}
 
 # 그리드 크기 및 영역 정의
-grid_size = (4, 4)
-frame_height, frame_width = 720, 1280
+grid_size = (12, 8)
+frame_height, frame_width = 1080, 1920
 cell_width = frame_width // grid_size[0]
 cell_height = frame_height // grid_size[1]
 trapezoid_points = np.array([[0, 750], [400, 50], [1500, 50], [1900, 750]], np.int32)
@@ -131,17 +135,31 @@ def read_frames():
     if cap:
         cap.release()  # 종료 시 cap 해제
         cap = None
+# bounding box의 중심을 기준으로 그리드 위치 가져오기
+def get_grid_position(center_x, center_y, cell_width, cell_height):
+    grid_x = center_x // cell_width
+    grid_y = center_y // cell_height
+    return (grid_x, grid_y)
+
+# 인접한 셀 확인 (상, 하, 좌, 우만 확인)
+def get_adjacent_cells(grid_position, grid_size):
+    grid_x, grid_y = grid_position
+    adjacent_cells = []
+    
+    # 인접한 셀만 확인 (상, 하, 좌, 우)
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # left, right, top, bottom
+    for dx, dy in directions:
+        nx, ny = grid_x + dx, grid_y + dy
+        # 셀이 그리드 범위 내에 있는지 확인
+        if 0 <= nx < grid_size[0] and 0 <= ny < grid_size[1]:
+            adjacent_cells.append((nx, ny))
+    return adjacent_cells
 
 
-# 프레임 처리 및 추적
+# 이전 프레임의 인접 셀에서 ID를 확인하도록 process_frame 함수 수정
 def process_frame():
     if not frame_queue.empty():
         frame = frame_queue.get()
-
-        #  # 다운스케일링 해상도 설정
-        # target_width, target_height = 640, 360
-        # frame = cv2.resize(frame, (target_width, target_height))
-
         results = model(frame)
         detections = []
 
@@ -150,62 +168,72 @@ def process_frame():
             confidences = result.boxes.conf.cpu().numpy()
             class_ids = result.boxes.cls.cpu().numpy()
 
-            # max_cows만큼의 객체 감지
             for box, conf, class_id in zip(boxes, confidences, class_ids):
-                if len(detections) >= max_cows:
-                    break
                 x1, y1, x2, y2 = map(int, box)
-                if is_inside_trapezoid((x1, y1, x2, y2), trapezoid_points):
-                    detections.append(([x1, y1, x2, y2], conf, int(class_id)))
+                center_x, center_y = (x1 + x2) // 2, (y1 + y2) // 2
 
-        # DeepSORT 트래킹 수행
+                # bounding box의 중심을 기준으로 그리드 셀 결정
+                grid_position = get_grid_position(center_x, center_y, cell_width, cell_height)
+                
+                if is_inside_trapezoid((x1, y1, x2, y2), trapezoid_points):
+                    detections.append(([x1, y1, x2, y2], conf, int(class_id), grid_position))
+                    
+        # 그리드 기반 ID 할당이 강화된 DeepSORT 트래킹 수행
         tracked_objects = tracker.update_tracks(detections, frame=frame)
         new_tracked_ids = set()
-
+        
         for track, detection in zip(tracked_objects, detections):
             if track.is_confirmed():
                 deep_sort_id = track.track_id
-                (x1, y1, x2, y2), conf, class_id = detection  # YOLO 감지 박스 좌표 가져오기
-                detected_position = ((x1 + x2) // 2, (y1 + y2) // 2)
+                (x1, y1, x2, y2), conf, class_id, grid_position = detection
+                center_x, center_y = (x1 + x2) // 2, (y1 + y2) // 2
 
-                if deep_sort_id not in id_mapping:
-                    if missing_ids:
-                        new_id = missing_ids.pop()
-                        id_mapping[deep_sort_id] = new_id
-                        reverse_id_mapping[new_id] = deep_sort_id
+                # 연속성을 유지하기 위해 인접 셀에서 기존 ID 확인
+                if deep_sort_id in id_mapping:
+                    track_id = id_mapping[deep_sort_id]
+                else:
+                    # 인접한 그리드 셀에서 사용 가능한 ID 찾기
+                    adjacent_cells = get_adjacent_cells(grid_position, grid_size)
+                    reused_id = None
+                    for cell in adjacent_cells:
+                        for known_id, known_position in last_known_positions.items():
+                            if known_position == cell and known_id not in new_tracked_ids:
+                                reused_id = known_id
+                                break
+                        if reused_id:
+                            break
+
+                    # 일치하는 ID가 없으면 새 ID 할당
+                    if reused_id:
+                        track_id = reused_id
+                        missing_ids.discard(reused_id)
+                    elif missing_ids:
+                        track_id = missing_ids.pop()
                     else:
-                        continue
+                        continue  # 사용 가능한 ID가 없으면 건너뜀
 
-                track_id = id_mapping[deep_sort_id]
+                    # 매핑 업데이트
+                    id_mapping[deep_sort_id] = track_id
+                    reverse_id_mapping[track_id] = deep_sort_id
+
                 tracked_ids.add(track_id)
-                last_known_positions[track_id] = detected_position
+                last_known_positions[track_id] = grid_position
                 new_tracked_ids.add(track_id)
 
-                # id_select가 없는 경우: YOLO 감지 bounding box와 tracking ID를 모든 객체에 대해 표시
-                if id_select is None:
-                    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # 초록색 YOLO 감지 박스
+                # bounding box와 트래킹 ID 그리기
+                if id_select is None or track_id == id_select:
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
                     cv2.putText(frame, f"ID: {track_id}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-                
-                # id_select가 있는 경우: 해당 ID와 일치하는 객체만 YOLO 감지 bounding box와 tracking ID 표시
-                elif track_id == id_select:
-                    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # 초록색 YOLO 감지 박스
-                    cv2.putText(frame, f"ID: {track_id}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-                    break  # id_select와 일치하는 객체가 발견되면 반복 중단
 
-        # 중단된 트래킹 ID 관리
+        # 사용하지 않는 ID 관리 및 다음 프레임을 위해 초기화
         for old_id in tracked_ids - new_tracked_ids:
             if old_id in reverse_id_mapping:
                 deep_sort_id = reverse_id_mapping.pop(old_id)
                 missing_ids.add(old_id)
                 id_mapping.pop(deep_sort_id, None)
 
-
         tracked_ids.clear()
         tracked_ids.update(new_tracked_ids)
-        
-        # 다운스케일링 해상도 설정
-        target_width, target_height = 640, 360
-        frame = cv2.resize(frame, (target_width, target_height))
 
         _, buffer = cv2.imencode('.jpg', frame)
         frame_data = base64.b64encode(buffer).decode('utf-8')
