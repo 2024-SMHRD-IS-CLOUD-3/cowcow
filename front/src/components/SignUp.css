@@ -33,9 +33,9 @@ body {
     border-radius: 8px;
 }
 
-/* 다크 모드에서 placeholder 텍스트 색상을 흰색으로 */
+/* 다크 모드에서 placeholder 텍스트 색상을 반투명 흰색으로 */
 [data-theme="dark"] .input-group input::placeholder {
-    color: #ffffff; /* 완전 흰색 */
+    color: rgba(255, 255, 255, 0.6); /* 반투명 흰색 */
 }
 
 [data-theme="light"] .signup-box {
@@ -82,7 +82,7 @@ body {
 }
 
 [data-theme="light"] .input-group input::placeholder {
-    color: #000000; /* 라이트 모드에서 placeholder 텍스트 검은색 */
+    color: rgba(0, 0, 0, 0.5); /* 반투명 검은색 */
 }
 
 /* 이메일 입력과 인증 버튼을 같은 줄에 배치 */
