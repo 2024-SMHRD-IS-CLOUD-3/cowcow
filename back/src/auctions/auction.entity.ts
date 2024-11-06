@@ -23,8 +23,8 @@ export class Auction {
   @Column({ name: 'auc_del_dt', nullable: true})
   aucDelDt: Date;
 
-  @Column({ name: 'auc_video_url', nullable: true})
-  aucVideoUrl: string
+  @Column({ name: 'auc_end_dt', nullable: true})
+  aucEndDt: Date;
 
   // 사용자와의 관계 설정 (경매 등록자)
   @ManyToOne(() => User, (user) => user.auctions)

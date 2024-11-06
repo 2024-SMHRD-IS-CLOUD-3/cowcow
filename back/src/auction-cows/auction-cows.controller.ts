@@ -7,7 +7,7 @@ import {
   Body,
   Put,
   NotFoundException,
-  Query
+  Query,
 } from '@nestjs/common';
 import { AuctionCowsService } from './auction-cows.service';
 import { AuctionCow } from './auction-cow.entity';
@@ -57,7 +57,7 @@ export class AuctionCowsController {
   //   return updatedAuctionCow;
   // }
 
-  // 경매 낙찰 처리 (PUT /auctions/:id/win)
+  // 경매 낙찰 처리 (PUT /auction-cows/:id/win)
   @Put(':id/win')
   async setWinningBid(
     @Param('id') acowSeq: number,

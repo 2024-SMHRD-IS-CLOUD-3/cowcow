@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,9 +12,6 @@ export class AuctionsService {
   constructor(
     @InjectRepository(Auction)
     private readonly auctionsRepository: Repository<Auction>,
-
-    @InjectRepository(User)
-    private readonly usersRepository: Repository<User>,
 
     @InjectRepository(AuctionCow)
     private readonly auctionCowsRepository: Repository<AuctionCow>,
@@ -41,15 +39,23 @@ export class AuctionsService {
 
   // 2. 경매 생성
   async createAuction(auctionData: {
-    title: string; 
-    usrSeq: number; 
-    usrBarnSeq: number; 
-    cows: { cowSeq: number; minValue: number; predictPrice: number }[] 
+    title: string;
+    usrSeq: number;
+    usrBarnSeq: number;
+    cows: { cowSeq: number; minValue: number; predictPrice: number }[];
   }): Promise<Auction> {
+    const now = new Date();
+    const aucCrtDt = new Date(now.getTime());
+
+    const aucEndDt = new Date(aucCrtDt);
+    aucEndDt.setDate(aucEndDt.getDate() + 5);
+    console.log("AucEndDt: ", aucEndDt);
+
     const newAuction = this.auctionsRepository.create({
       aucBroadcastTitle: auctionData.title,
       usrSeq: auctionData.usrSeq,
-      aucCrtDt: new Date(),
+      aucCrtDt: aucCrtDt,
+      aucEndDt: aucEndDt,
       aucStatus: '진행중',
     });
     const savedAuction = await this.auctionsRepository.save(newAuction);
@@ -61,8 +67,8 @@ export class AuctionsService {
           aucSeq: savedAuction.aucSeq,
           acowBottomPrice: cow.minValue,
           acowPredictPrice: cow.predictPrice, // 이미 예측된 가격 사용
-          acowCrtDt: new Date(),
-        })
+          acowCrtDt: new Date(now.getTime()),
+        }),
       );
 
       await Promise.all(auctionCowPromises);
@@ -81,7 +87,12 @@ export class AuctionsService {
   async findOne(id: number): Promise<Auction | null> {
     return this.auctionsRepository.findOne({
       where: { aucSeq: id },
-      relations: ['user', 'auctionCows', 'auctionCows.cow', 'auctionCows.cow.userBarn'],
+      relations: [
+        'user',
+        'auctionCows',
+        'auctionCows.cow',
+        'auctionCows.cow.userBarn',
+      ],
     });
   }
 
@@ -97,7 +108,8 @@ export class AuctionsService {
     // 상태 업데이트와 종료 시간 설정
     const updateData: Partial<Auction> = { aucStatus: status };
     if (status === '종료') {
-      updateData.aucDelDt = new Date();
+      const now = new Date();
+      updateData.aucDelDt = new Date(now.getTime());
     }
     
     await this.auctionsRepository.update(id, updateData);

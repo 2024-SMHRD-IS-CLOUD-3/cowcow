@@ -16,7 +16,7 @@ const LoginPage = ({ setUser }) => {
     }
   }, []);
   const handleKakaoLogin = () => {
-    window.Kakao.Auth.login({
+    window.Kakao.Auth.loginForm({
       success: async (response) => {
         try {
           const kakaoResponse = await window.Kakao.API.request({
@@ -52,7 +52,7 @@ const LoginPage = ({ setUser }) => {
           console.log("로그인된 사용자 정보:", result);
 
           setUser(result); // 사용자 상태 저장
-          localStorage.setItem("user", JSON.stringify(result)); // 로컬 스토리지 저장
+          sessionStorage.setItem("user", JSON.stringify(result)); // 로컬 스토리지 저장
           navigate("/"); // 메인 페이지로 이동
         } catch (error) {
           console.error("Kakao login failed:", error);
@@ -84,7 +84,7 @@ const LoginPage = ({ setUser }) => {
       const result = await response.json();
       console.log("로그인 성공:", result);
       setUser(result);
-      localStorage.setItem("user", JSON.stringify(result));
+      sessionStorage.setItem("user", JSON.stringify(result));
       navigate("/");
     } catch (error) {
       console.error("Error during login:", error);
@@ -126,6 +126,12 @@ const LoginPage = ({ setUser }) => {
           </button>
         </form>
 
+        <div className="social-login">
+          <button onClick={handleKakaoLogin} className="kakao-login-button">
+            카카오 로그인
+          </button>
+        </div>
+
         <div className="help-links">
           <a href="/find-id">아이디 찾기</a>
           <span> | </span>
@@ -135,12 +141,6 @@ const LoginPage = ({ setUser }) => {
         <p className="signup-link">
           계정이 없으신가요? <Link to="/signUp">회원가입</Link>
         </p>
-
-        <div className="social-login">
-          <button onClick={handleKakaoLogin} className="kakao-login-button">
-            카카오 로그인
-          </button>
-        </div>
       </div>
     </div>
   );

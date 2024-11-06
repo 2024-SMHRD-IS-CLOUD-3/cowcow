@@ -22,7 +22,7 @@ export class AuctionCow {
   @Column({ name: 'acow_crt_dt', type: 'datetime' })
   acowCrtDt: Date;
   
-  @Column({ name: 'acow_del_dt', nullable: true})
+  @Column({ name: 'acow_del_dt', type: 'datetime', nullable: true})
   acowDelDt: Date;
 
   @Column({ name: 'acow_status', default: '진행중' })

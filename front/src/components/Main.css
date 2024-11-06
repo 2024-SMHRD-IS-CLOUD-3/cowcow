@@ -1,24 +1,31 @@
-/* 다크모드와 화이트모드 스타일 */
-.dark-mode {
-    background: linear-gradient(135deg, #1a1a1a, #1a1a1a);
-    color: #f0f0f0;
-}
-
-.light-mode {
-    background: linear-gradient(135deg, #ffffff, #ffffff);
-    color: #000;
+a {
+    text-decoration: none !important;
 }
 
 /* 전체 레이아웃 스타일 */
-body {
-    font-family: 'Arial', sans-serif;
+html, body {
+    /* height: 100%; /* 화면 전체 높이를 채우도록 설정 */ 
     margin: 0;
     padding: 0;
+    font-family: 'Arial', sans-serif;
     overflow-x: hidden;
-    transition: background-color 0.3s, color 0.3s;
+    /* transition: background-color 0.3s, color 0.3s; */
+    background-color: var(--background-primary); /* 배경색 설정 */
 }
+
+.nav-links a, .greeting, .auction-info, .auction-card, .viewer-count, .live-badge, .top-button {
+    color: var(--text-primary);
+    font-family: 'WarhavenB', sans-serif;
+}
+
+.main-container, .search-bar input, .live-auctions, .auction-list, .auction-card, .thumbnail-container, .top-button {
+    background-color: var(--background-primary);
+    font-family: 'WarhavenB', sans-serif;
+}
+
+
 /* 헤더 스타일 */
-.main-header {
+/* .main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -29,25 +36,13 @@ body {
     height: 70px;
     backdrop-filter: blur(10px);
     transition: background-color 0.3s, color 0.3s;
-}
+} */
 
-/* 다크모드일 때 헤더 스타일 */
-.main-header.dark {
-    background-color: #1a1a1a;
-    color: #f0f0f0;
-}
-
-/* 화이트모드일 때 헤더 스타일 */
-.main-header.light {
-    background-color: #ffffff;
-    color: #000;
-}
-
-.main-header h1 img {
+/* .main-header h1 img {
     width: 100px;
     height: 100px;
     object-fit: cover;
-}
+} */
 
 /* 헤더 텍스트와 네비게이션 링크 스타일 */
 .nav-links {
@@ -68,101 +63,25 @@ body {
 
 /* 인사말 텍스트 스타일 */
 .greeting {
-    overflow: hidden; /* 넘치는 텍스트 숨기기 */
-    white-space: nowrap; /* 줄바꿈 방지 */
-    text-overflow: clip; /* 말줄임표 없이 잘리도록 처리 */
-    max-width: 200px; /* 적절한 너비 지정 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: clip;
+    max-width: 200px;
 }
 
-/* 다크모드 텍스트 색상 */
-.main-header.dark .nav-links a {
-    color: #f0f0f0;
-}
 
-.main-header.dark .nav-links a:hover {
-    color: #63b3ff;
-}
-
-/* 화이트모드 텍스트 색상 */
-.main-header.light .nav-links a {
-    color: #000;
-}
-
-.main-header.light .nav-links a:hover {
-    color: #007acc;
-}
-
-/* 검색창 스타일 */
-.search-bar input {
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #333;
-    color: #fff;
-    width: 400px;
-    border: 1px solid #444;
-    outline: none;
-    transition: border-color 0.3s;
-    margin-left: 230px;
-}
-
-/* 라이트 모드일 때 검색창 스타일 */
-.light-mode .search-bar input {
-    background-color: #fff;
-    color: #fff;
-}
-
-/* 다크 모드일 때 검색창 스타일 */
-.dark-mode .search-bar input {
-    background-color: #333;
-    color: #000;
-}
-
-.search-bar input:focus {
-    border-color: black;
-}
-
-/* 테마 전환 버튼 */
-.theme-toggle-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-size: 24px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    z-index: 100;
-}
-
-/* 라이트 모드 버튼 배경 */
-.theme-toggle-button.light {
-    background-color: white;
-    color: black;
-}
-
-/* 다크 모드 버튼 배경 */
-.theme-toggle-button.dark {
-    background-color: #333;
-    color: white;
-}
-
-.theme-toggle-button:hover {
-    transform: scale(1.1);
-}
-
-.theme-toggle:hover {
-    background-color: #007acc;
-    transform: scale(1.1);
-}
 
 /* 경매 목록 섹션 */
 .live-auctions {
-    padding: 40px;
+    flex-grow: 1; /* 남은 공간을 채우도록 설정 */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 상단 정렬 */
+    align-items: center;
     text-align: center;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: var(--background-primary); /* 배경색 설정 */
 }
 
 .live-auctions h2 {
@@ -173,25 +92,24 @@ body {
 
 /* 경매 카드 그리드 */
 .auction-list {
+    margin-top: 70px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, 400px);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    padding: 0 40px;
-    overflow: hidden; /* 넘치는 카드 숨기기 */
-    white-space: nowrap; /* 줄바꿈 방지 */
+    padding:  40px;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 /* 경매 카드 스타일 */
 .auction-card {
-    width: 350px;
-    margin-left: 50px;
-    background-color: #1a1a1a;
+    margin: 0 auto;
+    max-width: 350px;
     border-radius: 12px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: white;
 }
 
 /* 썸네일 컨테이너 */
@@ -234,54 +152,11 @@ body {
 
 /* 경매 정보 */
 .auction-info {
-    margin-left: 60px;
-    margin-top: 10px;
+    padding: 5px;
     text-align: left;
-    
+    color: var(--text-primary);
 }
 
-.auction-info h3 {
-    margin: 10px 0;
-    font-size: 22px;
-    color: #f0f0f0;
-}
-
-.auction-info p {
-    color: #aaa;
-}
-/* 다크모드일 때 헤더 스타일 */
-.auction-info.dark {
-    color: #f0f0f0;
-}
-
-/* 화이트모드일 때 헤더 스타일 */
-.auction-info.light {
-    color: #000;
-}
-
-/* 탑 버튼 스타일 */
-.top-button {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    background-color: #63b3ff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.top-button.show {
-    visibility: visible;
-    opacity: 1;
-}
-
-.top-button:hover {
-    background-color: #007acc;
-    transform: scale(1.1);
-}
 
 /* 애니메이션 효과 */
 @keyframes fadeIn {
@@ -295,22 +170,10 @@ body {
     }
 }
 
-@media (max-width: 8px) {
-    .auction-list {
-        display: flex; /* 그리드를 플렉스로 전환 */
-        flex-wrap: nowrap; /* 줄바꿈 방지 */
-        overflow-x: auto; /* 가로 스크롤 활성화 */
-        gap: 10px; /* 카드 사이 간격 조정 */
-    }
-    .auction-card {
-        flex: 0 0 auto; /* 카드 크기를 고정 */
-        width: 200px; /* 카드 너비 고정 */
-    }
-}
-
 /* 5열로 제한 */
 @media (min-width: 1200px) {
     .auction-list {
-        grid-template-columns: repeat(5, 1fr); /* 최대 5열 */
+        grid-template-columns: repeat(5, 1fr);
     }
 }
+
