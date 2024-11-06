@@ -235,6 +235,10 @@ def process_frame():
         tracked_ids.clear()
         tracked_ids.update(new_tracked_ids)
 
+         # 다운스케일링 해상도 설정
+        target_width, target_height = 640, 360
+        frame = cv2.resize(frame, (target_width, target_height))
+
         _, buffer = cv2.imencode('.jpg', frame)
         frame_data = base64.b64encode(buffer).decode('utf-8')
         return frame_data
