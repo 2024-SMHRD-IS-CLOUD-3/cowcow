@@ -328,12 +328,6 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
       </header>
 
       {videoVisible && (
-        // <div className="video-container">
-        //   <video width="600" controls autoPlay>
-        //     <source src="path_to_your_video.mp4" type="video/mp4" />
-        //     Your browser does not support the video tag.
-        //   </video>
-        // </div>
         <div className="modal-overlay">
           {/* X 버튼 */}
           <button className="close-button" onClick={() => setVideoVisible(false)}>

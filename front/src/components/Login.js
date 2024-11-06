@@ -126,6 +126,12 @@ const LoginPage = ({ setUser }) => {
           </button>
         </form>
 
+        <div className="social-login">
+          <button onClick={handleKakaoLogin} className="kakao-login-button">
+            카카오 로그인
+          </button>
+        </div>
+
         <div className="help-links">
           <a href="/find-id">아이디 찾기</a>
           <span> | </span>
@@ -135,12 +141,6 @@ const LoginPage = ({ setUser }) => {
         <p className="signup-link">
           계정이 없으신가요? <Link to="/signUp">회원가입</Link>
         </p>
-
-        <div className="social-login">
-          <button onClick={handleKakaoLogin} className="kakao-login-button">
-            카카오 로그인
-          </button>
-        </div>
       </div>
     </div>
   );
