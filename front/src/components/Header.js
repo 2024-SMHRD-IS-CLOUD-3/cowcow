@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Header.css";
 import io from 'socket.io-client';
 import logo from "../images/cowcowlogo.png"; // 로고 경로 조정 필요
+import video from "../videos/시연영상(작업)-1.mp4";
 
 const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const [showModal, setShowModal] = useState(false);
@@ -18,6 +19,11 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const location = useLocation();
   const [showAlarmDropdown, setShowAlarmDropdown] = useState(false);
   const [alarms, setAlarms] = useState([]);
+  const [videoVisible, setVideoVisible] = useState(false);
+
+  const handleButtonClick = () => {
+    setVideoVisible(!videoVisible); // 버튼 클릭 시 상태 토글
+  };
 
   const handleLogout = () => {
     if (window.Kakao && window.Kakao.Auth) {
@@ -238,6 +244,25 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Escape") {
+      setVideoVisible(false); // esc 키 누르면 영상 끄기
+    }
+  };
+
+  useEffect(() => {
+    if (videoVisible) {
+      // 영상이 켜져 있을 때만 이벤트 리스너 추가
+      window.addEventListener("keydown", handleKeyPress);
+    } else {
+      // 영상이 꺼져 있을 때 이벤트 리스너 제거
+      window.removeEventListener("keydown", handleKeyPress);
+    }
+
+    // 클린업 함수로 이벤트 리스너 제거
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [videoVisible]);
+
   return (
     <>
       <header className="header">
@@ -294,10 +319,32 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
           )}
         </nav>
 
+        <button onClick={handleButtonClick} className="theme-toggle-button-video">
+          ❓
+        </button>
         <button onClick={toggleTheme} className="theme-toggle-button">
           {isDarkMode ? '🌞' : '🌙'}
         </button>
       </header>
+
+      {videoVisible && (
+        // <div className="video-container">
+        //   <video width="600" controls autoPlay>
+        //     <source src="path_to_your_video.mp4" type="video/mp4" />
+        //     Your browser does not support the video tag.
+        //   </video>
+        // </div>
+        <div className="modal-overlay">
+          {/* X 버튼 */}
+          <button className="close-button" onClick={() => setVideoVisible(false)}>
+            X
+          </button>
+          <video width="900" controls autoPlay>
+            <source src={video} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+      </div>
+      )}
 
       {showModal && (
         <div className="modal-overlay">
