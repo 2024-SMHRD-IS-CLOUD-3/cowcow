@@ -174,13 +174,17 @@
 
 .add-button:hover,
 .remove-button:hover,
-.close-button:hover,
 .broadcast-button:hover {
   background-color: var(--hover-color);
 }
 
+.close-button:hover {
+  background-color: #ff4444;
+}
+
+
 .close-button {
-  background-color: #e74c3c;
+  background-color: red;
   color: #fff;
   margin-right: 10px;
 }
