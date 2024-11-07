@@ -174,13 +174,17 @@
 
 .add-button:hover,
 .remove-button:hover,
-.close-button:hover,
 .broadcast-button:hover {
   background-color: var(--hover-color);
 }
 
+.close-button:hover {
+  background-color: #ff4444;
+}
+
+
 .close-button {
-  background-color: #e74c3c;
+  background-color: red;
   color: #fff;
   margin-right: 10px;
 }
@@ -194,7 +198,8 @@
 .alarm-dropdown {
   position: absolute;
   top: 60px;
-  width: 400px;
+  right: 0.5px;
+  width: 23%;
   max-height: 300px;
   background: var(--background-secondary);
   border: 1px solid #ddd;
@@ -204,6 +209,8 @@
   padding: 10px;
   z-index: 1000;
   font-family: 'WarhavenB', sans-serif;
+  scrollbar-width: none; /* 스크롤바 숨기기 */
+  -ms-overflow-style: none; /* IE, Edge에서 스크롤바 숨기기 */
 }
 
 .alarm-dropdown h4 {
