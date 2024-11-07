@@ -118,7 +118,7 @@ const AuctionDetail = ({ user }) => {
 
     const acowStatusInterval = setInterval(() => {
       fetchAcowStatus(acows[currentSlide].acowSeq);
-    }, 1000);
+    }, 500);
 
     return () => clearInterval(acowStatusInterval);
   }, [currentSlide, acows]);
@@ -241,7 +241,6 @@ const AuctionDetail = ({ user }) => {
       }
 
       alert("낙찰이 성공적으로 처리되었습니다!");
-      navigate("/");
     } catch (error) {
       console.error("Error during winning bid submission:", error);
       alert("낙찰 처리에 실패했습니다. 다시 시도해 주세요.");
@@ -363,37 +362,61 @@ const AuctionDetail = ({ user }) => {
               </div>
             </div>
 
-            <div className="bid-section-inline">
               {!user ? (
-                <>
+              <>
+                <div className="bid-section-inline">
                   <input
-                    type="number"
-                    placeholder={
-                      acowData?.acowStatus === "낙찰"
-                        ? "낙찰 완료된 상품입니다"
-                        : "입찰 금액 입력"
-                    }
-                    className="bid-input"
-                    disabled={acowData?.acowStatus === "낙찰"}
-                  />
-                  <Link to="/login">
-                    <button
-                      className={`btn primary ${acows[currentSlide]?.acowStatus === "낙찰"
-                          ? "disabled"
-                          : ""
-                        }`}
-                      disabled={acowData?.acowStatus === "낙찰"}
-                    >
-                      {acowData?.acowStatus === "낙찰"
-                        ? "입찰 불가"
-                        : "입찰하기"}
-                    </button>
-                  </Link>
-                </>
+                        type="number"
+                        placeholder={
+                          acowData?.acowStatus === "낙찰"
+                            ? "낙찰 완료된 상품입니다"
+                            : "입찰 금액 입력 (단위: 만원)"
+                        }
+                        className="bid-input"
+                        value={bidAmount}
+                        onChange={(e) => {
+                          const inputAmount = e.target.value;
+
+                          if (inputAmount === "") {
+                            setBidAmount("");
+                            setDisplayAmount("0만원");
+                            return;
+                          }
+
+                          const amountInTenThousands = parseInt(inputAmount, 10);
+
+                          if (!isNaN(amountInTenThousands)) {
+                            if (amountInTenThousands > 100000) {
+                              alert("입력 가능한 최대 금액은 10억 원입니다.");
+                              return;
+                            }
+
+                            setBidAmount(amountInTenThousands);
+                            setDisplayAmount(formatAmount(amountInTenThousands));
+                          }
+                        }}
+                        disabled={acowData?.acowStatus === "낙찰"}
+                      />
+                    <div className="display-amount">입력 금액: {displayAmount}</div>
+                    </div>
+                    <div className="bid-section-inline">
+                    {/* <Link to="/login"> */}
+                      <button
+                        className={`success-bid ${acowData?.acowStatus === "낙찰" ? "disabled" : ""}`}
+                        disabled={acowData?.acowStatus === "낙찰"}
+                        onClick={() => navigate('/login')} // 함수 없이 바로 경로 이동
+                      >
+                        {acowData?.acowStatus === "낙찰"
+                          ? "입찰 불가"
+                          : "입찰하기"}
+                        </button>
+                    {/* </Link> */}
+                </div>
+              </>
               ) : (
                 <>
-                  {auction.usrSeq === user.usrSeq ? (
-                    <>
+                {auction.usrSeq === user.usrSeq ? (
+                    <div className="bid-section-inline">
                       <button
                         className={`btn primary ${acows[currentSlide]?.acowStatus === "낙찰"
                             ? "disabled"
@@ -415,9 +438,10 @@ const AuctionDetail = ({ user }) => {
                       >
                         방송 종료
                       </button>
-                    </>
+                    </div>
                   ) : (
                     <>
+                    <div className="bid-section-inline">
                       <input
                         type="number"
                         placeholder={
@@ -451,23 +475,25 @@ const AuctionDetail = ({ user }) => {
                         disabled={acowData?.acowStatus === "낙찰"}
                       />
                       <div className="display-amount">입력 금액: {displayAmount}</div>
+                      </div>
+                      <div className="bid-section-inline">
+                      <button
+                        className={`success-bid ${acowData?.acowStatus === "낙찰"
+                            ? "disabled"
+                            : ""
+                          }`}
+                        onClick={handleBidSubmit}
+                        disabled={acowData?.acowStatus === "낙찰"}
+                      >
+                        {acowData?.acowStatus === "낙찰"
+                          ? "입찰 불가"
+                          : "입찰하기"}
+                      </button>
+                    </div>
                     </>
                   )}
                 </>
               )}
-            </div>
-            <button
-              className={`btn primary ${acowData?.acowStatus === "낙찰"
-                  ? "disabled"
-                  : ""
-                }`}
-              onClick={handleBidSubmit}
-              disabled={acowData?.acowStatus === "낙찰"}
-            >
-              {acowData?.acowStatus === "낙찰"
-                ? "입찰 불가"
-                : "입찰하기"}
-            </button>
           </div>
         </div>
 
