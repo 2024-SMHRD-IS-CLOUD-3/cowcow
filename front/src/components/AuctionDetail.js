@@ -8,16 +8,17 @@ const AuctionDetail = ({ user }) => {
   const { id } = useParams();
   const [auction, setAuction] = useState(null);
   const [acows, setAcows] = useState([]);
-  const [acowData, setAcowData] = useState([]);
   const [endTime, setEndTime] = useState();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [bidAmount, setBidAmount] = useState("");
   const [highestBid, setHighestBid] = useState(null);
+  const [isLoadingBid, setIsLoadingBid] = useState(false);
   const [days, setDays] = useState("00");
   const [hours, setHours] = useState("00");
   const [minutes, setMinutes] = useState("00");
   const [seconds, setSeconds] = useState("00");
   const [displayAmount, setDisplayAmount] = useState('0만원');
+  const [acowData, setAcowData] = useState(null);
   const videoRef = useRef(null);
   const navigate = useNavigate();
 
@@ -89,18 +90,39 @@ const AuctionDetail = ({ user }) => {
         throw new Error("최고 입찰가를 가져오는 데 실패했습니다.");
       }
       const bidData = await response.json();
-      console.log("bidData: ", bidData);
-  
-      // bidData에서 acow와 highestBid를 각각의 상태로 설정
-      setHighestBid(bidData.highestBid);
-      setAcowData(bidData.acow); // acow 데이터를 저장할 별도의 상태
-  
+      setHighestBid(bidData);
     } catch (error) {
       console.error("Error fetching highest bid:", error);
       setHighestBid(null);
+    }
+  };
+
+  const fetchAcowStatus = async (acowSeq) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/auction-cows/${acowSeq}`
+      );
+      if (!response.ok) {
+        throw new Error("해당하는 소의 정보를 가져오는 데 실패했습니다.");
+      }
+      const acowData = await response.json();
+      setAcowData(acowData);
+    } catch (error) {
+      console.error("Error fetching acow Status:", error);
       setAcowData(null);
     }
   };
+
+  useEffect(() => {
+    if (!acows[currentSlide]) return;
+
+    const acowStatusInterval = setInterval(() => {
+      fetchAcowStatus(acows[currentSlide].acowSeq);
+    }, 1000);
+
+    return () => clearInterval(acowStatusInterval);
+  }, [currentSlide, acows]);
+
 
   useEffect(() => {
     if (!acows[currentSlide]) return;
@@ -198,10 +220,6 @@ const AuctionDetail = ({ user }) => {
       alert("낙찰할 입찰가가 없습니다.");
       return;
     }
-    console.log("AuctionDetail Page : ");
-    console.log(acows[currentSlide].acowSeq);
-    console.log(highestBid.bidAcc);
-    console.log(highestBid.bidAmt);
 
     try {
       const response = await fetch(
@@ -292,12 +310,12 @@ const AuctionDetail = ({ user }) => {
             <td>
               <h1
                 className={
-                  acows[currentSlide]?.acowStatus === "진행중"
+                  acowData?.acowStatus === "진행중"
                     ? "state-progressing"
                     : "state-won"
                 }
               >
-                {acows[currentSlide]?.acowStatus || "정보 없음"}
+                {acowData?.acowStatus || "정보 없음"}
               </h1>
             </td>
           </tr>
@@ -331,7 +349,7 @@ const AuctionDetail = ({ user }) => {
         <div className="auction-content">
           <div className="video-container">
             <iframe
-              src="http://223.130.160.153:5000/video_feed"
+              src="http://localhost:5000/video_feed"
               title="RTSP Video Stream"
             ></iframe>
           </div>
@@ -351,12 +369,12 @@ const AuctionDetail = ({ user }) => {
                   <input
                     type="number"
                     placeholder={
-                      acows[currentSlide]?.acowStatus === "낙찰"
+                      acowData?.acowStatus === "낙찰"
                         ? "낙찰 완료된 상품입니다"
                         : "입찰 금액 입력"
                     }
                     className="bid-input"
-                    disabled={acows[currentSlide]?.acowStatus === "낙찰"}
+                    disabled={acowData?.acowStatus === "낙찰"}
                   />
                   <Link to="/login">
                     <button
@@ -364,9 +382,9 @@ const AuctionDetail = ({ user }) => {
                           ? "disabled"
                           : ""
                         }`}
-                      disabled={acows[currentSlide]?.acowStatus === "낙찰"}
+                      disabled={acowData?.acowStatus === "낙찰"}
                     >
-                      {acows[currentSlide]?.acowStatus === "낙찰"
+                      {acowData?.acowStatus === "낙찰"
                         ? "입찰 불가"
                         : "입찰하기"}
                     </button>
@@ -384,10 +402,10 @@ const AuctionDetail = ({ user }) => {
                         onClick={handleWinningBid}
                         disabled={
                           !highestBid ||
-                          acows[currentSlide]?.acowStatus === "낙찰"
+                          acowData?.acowStatus === "낙찰"
                         }
                       >
-                        {acows[currentSlide]?.acowStatus === "낙찰"
+                        {acowData?.acowStatus === "낙찰"
                           ? "낙찰 완료"
                           : "낙찰하기"}
                       </button>
@@ -403,7 +421,7 @@ const AuctionDetail = ({ user }) => {
                       <input
                         type="number"
                         placeholder={
-                          acows[currentSlide]?.acowStatus === "낙찰"
+                          acowData?.acowStatus === "낙찰"
                             ? "낙찰 완료된 상품입니다"
                             : "입찰 금액 입력 (단위: 만원)"
                         }
@@ -430,7 +448,7 @@ const AuctionDetail = ({ user }) => {
                             setDisplayAmount(formatAmount(amountInTenThousands));
                           }
                         }}
-                        disabled={acows[currentSlide]?.acowStatus === "낙찰"}
+                        disabled={acowData?.acowStatus === "낙찰"}
                       />
                       <div className="display-amount">입력 금액: {displayAmount}</div>
                     </>
@@ -439,14 +457,14 @@ const AuctionDetail = ({ user }) => {
               )}
             </div>
             <button
-              className={`btn primary ${acows[currentSlide]?.acowStatus === "낙찰"
+              className={`btn primary ${acowData?.acowStatus === "낙찰"
                   ? "disabled"
                   : ""
                 }`}
               onClick={handleBidSubmit}
-              disabled={acows[currentSlide]?.acowStatus === "낙찰"}
+              disabled={acowData?.acowStatus === "낙찰"}
             >
-              {acows[currentSlide]?.acowStatus === "낙찰"
+              {acowData?.acowStatus === "낙찰"
                 ? "입찰 불가"
                 : "입찰하기"}
             </button>
