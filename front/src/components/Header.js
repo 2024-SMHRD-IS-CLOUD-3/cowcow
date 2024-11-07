@@ -287,10 +287,9 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
           <Link to="/">홈</Link>
           {user ? (
             <>
-              <a onClick={() => setShowAlarmDropdown(!showAlarmDropdown)}>알람</a>
+              <a onClick={() => setShowAlarmDropdown(!showAlarmDropdown)}>알림</a>
               {showAlarmDropdown && (
                 <div className="alarm-dropdown">
-                  <h4>알림</h4>
                   {alarms.length === 0 ? (
                     <p className="no-alarms">새 알림이 없습니다.</p>
                   ) : (

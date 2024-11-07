@@ -22,6 +22,15 @@ export class UsersService {
     return this.usersRepository.save(newUser);
   }
 
+  async findUser(usrEml: string): Promise<boolean> {
+    const user = await this.usersRepository.findOne({
+      where: { usrEml: usrEml },
+    });
+    
+    return user ? false : true;
+  }
+  
+
   // 비밀번호 확인 메서드 추가
   async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.usersRepository.findOne({

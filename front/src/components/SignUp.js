@@ -11,12 +11,11 @@ const SignUp = () => {
     const [name, setName] = useState(''); // 이름 상태 추가
     const [isVerified, setIsVerified] = useState(null); // 이메일 인증 성공 여부
     const [isSubmitted, setIsSubmitted] = useState(false); // 회원가입 성공 여부
-    const navigate = useNavigate(); // 페이지 이동 함수
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isVerified) {
-            alert('이메일 인증이 필요합니다.');
+            alert('이메일을 다시 한번 확인해주세요.');
             return;
         }
 
@@ -29,7 +28,7 @@ const SignUp = () => {
         };
 
         try {
-            const response = await fetch('http://223.130.160.153:3001/users/signup', {
+            const response = await fetch('http://localhost:3001/users/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,11 +48,18 @@ const SignUp = () => {
         }
     };
 
-    const verifyEmail = () => {
-        if (email) {
-            setIsVerified(true); // 인증 성공
-        } else {
-            setIsVerified(false); // 인증 실패
+    const verifyEmail = async () => {
+        try {
+            const response = await fetch(`http://localhost:3001/users/${email}`);
+
+            if (!response.ok) {
+                throw new Error('중복된 이메일');
+            }
+            const result = await response.json();
+            setIsVerified(result); // 인증 성공
+            console.log("이메일 인증 여부: ", result);
+        } catch (error) {
+            console.error('Error verify Email: ', error);
         }
     };
 
@@ -88,17 +94,17 @@ const SignUp = () => {
                                     className="verify-button"
                                     onClick={verifyEmail}
                                 >
-                                    인증하기
+                                    중복확인
                                 </button>
                             </div>
                             {isVerified === true && (
                                 <span className="verification-message success">
-                                    인증완료
+                                    사용가능
                                 </span>
                             )}
                             {isVerified === false && (
                                 <span className="verification-message failure">
-                                    인증실패
+                                    중복된 이메일입니다
                                 </span>
                             )}
                         </div>
