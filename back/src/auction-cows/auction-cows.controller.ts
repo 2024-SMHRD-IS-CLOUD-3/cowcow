@@ -34,15 +34,15 @@ export class AuctionCowsController {
     return await this.auctionCowsService.findAll();
   }
 
-  // // 특정 경매 소 조회 (GET /auction-cows/:id)
-  // @Get(':id')
-  // async findOne(@Param('id') id: number): Promise<AuctionCow> {
-  //   const auctionCow = await this.auctionCowsService.findOne(id);
-  //   if (!auctionCow) {
-  //     throw new NotFoundException('경매 소를 찾을 수 없습니다.');
-  //   }
-  //   return auctionCow;
-  // }
+  // 특정 경매 소 조회 (GET /auction-cows/:id)
+  @Get(':id')
+  async findOne(@Param('id') id: number): Promise<AuctionCow> {
+    const auctionCow = await this.auctionCowsService.findOne(id);
+    if (!auctionCow) {
+      throw new NotFoundException('경매 소를 찾을 수 없습니다.');
+    }
+    return auctionCow;
+  }
 
   // // 경매 소 정보 업데이트 (PUT /auction-cows/:id)
   // @Put(':id')

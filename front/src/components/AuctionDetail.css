@@ -312,3 +312,41 @@ iframe {
 }
 
 
+.success-bid {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */ 
+    border-radius: 5px;
+}
+
+.success-bid {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */ 
+    border-radius: 5px;
+}
+
+.success-bid.disabled {
+    background-color: #555;
+    color: #bbb;
+    cursor: not-allowed;
+    pointer-events: none;
+    border: none;
+    padding: 10px;
+    width: 100%;
+  }
+  
+.success-bid:hover {
+    background-color: var(--hover-color);
+}
+  
