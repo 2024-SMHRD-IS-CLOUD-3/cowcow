@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Header.css";
 import io from 'socket.io-client';
 import logo from "../images/cowcowlogo.png"; // 로고 경로 조정 필요
-import video from "../videos/시연영상(작업)-1.mp4";
+import video from "../videos/cowcow-introduce-trailer(ENG).mp4";
 
 const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const [showModal, setShowModal] = useState(false);
@@ -287,10 +287,9 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
           <Link to="/">홈</Link>
           {user ? (
             <>
-              <a onClick={() => setShowAlarmDropdown(!showAlarmDropdown)}>알람</a>
+              <a onClick={() => setShowAlarmDropdown(!showAlarmDropdown)}>알림</a>
               {showAlarmDropdown && (
                 <div className="alarm-dropdown">
-                  <h4>알림</h4>
                   {alarms.length === 0 ? (
                     <p className="no-alarms">새 알림이 없습니다.</p>
                   ) : (
@@ -328,16 +327,17 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
       </header>
 
       {videoVisible && (
-        <div className="modal-overlay">
-          {/* X 버튼 */}
-          <button className="close-button" onClick={() => setVideoVisible(false)}>
-            X
-          </button>
-          <video width="900" controls autoPlay>
-            <source src={video} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-      </div>
+          <div className="modal-overlay">
+            <video width="900" controls>
+              <source src={video} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div className="x-button">
+              <button className="close-button" onClick={() => setVideoVisible(false)}>
+                X
+              </button>
+            </div>
+          </div>
       )}
 
       {showModal && (

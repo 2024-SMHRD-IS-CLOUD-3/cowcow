@@ -54,7 +54,6 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
       try {
         const response = await fetch("http://223.130.160.153:3001/auctions");
         if (!response.ok) {
-          console.log("MainPage 에러");
           throw new Error("Failed to fetch auctions.");
         }
         const data = await response.json();
