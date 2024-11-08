@@ -12,14 +12,12 @@ const AuctionDetail = ({ user }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [bidAmount, setBidAmount] = useState("");
   const [highestBid, setHighestBid] = useState(null);
-  const [isLoadingBid, setIsLoadingBid] = useState(false);
   const [days, setDays] = useState("00");
   const [hours, setHours] = useState("00");
   const [minutes, setMinutes] = useState("00");
   const [seconds, setSeconds] = useState("00");
   const [displayAmount, setDisplayAmount] = useState('0만원');
   const [acowData, setAcowData] = useState(null);
-  const videoRef = useRef(null);
   const navigate = useNavigate();
 
   const imgSlides = [
@@ -150,30 +148,6 @@ const AuctionDetail = ({ user }) => {
     }
   };
 
-  useEffect(() => {
-    let stream;
-    const startVideoStream = async () => {
-      try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        stream = mediaStream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (error) {
-        console.error("웹캠 스트림을 불러올 수 없습니다:", error);
-      }
-    };
-
-    startVideoStream();
-
-    return () => {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, []);
 
   const handleBidSubmit = async () => {
     if (!bidAmount) {
@@ -348,7 +322,7 @@ const AuctionDetail = ({ user }) => {
         <div className="auction-content">
           <div className="video-container">
             <iframe
-              src="http://localhost:5000/video_feed"
+              src="http://223.130.160.153:5000/video_feed"
               title="RTSP Video Stream"
             ></iframe>
           </div>
