@@ -60,11 +60,6 @@ body {
   color: #ffffff;
 }
 
-/* 검색바 */
-.search-bar input {
-  background-color: var(--background-secondary);
-  color: var(--text-primary);
-}
 
 /* 테마 토글 버튼 */
 .theme-toggle-button {

@@ -9,12 +9,10 @@ import thumbnail5 from "../images/thumbnail5.png";
 import thumbnail6 from "../images/thumbnail6.png";
 import thumbnail7 from "../images/thumbnail7.png";
 
-const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
+const MainPage = ({ searchTerm, setSearchTerm, isDarkMode, toggleTheme }) => {
   const [auctionData, setAuctionData] = useState([]);
   const [showTopButton, setShowTopButton] = useState(false);
   const [randomThumbnail, setRandomThumbnail] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
 
   // Array of all thumbnails
   const thumbnails = [
@@ -44,10 +42,6 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
   ).filter((auction) =>
     (auction.aucStatus === "진행중" || auction.aucStatus === "종료")
   );
-
-  // const liveAuctions = filteredAuctions.filter((auction) => 
-  //   (auction.aucStatus === "진행중" || auction.aucStatus === "종료")
-  // )
 
   useEffect(() => {
     const fetchAuctions = async () => {
@@ -136,6 +130,28 @@ const MainPage = ({ user, setUser, isDarkMode, toggleTheme }) => {
 
   return (
     <div>
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="경매 검색..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      {/* 검색 결과 렌더링 */}
+      <div className="search-results">
+        {filteredAuctions.length > 0 ? (
+          filteredAuctions.map((auction) => (
+            <div key={auction.id} className="auction-item">
+              <h3>{auction.title}</h3>
+              <p>{auction.description}</p>
+            </div>
+          ))
+        ) : (
+          <p>검색 결과가 없습니다.</p>
+        )}
+      </div>
 
       <div className="live-auctions">
         <div className="auction-list">

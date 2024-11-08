@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import io from 'socket.io-client';
 import logo from "../images/cowcowlogo.png"; // 로고 경로 조정 필요
 import video1 from "../videos/cowcow-introduce-trailer(ENG).mp4";
 import video2 from "../videos/cowcow-introduce-trailer(KOR).mp4";
 
-const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
+const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
   const [showModal, setShowModal] = useState(false);
   const [broadCastTitle, setbroadCastTitle] = useState("");
   const [items, setItems] = useState([{ id: 1, entity: "", minValue: "" }]);
@@ -15,14 +15,24 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const [selectedBarn, setSelectedBarn] = useState("");
   const [barnCows, setBarnCows] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
   const [showAlarmDropdown, setShowAlarmDropdown] = useState(false);
   const [alarms, setAlarms] = useState([]);
   const [videoVisible, setVideoVisible] = useState(false);
   const [video, setVideo] = useState(video1);
   const videoRef = useRef(null);
+  const alarmDropdownRef = useRef(null); // 알림 드롭다운에 ref 설정
+
+  // 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (alarmDropdownRef.current && !alarmDropdownRef.current.contains(event.target)) {
+        setShowAlarmDropdown(false); // 외부 클릭 시 알림창 닫기
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleButtonClick = () => {
     setVideoVisible(!videoVisible); // 버튼 클릭 시 상태 토글
@@ -269,6 +279,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     }
   };
 
+
   useEffect(() => {
     if (videoVisible) {
       // 영상이 켜져 있을 때만 이벤트 리스너 추가
@@ -283,26 +294,20 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   }, [videoVisible]);
 
   
+  const handleHomeClick = () => {
+    setSearchTerm(""); // 검색어 초기화
+    navigate("/"); // 홈으로 이동
+  };
+
 
   return (
     <>
       <header className="header">
-        <Link to="/" className="logo-link">
+        <Link to="/" className="logo-link" onClick={handleHomeClick}>
           <h1 style={{ display: "inline" }}>
             <img src={logo} alt="logo" />
           </h1>
         </Link>
-        
-        {location.pathname === "/" && (
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="경매 검색..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        )}
 
         <nav className="nav-links">
           <Link to="/">홈</Link>
@@ -310,7 +315,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
             <>
               <a onClick={() => setShowAlarmDropdown(!showAlarmDropdown)}>알림</a>
               {showAlarmDropdown && (
-                <div className="alarm-dropdown">
+                <div className="alarm-dropdown" ref={alarmDropdownRef}>
                   {alarms.length === 0 ? (
                     <p className="no-alarms">새 알림이 없습니다.</p>
                   ) : (

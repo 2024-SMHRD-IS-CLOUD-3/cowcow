@@ -23,7 +23,7 @@ body {
 }
   
 /* Header 스타일 */
-.header {
+/* .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +47,7 @@ body {
 .header .logo {
     font-size: 24px;
     font-weight: bold;
-}
+} */
   
 /* 예상가와 타이머 영역 */
 .expected-price-container {
