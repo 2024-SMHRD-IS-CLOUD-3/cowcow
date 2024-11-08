@@ -11,6 +11,11 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get(':usrEml')
+  async confirmUser(@Param('usrEml') usrEml: string): Promise<boolean> {
+    return this.usersService.findUser(usrEml);
+  }
+
   @Post('signup') // POST /users/signup
   async createUser(@Body() userData: Partial<User>): Promise<User> {
     return this.usersService.create(userData);

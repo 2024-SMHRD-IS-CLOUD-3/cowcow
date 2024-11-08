@@ -80,7 +80,7 @@ const LoginPage = ({ setUser }) => {
       if (!response.ok) {
         throw new Error("로그인 실패");
       }
-
+      
       const result = await response.json();
       console.log("로그인 성공:", result);
       setUser(result);
