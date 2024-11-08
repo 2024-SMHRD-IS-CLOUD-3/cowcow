@@ -246,3 +246,67 @@
   font-size: 12px;
   font-family: 'WarhavenB', sans-serif;
 }
+
+
+.modal-overlay2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.video-wrapper {
+  position: relative; /* language-button-group의 위치 기준 */
+}
+
+.close-button2 {
+  background-color: red;
+  color: #fff;
+  padding: 10px 15px;
+  font-size: 0.9em;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  border: none;
+  font-family: 'WarhavenB', sans-serif;
+  position: absolute;
+  left: 50%;
+  bottom: 19%;
+  transform: translateX(-50%);
+}
+
+.close-button2:hover {
+  background-color: #ff4444;
+}
+
+.language-button-group {
+  position: absolute;
+  bottom: -28px; /* 비디오 하단에서 10px 위 */
+  right: 0px; /* 비디오 오른쪽에서 10px 왼쪽 */
+  display: flex;
+  gap: 5px;
+}
+
+.language-eng, .language-kor {
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-size: 0.9em;
+  font-family: 'WarhavenB', sans-serif;
+}
+
+.language-eng:hover, .language-kor:hover {
+  background-color: #555;
+}
+
