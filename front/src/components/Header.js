@@ -3,12 +3,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Header.css";
 import io from 'socket.io-client';
 import logo from "../images/cowcowlogo.png"; // 로고 경로 조정 필요
-<<<<<<< HEAD
 import video1 from "../videos/cowcow-introduce-trailer(ENG).mp4";
 import video2 from "../videos/cowcow-introduce-trailer(KOR).mp4";
-=======
-import video from "../videos/cowcow-introduce-trailer(ENG).mp4";
->>>>>>> 6b83fa3c6c7a3d772dd5ed49f16cc0b681f32939
 
 const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const [showModal, setShowModal] = useState(false);
@@ -352,7 +348,6 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
       </header>
 
       {videoVisible && (
-<<<<<<< HEAD
         <div className="modal-overlay2">
           <div className="video-wrapper">
             <video width="900" controls ref={videoRef}>
@@ -372,19 +367,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
             X
           </button>
         </div>
-=======
-          <div className="modal-overlay">
-            <video width="900" controls>
-              <source src={video} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            <div className="x-button">
-              <button className="close-button" onClick={() => setVideoVisible(false)}>
-                X
-              </button>
-            </div>
-          </div>
->>>>>>> 6b83fa3c6c7a3d772dd5ed49f16cc0b681f32939
+
       )}
 
 

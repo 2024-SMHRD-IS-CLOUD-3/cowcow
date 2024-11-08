@@ -96,8 +96,10 @@ export class AuctionCowsController {
     }
   }
   // '낙찰'된 경매 조회 API
-  @Get('/completed')
-  async getCompletedAuctions(@Query('userSeq') userSeq: number) {
-    return this.auctionCowsService.getCompletedAuctions(userSeq);
+  @Get('/completed/:id')
+  async getCompletedAuctions(@Param('id') id: number) {
+    console.log("completed의 usrSeq: ", id);
+    return this.auctionCowsService.getCompletedAuctions(id);
   }
 }
+

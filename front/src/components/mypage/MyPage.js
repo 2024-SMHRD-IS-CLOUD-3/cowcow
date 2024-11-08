@@ -9,7 +9,7 @@ const MyPage = ({ user, setUser }) => {
     useEffect(() => {
         const fetchUserBarn = async () => {
             try {
-                const response = await fetch(`http://localhost:3001/user-barns/user/${user.usrSeq}`);
+                const response = await fetch(`http://223.130.160.153:3001/user-barns/user/${user.usrSeq}`);
                 if (!response.ok) {
                     throw new Error("농가 정보를 가져오는 데 실패했습니다.");
                 }
@@ -71,7 +71,7 @@ const ProfileInfo = ({ user, userBarns, setBarns, setUser }) => {
         if (userBarns.length < 3) {
             try {
                 const newBarn = { usrSeq: user.usrSeq, usrBarnName: newBarnName };
-                const response = await fetch('http://localhost:3001/user-barns', {
+                const response = await fetch('http://223.130.160.153:3001/user-barns', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ const ProfileInfo = ({ user, userBarns, setBarns, setUser }) => {
         if (!confirmed) return;
 
         try {
-            const response = await fetch(`http://localhost:3001/user-barns/${id}`, {
+            const response = await fetch(`http://223.130.160.153:3001/user-barns/${id}`, {
                 method: 'DELETE',
             });
             if (!response.ok) {
@@ -195,7 +195,7 @@ const InputField = ({ label, value, onChange, fieldName, userId }) => {
 
     const handleSaveClick = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/users/${userId}`, {
+            const response = await fetch(`http://223.130.160.153:3001/users/${userId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -242,4 +242,6 @@ const InputField = ({ label, value, onChange, fieldName, userId }) => {
 };
 
 export default MyPage;
+
+
 
