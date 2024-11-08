@@ -11,7 +11,7 @@ const TransactionHistory = ({ user, isDarkMode }) => { // isDarkMode 추가
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const response = await fetch(`http://223.130.160.153:3001/auction-cows/completed?userSeq=${user.usrSeq}`);
+                const response = await fetch(`http://localhost:3001/auction-cows/completed?userSeq=${user.usrSeq}`);
                 if (!response.ok) throw new Error('거래 내역을 불러오는 데 실패했습니다.');
 
                 const data = await response.json();

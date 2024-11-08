@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Header.css";
 import io from 'socket.io-client';
 import logo from "../images/cowcowlogo.png"; // 로고 경로 조정 필요
-import video from "../videos/시연영상(작업)-1.mp4";
+import video1 from "../videos/cowcow-introduce-trailer(ENG).mp4";
+import video2 from "../videos/cowcow-introduce-trailer(KOR).mp4";
 
 const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const [showModal, setShowModal] = useState(false);
@@ -20,9 +21,27 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   const [showAlarmDropdown, setShowAlarmDropdown] = useState(false);
   const [alarms, setAlarms] = useState([]);
   const [videoVisible, setVideoVisible] = useState(false);
+  const [video, setVideo] = useState(video1);
+  const videoRef = useRef(null);
 
   const handleButtonClick = () => {
     setVideoVisible(!videoVisible); // 버튼 클릭 시 상태 토글
+  };
+
+  const handleEnglishClick = () => {
+    setVideo(video1);
+    if (videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play();
+    }
+  };
+
+  const handleKoreanClick = () => {
+    setVideo(video2);
+    if (videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play();
+    }
   };
 
   const handleLogout = () => {
@@ -45,7 +64,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     const fetchAlarms = async () => {
       if (!user) return;
       try {
-        const response = await fetch(`http://223.130.160.153:3001/alarms/${user.usrSeq}`);
+        const response = await fetch(`http://localhost:3001/alarms/${user.usrSeq}`);
         if (response.ok) {
           const data = await response.json();
           setAlarms(data);
@@ -63,7 +82,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
   useEffect(() => {
     if (!user) return;
 
-    const socket = io('http://223.130.160.153:3001/alrim');
+    const socket = io('http://localhost:3001/alrim');
 
     socket.emit('joinRoom', { usrSeq: user.usrSeq });
 
@@ -87,7 +106,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     const fetchUserBarns = async () => {
       try {
         const response = await fetch(
-          `http://223.130.160.153:3001/user-barns/user/${user.usrSeq}`
+          `http://localhost:3001/user-barns/user/${user.usrSeq}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -107,7 +126,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     const fetchUserCows = async () => {
       try {
         const response = await fetch(
-          `http://223.130.160.153:3001/cows/user/${user.usrSeq}`
+          `http://localhost:3001/cows/user/${user.usrSeq}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -129,7 +148,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     if (barnId) {
       try {
         const response = await fetch(
-          `http://223.130.160.153:3001/cows/barn/${barnId}`
+          `http://localhost:3001/cows/barn/${barnId}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -187,7 +206,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
       const predictions = await Promise.all(
         selectedCows.map(async (cow) => {
           const cowData = userCows.find((c) => c.cowSeq === Number(cow.entity));
-          const response = await fetch("http://223.130.160.153:8081/predict", {
+          const response = await fetch("http://localhost:8081/predict", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -212,7 +231,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
         })
       );
 
-      const response = await fetch("http://223.130.160.153:3001/auctions", {
+      const response = await fetch("http://localhost:3001/auctions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -263,6 +282,8 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [videoVisible]);
 
+  
+
   return (
     <>
       <header className="header">
@@ -287,10 +308,9 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
           <Link to="/">홈</Link>
           {user ? (
             <>
-              <a onClick={() => setShowAlarmDropdown(!showAlarmDropdown)}>알람</a>
+              <a onClick={() => setShowAlarmDropdown(!showAlarmDropdown)}>알림</a>
               {showAlarmDropdown && (
                 <div className="alarm-dropdown">
-                  <h4>알림</h4>
                   {alarms.length === 0 ? (
                     <p className="no-alarms">새 알림이 없습니다.</p>
                   ) : (
@@ -328,17 +348,27 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode }) => {
       </header>
 
       {videoVisible && (
-        <div className="modal-overlay">
-          {/* X 버튼 */}
-          <button className="close-button" onClick={() => setVideoVisible(false)}>
+        <div className="modal-overlay2">
+          <div className="video-wrapper">
+            <video width="900" controls ref={videoRef}>
+              <source src={video} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div className="language-button-group">
+              <button className="language-eng" onClick={handleEnglishClick}>
+                ENGLISH
+              </button>
+              <button className="language-kor" onClick={handleKoreanClick}>
+                한국어
+              </button>
+            </div>
+          </div>
+          <button className="close-button2" onClick={() => setVideoVisible(false)}>
             X
           </button>
-          <video width="900" controls autoPlay>
-            <source src={video} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-      </div>
+        </div>
       )}
+
 
       {showModal && (
         <div className="modal-overlay">
