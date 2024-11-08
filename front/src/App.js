@@ -14,6 +14,7 @@ import Header from './components/Header';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(() => 
     sessionStorage.getItem("theme") === "dark"
   );
@@ -37,9 +38,9 @@ function App() {
 
   return (
       <Router>
-         <Header user={user} setUser={setUser} toggleTheme={toggleTheme} isDarkMode={isDarkMode} /> toggleTheme 추가
+         <Header user={user} setUser={setUser} toggleTheme={toggleTheme} isDarkMode={isDarkMode} setSearchTerm={setSearchTerm} /> toggleTheme 추가
         <Routes>
-          <Route path="/" element={<Main user={user} setUser={setUser} toggleTheme={toggleTheme} isDarkMode={isDarkMode} />} />
+          <Route path="/" element={<Main searchTerm={searchTerm} setSearchTerm={setSearchTerm} toggleTheme={toggleTheme} isDarkMode={isDarkMode} />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/kakao-callback" element={<KakaoCallback setUser={setUser} />} />
           <Route path="/signUp" element={<SignUp />} />

@@ -22,6 +22,7 @@
   padding: 20px;
   transition: background-color 0.3s, color 0.3s;
   font-family: 'WarhavenB', sans-serif;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
 }
 
 .header .logo {
@@ -47,22 +48,6 @@
   color: var(--text-primary);
   transition: color 0.3s;
   font-family: 'WarhavenB', sans-serif;
-}
-
-/* 검색창 스타일 */
-.search-bar input {
-  padding: 10px;
-  border-radius: 8px;
-  width: 400px;
-  border: 1px solid #444;
-  outline: none;
-  transition: border-color 0.3s;
-  margin-left: 230px;
-  font-family: 'WarhavenB', sans-serif;
-}
-
-.search-bar input:focus {
-  border-color: black;
 }
 
 .nav-links a {
@@ -196,11 +181,11 @@
 
 /* 알림 드롭다운 스타일 */
 .alarm-dropdown {
-  position: absolute;
+  position: fixed;
   top: 60px;
-  right: 0.5px;
-  width: 23%;
-  max-height: 300px;
+  right: 0px;
+  width: 390px;
+  height: 300px;
   background: var(--background-secondary);
   border: 1px solid #ddd;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -211,6 +196,13 @@
   font-family: 'WarhavenB', sans-serif;
   scrollbar-width: none; /* 스크롤바 숨기기 */
   -ms-overflow-style: none; /* IE, Edge에서 스크롤바 숨기기 */
+}
+
+/* 반응형 설정 */
+@media (max-width: 768px) {
+  .alarm-dropdown {
+    height: 65px;
+  }
 }
 
 .alarm-dropdown h4 {
