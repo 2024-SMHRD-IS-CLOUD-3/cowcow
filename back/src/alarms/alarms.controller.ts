@@ -7,7 +7,8 @@ export class AlarmsController {
 
   @Get(':userId')
   async getUserAlarms(@Param('userId') userId: number) {
-    return this.alarmsService.getUserAlarms(userId);
+    const alarm = this.alarmsService.getUserAlarms(userId);
+    return alarm;
   }
 
   @Post()

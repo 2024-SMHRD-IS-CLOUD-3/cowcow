@@ -21,17 +21,12 @@ export class AlarmsService {
       throw new NotFoundException(`ID ${userId}에 해당하는 사용자를 찾을 수 없습니다.`);
     }
 
-    // console.log("alarm.service.ts");
-    console.log("누구에게 온 알림인가!: ", userId);
-    
     const alarm = this.alarmsRepository.create({
       user,
       alarmMsg: message,
       alarmIsRead: false,
     });
 
-    console.log("alarm: ", alarm);
-    
     return this.alarmsRepository.save(alarm);
   }
 

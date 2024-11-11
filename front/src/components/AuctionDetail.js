@@ -172,7 +172,7 @@ const AuctionDetail = ({ user }) => {
           acowSeq: acows[currentSlide].acowSeq,
           bidAcc: user.usrSeq,
           bidAmt: parseInt(bidAmount, 10),
-          bidDt: new Date(),
+          bidDt: new Date().toString(),
         }),
       });
 
