@@ -28,7 +28,7 @@ const SignUp = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:3001/users/signup', {
+            const response = await fetch('http://223.130.160.153:3001/users/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const SignUp = () => {
 
     const verifyEmail = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/users/${email}`);
+            const response = await fetch(`http://223.130.160.153:3001/users/${email}`);
 
             if (!response.ok) {
                 throw new Error('중복된 이메일');

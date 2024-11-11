@@ -74,7 +74,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
     const fetchAlarms = async () => {
       if (!user) return;
       try {
-        const response = await fetch(`http://localhost:3001/alarms/${user.usrSeq}`);
+        const response = await fetch(`http://223.130.160.153:3001/alarms/${user.usrSeq}`);
         if (response.ok) {
           const data = await response.json();
           setAlarms(data);
@@ -92,7 +92,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
   useEffect(() => {
     if (!user) return;
 
-    const socket = io('http://localhost:3001/alrim');
+    const socket = io('http://223.130.160.153:3001/alrim');
 
     socket.emit('joinRoom', { usrSeq: user.usrSeq });
 
@@ -116,7 +116,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
     const fetchUserBarns = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/user-barns/user/${user.usrSeq}`
+          `http://223.130.160.153:3001/user-barns/user/${user.usrSeq}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -136,7 +136,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
     const fetchUserCows = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/cows/user/${user.usrSeq}`
+          `http://223.130.160.153:3001/cows/user/${user.usrSeq}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -158,7 +158,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
     if (barnId) {
       try {
         const response = await fetch(
-          `http://localhost:3001/cows/barn/${barnId}`
+          `http://223.130.160.153:3001/cows/barn/${barnId}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -216,7 +216,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
       const predictions = await Promise.all(
         selectedCows.map(async (cow) => {
           const cowData = userCows.find((c) => c.cowSeq === Number(cow.entity));
-          const response = await fetch("http://localhost:8081/predict", {
+          const response = await fetch("http://223.130.160.153:8081/predict", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -241,7 +241,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
         })
       );
 
-      const response = await fetch("http://localhost:3001/auctions", {
+      const response = await fetch("http://223.130.160.153:3001/auctions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
