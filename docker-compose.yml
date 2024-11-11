@@ -22,6 +22,7 @@ services:
       - DATABASE_USER=ohi0
       - DATABASE_PASSWORD=smart123!
       - DATABASE_NAME=ohi0
+      - TZ=Asia/Seoul  # 한국 시간대 설정 추가
     networks:
       - mynetwork
 
