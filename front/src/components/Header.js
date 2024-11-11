@@ -22,6 +22,8 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
   const [video, setVideo] = useState(video1);
   const videoRef = useRef(null);
   const alarmDropdownRef = useRef(null); // 알림 드롭다운에 ref 설정
+  const [displayMinValue, setDisplayMinValue] = useState(""); // 억 단위 표시 상태 추가
+
 
   // 외부 클릭 감지
   useEffect(() => {
@@ -189,12 +191,22 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
       item.id === id
         ? {
             ...item,
-            [field]: field === "minValue" ? Math.max(0, value) : value,
+            [field]: field === "minValue"
+              ? Math.min(100000, Math.max(0, value))  // 0 이상, 100000 이하로 제한
+              : value,
           }
         : item
     );
     setItems(updatedItems);
+  
+    // '억' 단위로 표시
+    if (field === "minValue") {
+      const amountInBillion = Math.min(100000, Math.max(0, value)) / 10000;
+      setDisplayMinValue(`${amountInBillion}억 원`);
+    }
   };
+  
+  
 
   const handlebroadCastTitleChange = (e) => setbroadCastTitle(e.target.value);
 
@@ -430,6 +442,7 @@ const Header = ({ user, setUser, toggleTheme, isDarkMode, setSearchTerm }) => {
                       min="0"
                       placeholder="최소가를 입력하세요"
                     />
+                    <span>{displayMinValue}</span> {/* '억' 단위로 표시 */}
                   </div>
                 </div>
               ))}
