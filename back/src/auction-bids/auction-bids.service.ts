@@ -36,8 +36,6 @@ export class AuctionBidsService {
       throw new NotFoundException(`ID ${bidData.aucSeq}에 해당하는 경매를 찾을 수 없습니다.`);
     }
 
-    console.log("acow.acowStatus: ", acow.acowStatus)
-
     if(acow.acowStatus === '낙찰') {
       throw new NotFoundException(`ID ${bidData.aucSeq}에 해당하는 경매는 이미 낙찰되었습니다.`);
     }
@@ -57,9 +55,6 @@ export class AuctionBidsService {
 
     // 알림 생성 - 데이터베이스에 저장
     const alarm = await this.alarmsService.createAlarm(sellerId, message);
-
-    console.log("현재 입찰이 이루어진 acowSeq: ", bidData.acowSeq);
-    console.log("입찰한 모든 사용자: ", uniqueBidders);
 
     // 고유한 입찰자들에게 알림 전송 - WebSocket으로 실시간 알림 전달
     await Promise.all(

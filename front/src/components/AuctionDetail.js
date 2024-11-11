@@ -37,7 +37,7 @@ const AuctionDetail = ({ user }) => {
 
   const fetchAuctionDetail = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/auctions/${id}`);
+      const response = await fetch(`http://223.130.160.153:3001/auctions/${id}`);
       if (!response.ok) {
         throw new Error("경매 정보를 가져오는 데 실패했습니다.");
       }
@@ -82,7 +82,7 @@ const AuctionDetail = ({ user }) => {
   const fetchHighestBid = async (acowSeq) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/auction-bids/highest/${acowSeq}`
+        `http://223.130.160.153:3001/auction-bids/highest/${acowSeq}`
       );
       if (!response.ok) {
         throw new Error("최고 입찰가를 가져오는 데 실패했습니다.");
@@ -98,7 +98,7 @@ const AuctionDetail = ({ user }) => {
   const fetchAcowStatus = async (acowSeq) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/auction-cows/${acowSeq}`
+        `http://223.130.160.153:3001/auction-cows/${acowSeq}`
       );
       if (!response.ok) {
         throw new Error("해당하는 소의 정보를 가져오는 데 실패했습니다.");
@@ -162,7 +162,7 @@ const AuctionDetail = ({ user }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/auction-bids`, {
+      const response = await fetch(`http://223.130.160.153:3001/auction-bids`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -172,7 +172,7 @@ const AuctionDetail = ({ user }) => {
           acowSeq: acows[currentSlide].acowSeq,
           bidAcc: user.usrSeq,
           bidAmt: parseInt(bidAmount, 10),
-          bidDt: new Date(),
+          bidDt: new Date().toString(),
         }),
       });
 
@@ -197,7 +197,7 @@ const AuctionDetail = ({ user }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/auction-cows/${acows[currentSlide].acowSeq}/win`,
+        `http://223.130.160.153:3001/auction-cows/${acows[currentSlide].acowSeq}/win`,
         {
           method: "PUT",
           headers: {
@@ -223,7 +223,7 @@ const AuctionDetail = ({ user }) => {
 
   const handleBroadcastEnd = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/auctions/${auction.aucSeq}/status`, {
+      const response = await fetch(`http://223.130.160.153:3001/auctions/${auction.aucSeq}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"

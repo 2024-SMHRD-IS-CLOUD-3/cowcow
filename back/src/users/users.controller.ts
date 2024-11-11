@@ -26,7 +26,7 @@ export class UsersController {
     return this.usersService.validateUser(userData.usrEml, userData.usrPwd);
   }
 
-  @Delete(':id') // DELETE /users/:id
+  @Delete('delete/:id') // DELETE /users/:id
   async deleteUser(@Param('id') id: number): Promise<void> {
     return this.usersService.deleteUser(id);
   }

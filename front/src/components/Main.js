@@ -64,10 +64,6 @@ const MainPage = ({ searchTerm, setSearchTerm, isDarkMode, toggleTheme }) => {
     let timestamp = today.toISOString();
 
     auctionData.forEach((auction) => {
-      console.log("auction.aucStatus: ", auction.auctionCows.every((cow) => cow.acowStatus === '낙찰'));
-      console.log("auction.aucSeq: ", auction.aucSeq);
-      console.log("엔드타임: ", auction.aucEndDt);
-      console.log("현재시간: ", timestamp);
       if (auction.aucStatus === '진행중' && auction.auctionCows.every((cow) => cow.acowStatus === '낙찰')) {
         handleAuctionEnd(auction.aucSeq);
       } else if (auction.aucStatus !== "방송종료") {
