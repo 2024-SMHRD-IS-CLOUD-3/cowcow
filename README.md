@@ -1,4 +1,4 @@
-# 클라우드 원(CD1) 
+# cowcow(CD1) 
 ![cowcowlogo](https://github.com/user-attachments/assets/af3ad80c-89ff-45c0-bcfc-98f5b620a26b)
 
 
