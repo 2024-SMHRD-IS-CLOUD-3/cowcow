@@ -97,7 +97,6 @@ html, body {
 /* 경매 카드 그리드 */
 .auction-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     padding:  40px;
     max-width: 100%;
