@@ -25,18 +25,18 @@
         <th>내용</th>
     </tr>
     <tr>
+        <td>개발도구</td>
+        <td>
+            <img src="https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white"/>
+        </td>
+    </tr>
+    <tr>
         <td>사용언어</td>
         <td>
             <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/>
             <img src = "https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white"/>
             <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white"/>
             <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"/>
-        </td>
-    </tr>
-    <tr>
-        <td>개발도구</td>
-        <td>
-            <img src="https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white"/>
         </td>
     </tr>
     <tr>
@@ -48,11 +48,16 @@
     <tr>
         <td>백엔드</td>
         <td>
-            <img src="https://img.shields.io/badge/Typeorm-E93625?style=for-the-badge&logo=typeorm&logoColor=white"/>
-            <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white"/> 
-            <img src="https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=Socket.io&logoColor=white">
             <img src = "https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white"/>
             <img src = "https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white"/>
+        </td>
+    </tr>
+    <tr>
+        <td>라이브러리</td>
+        <td>
+            <img src="https://img.shields.io/badge/Typeorm-E93625?style=for-the-badge&logo=typeorm&logoColor=white"/>
+                <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white"/> 
+                <img src="https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=Socket.io&logoColor=white">
         </td>
     </tr>
     <tr>
@@ -86,6 +91,7 @@
 
 
 ## ⚙ 시스템 아키텍처(구조)
+
 <br>
 
 ## 📌 SW유스케이스
