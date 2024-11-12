@@ -91,21 +91,24 @@
 
 
 ## ⚙ 시스템 아키텍처(구조)
+<img src = "https://github.com/user-attachments/assets/01b0c999-660b-4e83-9d94-31bceae1bc9f" width=800/>
 
 <br>
 
 ## 📌 SW유스케이스
-![TTT 유스케이스](https://github.com/user-attachments/assets/8e859a2b-fa90-4253-bd65-d5bc27e5f7a9)
+<img src = "https://github.com/user-attachments/assets/e25fb057-3156-4320-8295-596c5c823900" width=800/>
+
 
 
 ## 📌 서비스 흐름도
-![TTT-플로우차트-removebg-preview](https://github.com/user-attachments/assets/42d274ce-8422-4480-8732-c98c01e2470a)
+<img src = "https://github.com/user-attachments/assets/f70a65a0-9956-45dd-afee-edef9d6da4fc" width=400 height=250/>
+<img src = "https://github.com/user-attachments/assets/0ed1ee17-6094-4099-836d-81057b5237f1" width=400 height=250/>
 <br>
 
 
 
 ## 📌 ER다이어그램
-![image](https://github.com/user-attachments/assets/bf12db60-f5e0-4a1c-8c31-684f6d9b2ca5)
+<img src = "https://github.com/user-attachments/assets/aac7b31c-4ccd-432a-8c89-1ff094cdbbca" width=800/>
 <br>
 
 ## 🖥 화면 구성
@@ -114,43 +117,39 @@
 <br>
 
 ### 로그인 / 회원가입
-![로그인](https://github.com/user-attachments/assets/32c9f1b5-1379-4379-9332-f0de9eb95e9e)![회원가입](https://github.com/user-attachments/assets/0dfef385-9ef5-48af-ac55-8ce4091616dc)
+![로그인](https://github.com/user-attachments/assets/cfa11370-cc21-4444-9e2a-025ccf06b86f)
+![회원가입](https://github.com/user-attachments/assets/1c197a3e-5b85-4fc6-842c-07c03764ad85)
 
 
 <br>
 
-### 홈페이지  
-![홈화면](https://github.com/user-attachments/assets/74b66658-bd05-40e0-a482-ba16790ec512)
+### 메인페이지  
+![메인페이지](https://github.com/user-attachments/assets/35f97e12-5193-45da-927a-a6b5728deff3)
 <br>
 
-### 마이페이지 
-![마이페이지](https://github.com/user-attachments/assets/611d274c-e81f-4be1-8585-a9d83784e6da)
+### 경매등록
+![image](https://github.com/user-attachments/assets/d418bdae-6fb8-4f53-b7de-5943ac1f8c0e)
 <br>
 
-### 회원관리페이지
-![회원관리페이지](https://github.com/user-attachments/assets/2b3f9663-6d10-455a-807f-1eed03dcc92f)
+### 경매페이지(판매자/구매자)
+![판매자](https://github.com/user-attachments/assets/a6e6e056-cf3f-430c-912d-047feae000fb)
+![구매자](https://github.com/user-attachments/assets/7c8342db-dd78-4252-a6f4-dd65b04e36f0)
 <br>
 
-### 트레이너 일정관리 페이지
-![트레이너일정관리페이지](https://github.com/user-attachments/assets/14b39ca7-782c-4f7c-ad64-b79637f751ab)
+### 개인정보변경(마이페이지)
+![개인정보변경](https://github.com/user-attachments/assets/e237e459-b492-4397-8304-ca1c8e748451)
 <br>
 
-### 회원 개인정보페이지
-![개인회원페이지](https://github.com/user-attachments/assets/2e636ec3-5c48-4a1e-8ece-4005fe169c94)
+### 소등록(마이페이지)
+![소등록](https://github.com/user-attachments/assets/cd95f78e-f2a5-4e1f-9d3d-4e4d85ed7f22)
 <br>
 
-
-### 회원특이사항 메모장페이지
-![KakaoTalk_20240823_090157507](https://github.com/user-attachments/assets/48ef2b93-15af-48b7-a542-10bd814074fb)
-
+### 거래내역(마이페이지)
+![거래내역](https://github.com/user-attachments/assets/8223ff7c-e278-43a7-880b-ea8eae3cd985)
 <br>
 
-### 자세인식 페이지
-![자세인식페이지](https://github.com/user-attachments/assets/76d79a21-4ae4-4dee-adfe-a2fdf3202326)
-<br>
-
-### 회원 일정관리 페이지
-![개인회원 캘린더페이지](https://github.com/user-attachments/assets/0e8d832a-2f60-46d3-8e6f-b966e1c86e0a)
+### 회원탈퇴(마이페이지)
+![회원타일](https://github.com/user-attachments/assets/fc42d645-c7bb-484a-bd74-2ed3fa190285)
 <br>
 
 
@@ -165,12 +164,12 @@
     <td></td>
   </tr>
   <tr>
-    <td align="center"><strong>팀장<br>송창희</strong></td>
-    <td align="center"><strong>이영환</strong></td>
-    <td align="center"><strong>김승현</strong></td>
-    <td align="center"><strong>송현주</strong></td>
-    <td align="center"><strong>류형욱</strong></td>
-    <td align="center"><strong>김하영</strong></td>
+    <td align="center"><strong>팀장<br>김하영</strong></td>
+    <td align="center"><strong>김승현</strong></strong></td>
+    <td align="center"><strong>박규민</strong></td>
+    <td align="center"><strong>우병현</strong></td>
+    <td align="center"><strong>이지환</strong></td>
+    <td align="center"><strong>조근하</strong></td>
   </tr>
   <tr>
     <td align="center"><b>PM<br>Backend<br>Data Base</b></td>
@@ -188,7 +187,6 @@
     <td align="center"><a></a></td>
     <td align="center"><a></a></td>
     <td align="center"><a></a></td>
-    
   </tr>
 </table>
 
