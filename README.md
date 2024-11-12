@@ -1,4 +1,4 @@
-# cowcow(CD1) 
+# cowcow 
 ![cowcowlogo](https://github.com/user-attachments/assets/af3ad80c-89ff-45c0-bcfc-98f5b620a26b)
 
 
